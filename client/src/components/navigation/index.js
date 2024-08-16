@@ -1,3 +1,4 @@
+import { Link as RoterLink } from "react-router-dom";
 import {
   AppBar,
   Button,
@@ -11,12 +12,9 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Divider,
   Hidden,
-  Menu,
-  MenuItem,
+  Link,
 } from "@mui/material";
-
 import SettingsIcon from "@mui/icons-material/Settings";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -29,7 +27,7 @@ const Navigation = () => {
     <Box sx={{ width: 250 }} role="presentation">
       <List>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton component={RoterLink} to="/settings">
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
@@ -56,9 +54,17 @@ const Navigation = () => {
               <MenuIcon />
             </IconButton>
           </Hidden>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Movies recomendation
-          </Typography>
+
+          <Link component={RoterLink} to="/">
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ color: "white", flexGrow: 1 }}
+            >
+              Movies recomendation
+            </Typography>
+          </Link>
+
           <Box
             sx={{
               flexGrow: 1,
@@ -67,7 +73,8 @@ const Navigation = () => {
             }}
           >
             <Button
-              // onClick={handleCloseNavMenu}
+              component={RoterLink}
+              to="/settings"
               sx={{ my: 2, color: "white", display: "block" }}
             >
               Settings
