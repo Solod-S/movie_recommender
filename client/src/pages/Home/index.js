@@ -1,6 +1,7 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import { Box, Grid, Paper } from "@mui/material";
+import { MovieCard } from "../../components";
 
 const SelectedMoives = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -21,7 +22,24 @@ const Home = () => {
           <Paper>Filter section</Paper>
         </Grid>
         <Grid item xs={12} md={8}>
-          <Paper>List of movies</Paper>
+          <Paper>
+            <Box sx={{ flexGrow: 1, padding: 2 }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={4} lg={3}>
+                  <MovieCard />
+                </Grid>
+                <Grid item xs={12} md={4} lg={3}>
+                  <MovieCard />
+                </Grid>
+                <Grid item xs={12} md={4} lg={3}>
+                  <MovieCard />
+                </Grid>
+                <Grid item xs={12} md={4} lg={3}>
+                  <MovieCard />
+                </Grid>
+              </Grid>
+            </Box>
+          </Paper>
         </Grid>
         <Grid item xs={12} md={4}>
           <SelectedMoives>Selected movies</SelectedMoives>
