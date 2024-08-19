@@ -1,7 +1,7 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import { Box, Grid, Paper } from "@mui/material";
-import { MovieCard } from "../../components";
+import { MovieCard, MovieCardSelected } from "../../components";
 import { movies } from "../../stories/stub";
 const SelectedMoives = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -17,6 +17,9 @@ const SelectedMoives = styled(Paper)(({ theme }) => ({
 const Home = () => {
   const onCardSelect = movie => {
     alert("Movie added");
+  };
+  const onDeleteClick = movie => {
+    alert("Movie was removed");
   };
   return (
     <Box sx={{ flexGrow: 1, marginTop: 2 }}>
@@ -44,8 +47,28 @@ const Home = () => {
             </Box>
           </Paper>
         </Grid>
+
         <Grid item xs={12} md={4}>
-          <SelectedMoives>Selected movies</SelectedMoives>
+          <SelectedMoives>
+            <Grid item sx={{ padding: 1 }}>
+              <MovieCardSelected
+                movie={movies[0]}
+                onDeleteClick={onDeleteClick}
+              />
+            </Grid>
+            <Grid item sx={{ padding: 1 }}>
+              <MovieCardSelected
+                movie={movies[1]}
+                onDeleteClick={onDeleteClick}
+              />
+            </Grid>
+            <Grid item sx={{ padding: 1 }}>
+              <MovieCardSelected
+                movie={movies[2]}
+                onDeleteClick={onDeleteClick}
+              />
+            </Grid>
+          </SelectedMoives>
         </Grid>
       </Grid>
     </Box>

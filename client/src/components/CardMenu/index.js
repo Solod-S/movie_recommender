@@ -1,16 +1,22 @@
 import * as React from "react";
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import { IconButton, Menu } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const CardMenu = ({ onCardSelect }) => {
+const CardMenu = React.forwardRef(({ children }, ref) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  React.useImperativeHandle(ref, () => ({
+    handleClose,
+  }));
 
   return (
     <>
@@ -18,8 +24,8 @@ const CardMenu = ({ onCardSelect }) => {
         sx={{
           position: "absolute",
           backgroundColor: "#ffffff3b",
-          right: "4px",
-          top: "4px",
+          right: "6px",
+          top: "6px",
         }}
         aria-label="more"
         id="long-button"
@@ -36,29 +42,16 @@ const CardMenu = ({ onCardSelect }) => {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        PaperProps={
-          {
-            // style: {
-            //   maxHeight: ITEM_HEIGHT * 4.5,
-            //   width: "20ch",
-            // },
-          }
-        }
+        // PaperProps={{
+        //   style: {
+        //     width: "20ch",
+        //   },
+        // }}
       >
-        <MenuItem
-          key={1}
-          onClick={() => {
-            handleClose();
-            setTimeout(() => {
-              onCardSelect();
-            }, 100);
-          }}
-        >
-          Select
-        </MenuItem>
+        {children}
       </Menu>
     </>
   );
-};
+});
 
 export default CardMenu;

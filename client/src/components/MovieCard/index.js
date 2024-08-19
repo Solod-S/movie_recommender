@@ -3,9 +3,9 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { CardMenu } from "./components";
+import CardMenu from "../CardMenu";
 import PropTypes from "prop-types";
-import { Tooltip } from "@mui/material";
+import { MenuItem, Tooltip } from "@mui/material";
 
 const truncateString = (string, length = 35) => {
   if (string.length >= length) {
@@ -15,9 +15,28 @@ const truncateString = (string, length = 35) => {
 };
 
 const MovieCard = ({ movie, onCardSelect }) => {
+  const menuRef = React.useRef();
+
+  const callhandleClose = () => {
+    if (menuRef.current) {
+      menuRef.current.handleClose();
+    }
+  };
+
   return (
     <Card sx={{ position: "relative" }}>
-      <CardMenu onCardSelect={onCardSelect} />
+      <CardMenu ref={menuRef}>
+        <MenuItem
+          onClick={() => {
+            callhandleClose();
+            setTimeout(() => {
+              onCardSelect();
+            }, 100);
+          }}
+        >
+          select
+        </MenuItem>
+      </CardMenu>
       <CardMedia component="img" image={movie.image} alt={movie.title} />
       <CardContent style={{ paddingBottom: "16px", height: "150px" }}>
         {movie.title.length > 35 ? (
