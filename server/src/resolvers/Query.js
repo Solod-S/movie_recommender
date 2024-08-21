@@ -1,18 +1,20 @@
+const { getPopularMovies } = require("../modules/movies");
+
 const movies = async (parent, args) => {
-  return {
-    page: 1,
-    totalResults: 12,
-    totalPages: 12,
-    results: [
-      {
-        id: 1,
-        title: "title",
-        releaseDate: "22.22.22",
-        posterPath: "poster.jpg",
-        genres: [],
-      },
-    ],
-  };
+  try {
+    const data = await getPopularMovies({ page: 3, language: "en-US" });
+
+    return data;
+  } catch (error) {
+    console.error(`Error in movies resolver:`, error.message);
+
+    return {
+      page: 0,
+      totalResults: 0,
+      totalPages: 0,
+      results: [],
+    };
+  }
 };
 
 module.exports = { movies };

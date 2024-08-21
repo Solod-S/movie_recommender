@@ -18,7 +18,7 @@ const MovieCardSelected = ({ movie, onDeleteClick }) => {
     }
   };
   return (
-    <Card sx={{ display: "flex" }}>
+    <Card sx={{ display: "flex", position: "relative" }}>
       <CardMedia
         component="img"
         sx={{ width: 100 }}
@@ -29,7 +29,6 @@ const MovieCardSelected = ({ movie, onDeleteClick }) => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          position: "relative",
           width: "100%",
         }}
       >

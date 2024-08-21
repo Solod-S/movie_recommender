@@ -15,6 +15,15 @@ type Movie {
   releaseDate: String!
   posterPath: String
   genres: [Genre]
+  adult: Boolean
+  backdropPath: String
+  originalLanguage: String
+  originalTitle: String
+  overview: String
+  popularity: Float
+  video: Boolean
+  voteAverage: Float
+  voteCount: Int
 }
 
 type Genre {
