@@ -1,12 +1,13 @@
 require("dotenv").config();
-
+const { format } = require("date-fns");
 const IMG_PATH = process.env.IMAGE_BASE_PATH;
 
 class Movie {
   constructor(movie) {
+    this.movie = movie;
     this.id = movie.id;
     this.title = movie.title;
-    this.releaseDate = movie.release_date;
+
     this.posterPath = `${IMG_PATH}${movie.poster_path}`;
     this.adult = movie.adult;
     this.backdropPath = `${IMG_PATH}${movie.backdrop_path}`;
@@ -17,6 +18,12 @@ class Movie {
     this.video = movie.video;
     this.voteAverage = movie.vote_average;
     this.voteCount = movie.vote_count;
+  }
+
+  releaseDate(params) {
+    return params.format
+      ? format(new Date(this.movie.release_date), params.format)
+      : this.movie.release_date;
   }
 }
 // genre_ids: [Array],
