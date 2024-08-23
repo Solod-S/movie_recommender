@@ -30,7 +30,7 @@ const MovieCard = ({ movie, onCardSelect }) => {
           onClick={() => {
             callhandleClose();
             setTimeout(() => {
-              onCardSelect();
+              onCardSelect(movie);
             }, 100);
           }}
         >

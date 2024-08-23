@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import CardMenu from "../CardMenu";
 import { MenuItem } from "@mui/material";
 
-const MovieCardSelected = ({ movie, onDeleteClick }) => {
+const MovieCardSelected = ({ movie, onCardDelete }) => {
   const menuRef = React.useRef();
 
   const callhandleClose = () => {
@@ -70,7 +70,7 @@ const MovieCardSelected = ({ movie, onDeleteClick }) => {
           onClick={() => {
             callhandleClose();
             setTimeout(() => {
-              onDeleteClick();
+              onCardDelete(movie);
             }, 100);
           }}
         >
@@ -91,7 +91,7 @@ MovieCardSelected.protoTypes = {
     ),
     vote_average: PropTypes.number,
   }).isRequired,
-  onCardSelect: PropTypes.func.isRequired,
+  onCardDelete: PropTypes.func.isRequired,
 };
 
 export default MovieCardSelected;

@@ -1,8 +1,9 @@
 const { getPopularMovies } = require("../modules/movies");
 
 const movies = async (parent, args) => {
+  console.log(`args`, args);
   try {
-    const data = await getPopularMovies({ page: 1, language: "en-US" });
+    const data = await getPopularMovies({ page: args.page, language: "en-US" });
 
     return data;
   } catch (error) {
