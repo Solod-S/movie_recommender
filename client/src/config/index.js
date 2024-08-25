@@ -1,0 +1,1 @@
+export const SELECTED_MOVIES_LIMIT = 12;

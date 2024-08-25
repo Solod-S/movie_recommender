@@ -37,7 +37,12 @@ const MovieCard = ({ movie, onCardSelect }) => {
           select
         </MenuItem>
       </CardMenu>
-      <CardMedia component="img" image={movie.image} alt={movie.title} />
+      <CardMedia
+        component="img"
+        image={movie.image}
+        alt={movie.title}
+        style={{ height: "431px" }}
+      />
       <CardContent style={{ paddingBottom: "16px", height: "150px" }}>
         {movie.title.length > 35 ? (
           <Tooltip title={movie.title} arrow>

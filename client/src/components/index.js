@@ -1,5 +1,12 @@
 import Navigation from "./Navigation";
 import MovieCard from "./MovieCard";
 import MovieCardSelected from "./MovieCardSelected";
-
-export { Navigation, MovieCard, MovieCardSelected };
+import SelectedMoviesForm from "./SelectedMoviesForm";
+import SelectedMoviesSection from "./SelectedMoviesSection";
+export {
+  Navigation,
+  MovieCard,
+  MovieCardSelected,
+  SelectedMoviesForm,
+  SelectedMoviesSection,
+};

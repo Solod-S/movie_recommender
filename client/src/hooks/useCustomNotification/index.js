@@ -13,7 +13,6 @@ export const useCustomNotification = () => {
       duration = 6000,
       position = { vertical: "bottom", horizontal: "right" }
     ) => {
-      console.log(`message`, message);
       setNotification({ message, type, duration, position });
     },
     []
@@ -31,7 +30,11 @@ export const useCustomNotification = () => {
       onClose={handleClose}
       anchorOrigin={notification.position}
     >
-      <Alert onClose={handleClose} severity={notification.type}>
+      <Alert
+        variant="filled"
+        onClose={handleClose}
+        severity={notification.type}
+      >
         {notification.message}
       </Alert>
     </Snackbar>
@@ -43,7 +46,16 @@ export const useCustomNotification = () => {
   };
 };
 
-// Примеры вызова уведомлений
+//* Примеры вызова уведомлений
+
+//* Используйте хук для управления уведомлениями
+// const { showNotification, NotificationComponent } = useCustomNotification();
+
+//* Вставьте компонент в разметку
+// {
+//   NotificationComponent;
+// }
+
 // const handleClick = () => {
 //   showNotification("This is an info message!", "info", 5000, { vertical: 'top', horizontal: 'center' });
 // };

@@ -18,7 +18,7 @@ const MovieCardSelected = ({ movie, onCardDelete }) => {
     }
   };
   return (
-    <Card sx={{ display: "flex", position: "relative" }}>
+    <Card sx={{ display: "flex", position: "relative", minHeight: "164px" }}>
       <CardMedia
         component="img"
         sx={{ width: 100 }}

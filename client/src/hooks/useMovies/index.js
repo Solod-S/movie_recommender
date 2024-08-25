@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { SELECTED_MOVIES_LIMIT } from "../../config";
 
 export const useMovies = () => {
   const [selectedMovies, setSelectedMovies] = useState([]);
@@ -7,11 +8,12 @@ export const useMovies = () => {
     movie => {
       const length = selectedMovies.length;
       const isNewMovie = !selectedMovies.find(({ id }) => id === movie.id);
-      if (isNewMovie && length < 3) {
+      if (isNewMovie && length < SELECTED_MOVIES_LIMIT) {
         setSelectedMovies([movie, ...selectedMovies]);
       } else {
-        console.log("isNewMovie && length < 3");
+        console.log(`isNewMovie && length < ${SELECTED_MOVIES_LIMIT}`);
       }
+      // setSelectedMovies([movie, ...selectedMovies]);
     },
     [selectedMovies]
   );

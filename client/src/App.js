@@ -11,6 +11,7 @@ function App() {
   const client = new ApolloClient({
     uri: SERVER_URL,
     cache: new InMemoryCache(),
+    connectToDevTools: true,
   });
 
   return (

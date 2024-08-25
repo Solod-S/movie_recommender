@@ -1,24 +1,14 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
+
 import { Box, Grid, Paper, Pagination, Skeleton } from "@mui/material";
-import { MovieCard, MovieCardSelected } from "../../components";
-import { movies } from "../../stories/stub";
+import { MovieCard, SelectedMoviesSection } from "../../components";
+
 import { useQuery } from "@apollo/client";
 import { MOVIES_QUERY } from "./queries";
 
 import { useMovies } from "../../hooks/useMovies";
-
-const SelectedMoives = styled(Paper)(({ theme }) => ({
-  backgroundColor: "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-
-  color: theme.palette.text.secondary,
-  // height: "calc(100vh - 140px)",
-  minHeight: "calc(100vh - 140px)",
-  position: "sticky",
-  top: theme.spacing(2),
-}));
+import { useCustomNotification } from "../../hooks/useCustomNotification";
+import { SELECTED_MOVIES_LIMIT } from "../../config";
 
 const renderSkeletons = () => {
   return (
@@ -37,21 +27,89 @@ const renderSkeletons = () => {
 const Home = () => {
   const [page, setPage] = React.useState(1);
   const { selectedMovies, selectMovie, deleteMovie } = useMovies();
+  const { showNotification, NotificationComponent } = useCustomNotification();
   const { loading, error, data } = useQuery(MOVIES_QUERY, {
     variables: { page },
   });
+
   React.useEffect(() => {
     console.log(selectedMovies);
   }, [selectedMovies]);
+
   const paginationHandler = (event, page) => {
     setPage(page);
   };
+
+  const selectMovieHandler = movie => {
+    const length = selectedMovies.length;
+    const isNewMovie = !selectedMovies.find(({ id }) => id === movie.id);
+
+    switch (true) {
+      case !isNewMovie:
+        showNotification(
+          "This movie is already on the selected movies list.",
+          "error",
+          5000,
+          {
+            vertical: "bottom",
+            horizontal: "right",
+          }
+        );
+        return;
+
+      case length >= SELECTED_MOVIES_LIMIT:
+        showNotification(
+          "The limit of the list has been reached.",
+          "error",
+          5000,
+          {
+            vertical: "bottom",
+            horizontal: "right",
+          }
+        );
+        return;
+
+      default:
+        showNotification(
+          "The movie has been successfully added to the list.",
+          "success",
+          5000,
+          {
+            vertical: "bottom",
+            horizontal: "right",
+          }
+        );
+        break;
+    }
+
+    selectMovie(movie);
+  };
+
+  const deleteMovieHandler = movie => {
+    switch (true) {
+      default:
+        showNotification(
+          "The movie has been successfully removed from the list.",
+          "success",
+          5000,
+          {
+            vertical: "bottom",
+            horizontal: "right",
+          }
+        );
+        break;
+    }
+
+    deleteMovie(movie);
+  };
+
   if (error) {
     return `Error: ${error.message}`;
   }
 
   return (
     <Box sx={{ flexGrow: 1, marginTop: 2 }}>
+      {NotificationComponent}
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Paper>Filter section</Paper>
@@ -64,7 +122,10 @@ const Home = () => {
                 <Grid container spacing={2}>
                   {data.movies.results.map(movie => (
                     <Grid key={movie.id} item xs={12} md={4} lg={3}>
-                      <MovieCard movie={movie} onCardSelect={selectMovie} />
+                      <MovieCard
+                        movie={movie}
+                        onCardSelect={selectMovieHandler}
+                      />
                     </Grid>
                   ))}
                 </Grid>
@@ -89,13 +150,10 @@ const Home = () => {
         </Grid>
 
         <Grid key="Selected Movie" item xs={12} md={4}>
-          <SelectedMoives>
-            {selectedMovies.map(movie => (
-              <Grid key={movie.id} item sx={{ padding: 1 }}>
-                <MovieCardSelected movie={movie} onCardDelete={deleteMovie} />
-              </Grid>
-            ))}
-          </SelectedMoives>
+          <SelectedMoviesSection
+            selectedMovies={selectedMovies}
+            onCardDelete={deleteMovieHandler}
+          />
         </Grid>
       </Grid>
     </Box>
