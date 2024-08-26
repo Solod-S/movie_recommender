@@ -28,7 +28,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="settings" element={<Settings />} />
-              <Route path="recomendation" element={<Recomendation />} />
+              <Route path="recommend" element={<Recomendation />} />
             </Routes>
           </Container>
         </Box>

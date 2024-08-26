@@ -11,7 +11,7 @@ export const useMovies = () => {
       if (isNewMovie && length < SELECTED_MOVIES_LIMIT) {
         setSelectedMovies([movie, ...selectedMovies]);
       } else {
-        console.log(`isNewMovie && length < ${SELECTED_MOVIES_LIMIT}`);
+        // console.log(`isNewMovie && length < ${SELECTED_MOVIES_LIMIT}`);
       }
       // setSelectedMovies([movie, ...selectedMovies]);
     },

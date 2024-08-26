@@ -8,7 +8,6 @@ import noMoviesImageSrc from "../../assets/no_movies.png";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 
-
 const SelectedMovies = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
   ...theme.typography.body2,
@@ -54,6 +53,12 @@ const NoMovies = styled(Box)(({ theme }) => ({
 }));
 
 const SelectedMoviesSection = ({ selectedMovies, onCardDelete }) => {
+  const ids = selectedMovies.map(({ id }) => id);
+  const onSubmit = ({ listName }) => {
+    const link = `${window.location.host}/recommend?title=${listName}&ids=${ids.join(",")}`;
+    console.log(`link`, link);
+  };
+
   if (!selectedMovies.length || selectedMovies.length <= 0) {
     return (
       <SelectedMovies>
@@ -85,7 +90,7 @@ const SelectedMoviesSection = ({ selectedMovies, onCardDelete }) => {
         ))}
       </MoviesList>
       <Box pt={2}>
-        <SelectedMoviesForm />
+        <SelectedMoviesForm onSubmit={onSubmit} />
       </Box>
     </SelectedMovies>
   );
