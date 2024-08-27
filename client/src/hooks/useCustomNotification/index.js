@@ -29,11 +29,13 @@ export const useCustomNotification = () => {
       autoHideDuration={notification.duration}
       onClose={handleClose}
       anchorOrigin={notification.position}
+      sx={{ zIndex: 1300 }} // Setting z-index to ensure it's on top
     >
       <Alert
         variant="filled"
         onClose={handleClose}
         severity={notification.type}
+        sx={{ zIndex: 1301 }} // Setting z-index slightly higher for the Alert component
       >
         {notification.message}
       </Alert>
