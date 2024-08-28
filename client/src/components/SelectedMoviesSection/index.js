@@ -13,6 +13,8 @@ import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { useState } from "react";
 
+const CLIENT_URL = process.env.REACT_APP_CLIENT_URL_DEV;
+
 const SelectedMovies = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
   ...theme.typography.body2,
@@ -63,8 +65,7 @@ const SelectedMoviesSection = ({ selectedMovies, onCardDelete }) => {
   const ids = selectedMovies.map(({ id }) => id);
 
   const onSubmit = ({ listName }) => {
-    const moviesLink = `${window.location.host}/recommend?title=${listName}&ids=${ids.join(",")}`;
-    console.log(`moviesLink`, moviesLink);
+    const moviesLink = `${CLIENT_URL}/recommend?title=${listName}&ids=${ids.join(",")}`;
     setListName(listName);
     setLink(moviesLink);
   };

@@ -14,5 +14,16 @@ const getPopularMovies = async (args = {}) => {
     throw error;
   }
 };
+const getDetails = id => {
+  try {
+    console.log(`id`, id);
+    const language = "en-US";
+    const result = themoviedbInstance.get(`/movie/${id}?language=${language}`);
+    return result;
+  } catch (error) {
+    console.error("Error fetching details:", error.message);
+    throw error;
+  }
+};
 
-module.exports = { getPopularMovies };
+module.exports = { getPopularMovies, getDetails };

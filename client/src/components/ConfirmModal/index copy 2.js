@@ -26,7 +26,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  minHeight: 311,
+  minHeight: 273,
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
@@ -40,15 +40,6 @@ const ConfirmModal = ({
 }) => {
   const [openAlert, setOpenAlert] = React.useState(false);
 
-  React.useEffect(() => {
-    let timer;
-    if (openAlert)
-      timer = setTimeout(() => {
-        setOpenAlert(false);
-      }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [openAlert]);
   return (
     <>
       <Modal
@@ -87,7 +78,15 @@ const ConfirmModal = ({
               <VisibilityIcon />
             </IconButton>
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-            <CopyToClipboard text={url} onCopy={() => setOpenAlert(true)}>
+            <CopyToClipboard
+              text={url}
+              onCopy={() => {
+                setOpenAlert(true);
+                setTimeout(() => {
+                  setOpenAlert(false);
+                }, 1000);
+              }}
+            >
               <IconButton
                 color="primary"
                 sx={{ p: "10px" }}
@@ -98,17 +97,9 @@ const ConfirmModal = ({
             </CopyToClipboard>
           </Paper>
           {/* Social Media Share Buttons */}
-          <Typography
-            sx={{ marginTop: "12px", fontWeight: "400", textAlign: "center" }}
-            id="modal-modal-title"
-            variant="h8"
-            component="h2"
-          >
-            Share with friends:
-          </Typography>
           <Box
             sx={{
-              marginTop: "10px",
+              marginTop: "20px",
               display: "flex",
               justifyContent: "center",
               gap: "10px",
