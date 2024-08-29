@@ -9,8 +9,6 @@ import renderSkeletons from "../../utils/renderSkeletons";
 const Recomendation = () => {
   const [searchParams] = useSearchParams();
   const [params, setParams] = useState({ title: "", ids: [] });
-  const [boxMinHeight, setBoxMinHeight] = useState("100vh");
-
   const { loading, error, data } = useQuery(MOVIES_BY_IDS_QUERY, {
     variables: { ids: params.ids },
   });
@@ -25,34 +23,16 @@ const Recomendation = () => {
     setParams({ title, ids });
   }, [searchParams]);
 
-  useEffect(() => {
-    // Dynamically find the header and calculate its height
-    const headerElement = document.querySelector("header"); // Adjust selector to match your actual header element
-    if (headerElement) {
-      const headerHeight = headerElement.offsetHeight;
-      setBoxMinHeight(`calc(100vh - ${headerHeight}px)`);
-    }
-  }, []);
-
   if (error) return <div>Error. Try again!</div>;
 
   return (
-    <Box
-      sx={{
-        minHeight: boxMinHeight,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: 3,
-        backgroundColor: "#f5f5f5",
-      }}
-    >
-      <Typography variant="h4" gutterBottom>
-        {params.title ? params.title : "Recommended Movies"}
+    <Box>
+      <Typography variant="h1" gutterBottom>
+        {params.title}
       </Typography>
-      <Grid item xs={12} md={8} sx={{ width: "100%" }}>
-        <Paper sx={{ padding: 2, minHeight: "400px" }}>
-          <Box sx={{ flexGrow: 1 }}>
+      <Grid item xs={12} md={8}>
+        <Paper>
+          <Box sx={{ flexGrow: 1, padding: 2 }}>
             {loading && renderSkeletons()}
             {data && (
               <Grid container spacing={2}>
@@ -73,5 +53,4 @@ const Recomendation = () => {
     </Box>
   );
 };
-
 export default Recomendation;

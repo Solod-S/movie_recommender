@@ -65,7 +65,7 @@ const SelectedMoviesSection = ({ selectedMovies, onCardDelete }) => {
   const ids = selectedMovies.map(({ id }) => id);
 
   const onSubmit = ({ listName }) => {
-    const moviesLink = `${CLIENT_URL}/recommend?title=${listName}&ids=${ids.join(",")}`;
+    const moviesLink = `${CLIENT_URL}recommend?title=${listName}&ids=${ids.join(",")}`;
     setListName(listName);
     setLink(moviesLink);
   };

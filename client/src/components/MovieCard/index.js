@@ -14,7 +14,7 @@ const truncateString = (string, length = 35) => {
   return string;
 };
 
-const MovieCard = ({ movie, onCardSelect }) => {
+const MovieCard = ({ movie, onCardSelect, isPreviewMode = false }) => {
   const menuRef = React.useRef();
 
   const callhandleClose = () => {
@@ -25,18 +25,20 @@ const MovieCard = ({ movie, onCardSelect }) => {
 
   return (
     <Card sx={{ position: "relative" }}>
-      <CardMenu ref={menuRef}>
-        <MenuItem
-          onClick={() => {
-            callhandleClose();
-            setTimeout(() => {
-              onCardSelect(movie);
-            }, 100);
-          }}
-        >
-          select
-        </MenuItem>
-      </CardMenu>
+      {!isPreviewMode && (
+        <CardMenu ref={menuRef}>
+          <MenuItem
+            onClick={() => {
+              callhandleClose();
+              setTimeout(() => {
+                onCardSelect(movie);
+              }, 100);
+            }}
+          >
+            select
+          </MenuItem>
+        </CardMenu>
+      )}
       <CardMedia
         component="img"
         image={movie.image}
@@ -70,6 +72,7 @@ MovieCard.protoTypes = {
     releaseDate: PropTypes.string,
   }).isRequired,
   onCardSelect: PropTypes.func.isRequired,
+  isPreviewMode: PropTypes.bool.isRequired,
 };
 
 export default MovieCard;

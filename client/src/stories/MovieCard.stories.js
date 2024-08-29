@@ -26,3 +26,10 @@ export const Primary = {
     movie: movies[2],
   },
 };
+
+export const Preview = {
+  args: {
+    movie: movies[2],
+    isPreviewMode: true,
+  },
+};

@@ -9,20 +9,7 @@ import { MOVIES_QUERY } from "./queries";
 import { useMovies } from "../../hooks/useMovies";
 import { useCustomNotification } from "../../hooks/useCustomNotification";
 import { SELECTED_MOVIES_LIMIT } from "../../config";
-
-const renderSkeletons = () => {
-  return (
-    <Grid container spacing={2}>
-      {Array.from(new Array(8)).map((_, index) => (
-        <Grid key={index} item xs={12} md={4} lg={3}>
-          <Skeleton variant="rectangular" height={431} />
-          <Skeleton variant="text" height={32} />
-          <Skeleton variant="text" height={32} />
-        </Grid>
-      ))}
-    </Grid>
-  );
-};
+import renderSkeletons from "../../utils/renderSkeletons";
 
 const Home = () => {
   const [page, setPage] = React.useState(1);

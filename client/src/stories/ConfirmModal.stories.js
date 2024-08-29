@@ -26,7 +26,7 @@ export const Primary = {
   args: {
     open: true,
     title: "My favorite movies",
-    url: `${CLIENT_URL}/recommend?title=My favorite movies&ids=945961,1160018,573435,533535`,
+    url: `${CLIENT_URL}recommend?title=My favorite movies&ids=945961,1160018,573435,533535`,
     onClose: () => {},
   },
 };
