@@ -18,11 +18,12 @@ import {
 import SettingsIcon from "@mui/icons-material/Settings";
 import MenuIcon from "@mui/icons-material/Menu";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AppContext } from "../../appContext";
 
 const Navigation = () => {
   const [isDrawerOpen, setisDrawerOpen] = useState(false);
-
+  const { state, dispatch } = useContext(AppContext);
   const renderListItems = () => (
     <Box sx={{ width: 250 }} role="presentation">
       <List>

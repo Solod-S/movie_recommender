@@ -2,8 +2,9 @@ const { getPopularMovies, getDetails } = require("../modules/movies");
 const { Movie } = require("../modules/movies/entities/Movie");
 
 const movies = async (parent, args) => {
+  // "en-US"
   try {
-    const data = await getPopularMovies({ page: args.page, language: "en-US" });
+    const data = await getPopularMovies({ page: args.page, language: "ru" });
 
     return data;
   } catch (error) {
