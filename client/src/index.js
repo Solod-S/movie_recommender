@@ -2,15 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import App from "./App";
-import { AppContext } from "./appContext";
+import { AppContextProvider } from "./appContext";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <AppContext>
+    <AppContextProvider>
       <App />
-    </AppContext>
+    </AppContextProvider>
   </React.StrictMode>
 );
 

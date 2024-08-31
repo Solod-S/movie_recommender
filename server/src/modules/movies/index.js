@@ -14,10 +14,8 @@ const getPopularMovies = async (args = {}) => {
     throw error;
   }
 };
-const getDetails = id => {
+const getDetails = (id, language) => {
   try {
-    console.log(`id`, id);
-    const language = "en-US";
     const result = themoviedbInstance.get(`/movie/${id}?language=${language}`);
     return result;
   } catch (error) {

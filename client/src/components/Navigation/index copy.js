@@ -1,4 +1,4 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RoterLink } from "react-router-dom";
 import {
   AppBar,
   Button,
@@ -14,10 +14,6 @@ import {
   ListItemText,
   Hidden,
   Link,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
 } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -27,24 +23,21 @@ import { useCallback, useContext, useState } from "react";
 import { AppContext } from "../../appContext";
 
 const Navigation = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isDrawerOpen, setisDrawerOpen] = useState(false);
   const { state, dispatch } = useContext(AppContext);
 
-  const setLanguage = useCallback(
-    locale => {
-      dispatch({
-        type: "setLocale",
-        locale,
-      });
-    },
-    [dispatch]
-  );
+  const setLanguage = useCallback(locale => {
+    dispatch({
+      type: "setLocale",
+      locale,
+    });
+  }, []);
 
   const renderListItems = () => (
     <Box sx={{ width: 250 }} role="presentation">
       <List>
         <ListItem disablePadding>
-          <ListItemButton component={RouterLink} to="/settings">
+          <ListItemButton component={RoterLink} to="/settings">
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
@@ -66,19 +59,19 @@ const Navigation = () => {
               color="inherit"
               aria-label="menu"
               sx={{ mr: 2 }}
-              onClick={() => setIsDrawerOpen(true)}
+              onClick={() => setisDrawerOpen(true)}
             >
               <MenuIcon />
             </IconButton>
           </Hidden>
 
-          <Link component={RouterLink} to="/">
+          <Link component={RoterLink} to="/">
             <Typography
               variant="h6"
               component="div"
               sx={{ color: "white", flexGrow: 1 }}
             >
-              Movies Recommendation
+              Movies recomendation
             </Typography>
           </Link>
 
@@ -87,34 +80,26 @@ const Navigation = () => {
               flexGrow: 1,
               display: { xs: "none", lg: "flex" },
               justifyContent: "end",
-              alignItems: "center",
             }}
           >
-            <FormControl sx={{ m: 1 }} variant="standard">
-              <Select
-                value={state.locale}
-                onChange={e => setLanguage(e.target.value)}
-                disableUnderline
-                sx={{
-                  color: "white",
-                  "& .MuiSvgIcon-root": {
-                    display: "none",
-                  },
-                  "& .MuiSelect-select": {
-                    padding: 0,
-                    display: "flex",
-                    alignItems: "center",
-                  },
-                }}
+            <Box sx={{ display: "flex" }}>
+              <Button
+                disabled={state.locale === LOCALES.ENGLISH}
+                sx={{ my: 2, color: "white", display: "block" }}
+                onClick={() => setLanguage(LOCALES.ENGLISH)}
               >
-                <MenuItem value={LOCALES.ENGLISH}>EN</MenuItem>
-                <MenuItem value={LOCALES.FRENCH}>FR</MenuItem>
-                <MenuItem value={LOCALES.GERMAN}>DE</MenuItem>
-              </Select>
-            </FormControl>
-
+                English
+              </Button>
+              <Button
+                disabled={state.locale === LOCALES.FRENCH}
+                sx={{ my: 2, color: "white", display: "block" }}
+                onClick={() => setLanguage(LOCALES.FRENCH)}
+              >
+                French
+              </Button>
+            </Box>
             <Button
-              component={RouterLink}
+              component={RoterLink}
               to="/settings"
               sx={{ my: 2, color: "white", display: "block" }}
             >
@@ -127,7 +112,7 @@ const Navigation = () => {
       <Drawer
         anchor={"left"}
         open={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
+        onClose={() => setisDrawerOpen(false)}
       >
         {renderListItems()}
       </Drawer>

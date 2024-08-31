@@ -1,10 +1,13 @@
 const { getPopularMovies, getDetails } = require("../modules/movies");
 const { Movie } = require("../modules/movies/entities/Movie");
 
-const movies = async (parent, args) => {
-  // "en-US"
+const movies = async (parent, args, context) => {
+  console.log(`context`, context);
   try {
-    const data = await getPopularMovies({ page: args.page, language: "ru" });
+    const data = await getPopularMovies({
+      page: args.page,
+      language: context.locale,
+    });
 
     return data;
   } catch (error) {
@@ -19,10 +22,11 @@ const movies = async (parent, args) => {
   }
 };
 
-const moviesByIds = async (parent, args) => {
+const moviesByIds = async (parent, args, context) => {
   console.log(`args.ids`, args.ids);
+  const language = context.locale;
   try {
-    const requests = args.ids.map(id => getDetails(id));
+    const requests = args.ids.map(id => getDetails(id, language));
     console.log(requests);
 
     const data = await Promise.all(requests);

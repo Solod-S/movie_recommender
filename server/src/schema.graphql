@@ -1,6 +1,6 @@
 type Query {
   movies(page: Int): Movies
-  moviesByIds(ids: [Int]): [Movie]
+  moviesByIds(ids: [Int], language: String): [Movie]
 }
 
 type Movies {
@@ -31,3 +31,4 @@ type Genre {
   id: Int!
   name: String!
 }
+
