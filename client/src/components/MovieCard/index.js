@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import CardMenu from "../CardMenu";
 import PropTypes from "prop-types";
 import { MenuItem, Tooltip } from "@mui/material";
+import { FormattedMessage } from "react-intl";
 
 const truncateString = (string, length = 35) => {
   if (string.length >= length) {
@@ -35,7 +36,7 @@ const MovieCard = ({ movie, onCardSelect, isPreviewMode = false }) => {
               }, 100);
             }}
           >
-            select
+            <FormattedMessage id="select" />
           </MenuItem>
         </CardMenu>
       )}

@@ -1,6 +1,6 @@
 import { Box, Container, CssBaseline } from "@mui/material";
 import { Navigation } from "./components";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import {
   ApolloClient,
   InMemoryCache,
@@ -9,10 +9,10 @@ import {
   ApolloLink,
   from,
 } from "@apollo/client";
-
+import I18nProvider from "./providers/i18n";
 import { Home, Settings, Recomendation } from "./pages";
 import { useContext } from "react";
-import { AppContext } from "./appContext";
+import { AppContext } from "./providers/appContext";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -31,14 +31,14 @@ function App() {
   });
 
   const client = new ApolloClient({
-    link: from([localMidleware, httpLink]), // Pass an array here
+    link: from([localMidleware, httpLink]),
     cache: new InMemoryCache(),
     connectToDevTools: true,
   });
 
   return (
-    <ApolloProvider client={client}>
-      <BrowserRouter>
+    <I18nProvider locale={state.locale}>
+      <ApolloProvider client={client}>
         <CssBaseline />
         <Navigation />
         <Box
@@ -54,8 +54,8 @@ function App() {
             </Routes>
           </Container>
         </Box>
-      </BrowserRouter>
-    </ApolloProvider>
+      </ApolloProvider>
+    </I18nProvider>
   );
 }
 

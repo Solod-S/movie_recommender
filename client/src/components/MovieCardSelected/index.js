@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 
 import CardMenu from "../CardMenu";
 import { MenuItem } from "@mui/material";
+import { FormattedMessage } from "react-intl";
 
 const MovieCardSelected = ({ movie, onCardDelete }) => {
   const menuRef = React.useRef();
@@ -74,7 +75,7 @@ const MovieCardSelected = ({ movie, onCardDelete }) => {
             }, 100);
           }}
         >
-          remove
+          <FormattedMessage id="delete" />
         </MenuItem>
       </CardMenu>
     </Card>

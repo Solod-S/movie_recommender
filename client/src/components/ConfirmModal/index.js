@@ -18,6 +18,7 @@ import {
   LinkedinIcon,
   TelegramIcon,
 } from "react-share";
+import { FormattedMessage } from "react-intl";
 
 const style = {
   position: "absolute",
@@ -104,7 +105,7 @@ const ConfirmModal = ({
             variant="h8"
             component="h2"
           >
-            Share with friends:
+            <FormattedMessage id="share_with_friends" />
           </Typography>
           <Box
             sx={{
@@ -143,7 +144,7 @@ const ConfirmModal = ({
               }
               sx={{ mt: 2 }}
             >
-              Copied!
+              <FormattedMessage id="copied" />
             </Alert>
           )}
         </Box>

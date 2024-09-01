@@ -11,7 +11,9 @@ import {
 import noMoviesImageSrc from "../../assets/no_movies.png";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { FormattedMessage } from "react-intl";
+import { AppContext } from "../../providers/appContext";
 
 const CLIENT_URL = process.env.REACT_APP_CLIENT_URL_DEV;
 
@@ -60,12 +62,13 @@ const NoMovies = styled(Box)(({ theme }) => ({
 }));
 
 const SelectedMoviesSection = ({ selectedMovies, onCardDelete }) => {
+  const { state } = useContext(AppContext);
   const [listName, setListName] = useState("");
   const [link, setLink] = useState("");
   const ids = selectedMovies.map(({ id }) => id);
 
   const onSubmit = ({ listName }) => {
-    const moviesLink = `${CLIENT_URL}recommend?title=${listName}&ids=${ids.join(",")}`;
+    const moviesLink = `${CLIENT_URL}recommend?title=${listName}&locale=${state.locale}&ids=${ids.join()}`;
     setListName(listName);
     setLink(moviesLink);
   };
@@ -88,7 +91,7 @@ const SelectedMoviesSection = ({ selectedMovies, onCardDelete }) => {
             src={noMoviesImageSrc}
           />
           <Typography variant="h5" mt={2}>
-            No selected movies
+            <FormattedMessage id="no_selected_movies" />
           </Typography>
         </NoMovies>
       </SelectedMovies>

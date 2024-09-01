@@ -17,14 +17,15 @@ import {
   Select,
   MenuItem,
   FormControl,
-  InputLabel,
 } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import MenuIcon from "@mui/icons-material/Menu";
 import { LOCALES } from "../../constants";
 
 import { useCallback, useContext, useState } from "react";
-import { AppContext } from "../../appContext";
+import { AppContext } from "../../providers/appContext";
+import translate from "../../utils/translate";
+import { FormattedMessage } from "react-intl";
 
 const Navigation = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -48,7 +49,7 @@ const Navigation = () => {
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
-            <ListItemText primary="Settings" />
+            <ListItemText primary={translate("navigation.settings")} />
           </ListItemButton>
         </ListItem>
       </List>
@@ -78,7 +79,7 @@ const Navigation = () => {
               component="div"
               sx={{ color: "white", flexGrow: 1 }}
             >
-              Movies Recommendation
+              <FormattedMessage id="navigation.home" />
             </Typography>
           </Link>
 
@@ -118,7 +119,7 @@ const Navigation = () => {
               to="/settings"
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              Settings
+              <FormattedMessage id="navigation.settings" />
             </Button>
           </Box>
         </Toolbar>

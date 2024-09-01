@@ -10,14 +10,13 @@ import { useMovies } from "../../hooks/useMovies";
 import { useCustomNotification } from "../../hooks/useCustomNotification";
 import { SELECTED_MOVIES_LIMIT } from "../../config";
 import renderSkeletons from "../../utils/renderSkeletons";
-import { AppContext } from "../../appContext";
+import { AppContext } from "../../providers/appContext";
 
 const Home = () => {
   const [page, setPage] = React.useState(1);
   const { selectedMovies, selectMovie, deleteMovie } = useMovies();
   const { showNotification, NotificationComponent } = useCustomNotification();
   const { state, dispatch } = React.useContext(AppContext);
-  console.log(`state.locale`, state.locale);
   const { loading, error, data } = useQuery(MOVIES_QUERY, {
     variables: { page },
   });
