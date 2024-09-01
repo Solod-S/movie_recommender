@@ -6,7 +6,7 @@ const Cors = require("micro-cors");
 const resolvers = { Query: require("./resolvers/Query") };
 
 const cors = Cors({
-  allowedMethods: ["GET", "POST", "OPTIONS"], // Добавлено для разрешения методов
+  allowedMethods: ["GET", "POST", "OPTIONS"],
   allowHeaders: [
     "X-CSRF-Token",
     "X-Requested-With",
@@ -17,10 +17,10 @@ const cors = Cors({
     "Content-Type",
     "Date",
     "X-Api-Version",
-    "locale",
+    "locale", // Добавлено сюда
   ],
-  origin: "*", // Позволяет любые источники
-  credentials: true, // Если требуется передача куки
+  origin: "*",
+  credentials: true,
 });
 
 const context = ({ req, res }) => ({
@@ -33,7 +33,6 @@ const server = new ApolloServer({
   context,
   introspection: true,
   plugins: [
-    // Плагин для добавления Apollo Sandbox
     require("apollo-server-core").ApolloServerPluginLandingPageLocalDefault({
       embed: true,
     }),
@@ -43,27 +42,23 @@ const server = new ApolloServer({
 const startServer = server.start();
 
 module.exports = async (req, res) => {
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-  );
-
-  if (req.method === "OPTIONS") {
-    res.end();
-    return;
-  }
-
   await startServer;
 
-  // Используем cors для обработки запроса
-  cors((req, res) => server.createHandler({ path: "/api/graphql" })(req, res))(
-    req,
-    res
-  );
+  // Применение CORS
+  cors((req, res) => {
+    if (req.method === "OPTIONS") {
+      res.setHeader("Access-Control-Allow-Credentials", "true");
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS, POST");
+      res.setHeader(
+        "Access-Control-Allow-Headers",
+        "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, locale"
+      );
+      res.end();
+      return;
+    }
+
+    // Основной обработчик запроса
+    return server.createHandler({ path: "/api/graphql" })(req, res);
+  })(req, res);
 };
