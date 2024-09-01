@@ -17,6 +17,7 @@ const cors = Cors({
     "Content-Type",
     "Date",
     "X-Api-Version",
+    "locale",
   ],
   origin: "*", // Позволяет любые источники
   credentials: true, // Если требуется передача куки
