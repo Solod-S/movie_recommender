@@ -47,22 +47,17 @@ module.exports = async (req, res) => {
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET,OPTIONS,PATCH,DELETE,POST,PUT"
-  );
+  ); // Добавлен необходимый заголовок
   res.setHeader(
     "Access-Control-Allow-Headers",
     "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
   );
 
   if (req.method === "OPTIONS") {
-    res.end();
+    res.end(); // Завершить обработку для запросов OPTIONS
     return;
   }
 
   await startServer;
-
-  // Используем cors для обработки запроса
-  cors((req, res) => server.createHandler({ path: "/api/graphql" })(req, res))(
-    req,
-    res
-  );
+  return server.createHandler({ path: "/api/graphql" })(req, res);
 };

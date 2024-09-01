@@ -19,7 +19,10 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 function App() {
   const { state } = useContext(AppContext);
 
-  const httpLink = new HttpLink({ uri: SERVER_URL });
+  const httpLink = new HttpLink({
+    uri: SERVER_URL,
+    credentials: "same-origin",
+  });
 
   const localMidleware = new ApolloLink((operation, forward) => {
     const customHeaders = operation.getContext().hasOwnProperty("headers");
