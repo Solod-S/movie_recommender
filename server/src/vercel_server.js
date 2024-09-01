@@ -5,7 +5,10 @@ const Cors = require("micro-cors");
 
 const resolvers = { Query: require("./resolvers/Query") };
 
-const cors = Cors();
+const cors = Cors({
+  origin: "*", // Разрешаем все домены, можно сузить до нужных
+  methods: ["GET", "POST", "OPTIONS"],
+});
 
 const context = ({ req, res }) => ({
   locale: req?.headers?.locale || "en-US",
@@ -15,6 +18,8 @@ const server = new ApolloServer({
   typeDefs: fs.readFileSync(path.join(__dirname, "schema.graphql"), "utf8"),
   resolvers,
   context,
+  introspection: true,
+  playground: true,
 });
 
 server.start().then(() => {
