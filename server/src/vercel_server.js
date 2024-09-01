@@ -31,12 +31,12 @@ const server = new ApolloServer({
   resolvers,
   context,
   introspection: true,
-  // plugins: [
-  //   // Плагин для добавления Apollo Sandbox
-  //   require("apollo-server-core").ApolloServerPluginLandingPageLocalDefault({
-  //     embed: true,
-  //   }),
-  // ],
+  plugins: [
+    // Плагин для добавления Apollo Sandbox
+    require("apollo-server-core").ApolloServerPluginLandingPageLocalDefault({
+      embed: true,
+    }),
+  ],
 });
 
 const startServer = server.start();
