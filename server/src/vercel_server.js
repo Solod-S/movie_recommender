@@ -6,8 +6,20 @@ const Cors = require("micro-cors");
 const resolvers = { Query: require("./resolvers/Query") };
 
 const cors = Cors({
-  origin: "*", // Разрешаем все домены, можно сузить до нужных
-  methods: ["GET", "POST", "OPTIONS"],
+  allowedMethods: ["GET", "POST", "OPTIONS"], // Добавлено для разрешения методов
+  allowHeaders: [
+    "X-CSRF-Token",
+    "X-Requested-With",
+    "Accept",
+    "Accept-Version",
+    "Content-Length",
+    "Content-MD5",
+    "Content-Type",
+    "Date",
+    "X-Api-Version",
+  ],
+  origin: "*", // Позволяет любые источники
+  credentials: true, // Если требуется передача куки
 });
 
 const context = ({ req, res }) => ({
@@ -19,21 +31,33 @@ const server = new ApolloServer({
   resolvers,
   context,
   introspection: true,
-  playground: true,
+  plugins: [
+    // Плагин для добавления Apollo Sandbox
+    require("apollo-server-core").ApolloServerPluginLandingPageLocalDefault({
+      embed: true,
+    }),
+  ],
 });
 
-server.start().then(() => {
-  const handler = server.createHandler({ path: "/api/graphql" });
+const startServer = server.start();
 
-  const port = process.env.PORT || 4000;
+module.exports = async (req, res) => {
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+  ); // Добавлен необходимый заголовок
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+  );
 
-  require("http")
-    .createServer(
-      cors((req, res) =>
-        req.method === "OPTIONS" ? send(res, 200, "ok") : handler(req, res)
-      )
-    )
-    .listen(port, () => {
-      console.log(`Server is running on http://localhost:${port}/api/graphql`);
-    });
-});
+  if (req.method === "OPTIONS") {
+    res.end(); // Завершить обработку для запросов OPTIONS
+    return;
+  }
+
+  await startServer;
+  return server.createHandler({ path: "/api/graphql" })(req, res);
+};
