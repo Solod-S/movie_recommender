@@ -1,6 +1,5 @@
 const { ApolloServer } = require("apollo-server-express");
-const Cors = require("micro-cors");
-const helmet = require("helmet");
+const cors = require("cors");
 const {
   ApolloServerPluginDrainHttpServer,
   ApolloServerPluginLandingPageLocalDefault,
@@ -20,28 +19,17 @@ const typeDefs = fs.readFileSync(
   path.join(__dirname, "schema.graphql"),
   "utf8"
 );
-const cors = Cors;
+
 // Создаем сервер Apollo и Express приложение
 const app = express();
 const httpServer = http.createServer(app);
 
-// Использование Helmet для установки заголовков безопасности, включая CSP
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", "data:", "https:"],
-      },
-    },
-  })
-);
 // Настройки CORS
 app.use(
   cors({
-    allowedMethods: ["GET", "POST", "OPTIONS"],
-    allowHeaders: [
+    origin: "*",
+    credentials: true,
+    allowedHeaders: [
       "X-CSRF-Token",
       "X-Requested-With",
       "Accept",
@@ -51,10 +39,8 @@ app.use(
       "Content-Type",
       "Date",
       "X-Api-Version",
-      "locale", // Добавлено сюда
+      "locale",
     ],
-    origin: "*",
-    credentials: true,
   })
 );
 
@@ -74,9 +60,22 @@ async function startServer() {
   await server.start();
   server.applyMiddleware({ app });
 
-  // Настройка статических файлов для клиентской части
-  app.use(express.static(path.join(__dirname, "../../client/build")));
-  app.use(express.static("public"));
+  // Используем абсолютные пути
+  const clientBuildPath = path.join(__dirname, "../../client/build");
+  const publicPath = path.join(__dirname, "public");
+
+  // Проверяем, что пути существуют
+  if (fs.existsSync(clientBuildPath)) {
+    app.use(express.static(clientBuildPath));
+  } else {
+    console.warn(`Client build path does not exist: ${clientBuildPath}`);
+  }
+
+  if (fs.existsSync(publicPath)) {
+    app.use(express.static(publicPath));
+  } else {
+    console.warn(`Public path does not exist: ${publicPath}`);
+  }
 
   // Пример REST endpoint
   app.get("/rest", (req, res) => {
@@ -85,7 +84,7 @@ async function startServer() {
 
   // Обработка всех остальных запросов
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../../client/build", "index.html"));
+    res.sendFile(path.join(clientBuildPath, "index.html"));
   });
 }
 
