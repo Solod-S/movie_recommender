@@ -26,35 +26,36 @@ const app = express();
 const httpServer = http.createServer(app);
 
 // Использование Helmet для установки заголовков безопасности, включая CSP
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", "data:", "https:"],
-      },
-    },
-  })
-);
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         defaultSrc: ["'self'"],
+//         scriptSrc: ["'self'", "'unsafe-inline'"],
+//         imgSrc: ["'self'", "data:", "https:"],
+//       },
+//     },
+//   })
+// );
 // Настройки CORS
 app.use(
-  cors({
-    origin: "*",
-    credentials: true,
-    allowedHeaders: [
-      "X-CSRF-Token",
-      "X-Requested-With",
-      "Accept",
-      "Accept-Version",
-      "Content-Length",
-      "Content-MD5",
-      "Content-Type",
-      "Date",
-      "X-Api-Version",
-      "locale",
-    ],
-  })
+  cors()
+  //   {
+  //   origin: "*",
+  //   credentials: true,
+  //   allowedHeaders: [
+  //     "X-CSRF-Token",
+  //     "X-Requested-With",
+  //     "Accept",
+  //     "Accept-Version",
+  //     "Content-Length",
+  //     "Content-MD5",
+  //     "Content-Type",
+  //     "Date",
+  //     "X-Api-Version",
+  //     "locale",
+  //   ],
+  // }
 );
 
 const server = new ApolloServer({
