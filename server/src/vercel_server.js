@@ -60,9 +60,9 @@ async function startServer() {
   await server.start();
   server.applyMiddleware({ app });
 
-  // Используем абсолютные пути
-  const clientBuildPath = path.join(__dirname, "../../client/build");
-  const publicPath = path.join(__dirname, "public");
+  // Используем абсолютный путь
+  const clientBuildPath = path.resolve(__dirname, "../../client/build");
+  const publicPath = path.resolve(__dirname, "public");
 
   // Проверяем, что пути существуют
   if (fs.existsSync(clientBuildPath)) {
