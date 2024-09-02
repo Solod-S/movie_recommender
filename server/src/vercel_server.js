@@ -1,5 +1,5 @@
 const { ApolloServer } = require("apollo-server-express");
-const cors = require("cors");
+const Cors = require("micro-cors");
 const helmet = require("helmet");
 const {
   ApolloServerPluginDrainHttpServer,
@@ -20,42 +20,42 @@ const typeDefs = fs.readFileSync(
   path.join(__dirname, "schema.graphql"),
   "utf8"
 );
-
+const cors = Cors;
 // Создаем сервер Apollo и Express приложение
 const app = express();
 const httpServer = http.createServer(app);
 
 // Использование Helmet для установки заголовков безопасности, включая CSP
-// app.use(
-//   helmet({
-//     contentSecurityPolicy: {
-//       directives: {
-//         defaultSrc: ["'self'"],
-//         scriptSrc: ["'self'", "'unsafe-inline'"],
-//         imgSrc: ["'self'", "data:", "https:"],
-//       },
-//     },
-//   })
-// );
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:", "https:"],
+      },
+    },
+  })
+);
 // Настройки CORS
 app.use(
-  cors()
-  //   {
-  //   origin: "*",
-  //   credentials: true,
-  //   allowedHeaders: [
-  //     "X-CSRF-Token",
-  //     "X-Requested-With",
-  //     "Accept",
-  //     "Accept-Version",
-  //     "Content-Length",
-  //     "Content-MD5",
-  //     "Content-Type",
-  //     "Date",
-  //     "X-Api-Version",
-  //     "locale",
-  //   ],
-  // }
+  cors({
+    allowedMethods: ["GET", "POST", "OPTIONS"],
+    allowHeaders: [
+      "X-CSRF-Token",
+      "X-Requested-With",
+      "Accept",
+      "Accept-Version",
+      "Content-Length",
+      "Content-MD5",
+      "Content-Type",
+      "Date",
+      "X-Api-Version",
+      "locale", // Добавлено сюда
+    ],
+    origin: "*",
+    credentials: true,
+  })
 );
 
 const server = new ApolloServer({
