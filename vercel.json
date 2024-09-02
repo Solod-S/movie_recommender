@@ -6,6 +6,6 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "server/src/vercel_server.js" },
-    { "src": "/(.*)", "dest": "/client/build/$1" }
+    { "src": "/(.*)", "dest": "client/build/$1" }
   ]
 }
