@@ -11,6 +11,14 @@ import { useCustomNotification } from "../../hooks/useCustomNotification";
 import { SELECTED_MOVIES_LIMIT } from "../../config";
 import renderSkeletons from "../../utils/renderSkeletons";
 import { AppContext } from "../../providers/appContext";
+import Filters from "../../components/Filters";
+
+const genres = [
+  { id: 1, name: "Action" },
+  { id: 2, name: "Comedy" },
+];
+
+const years = [2024, 2023, 2022, 2021, 2020, 2019, 2018];
 
 const Home = () => {
   const [page, setPage] = React.useState(1);
@@ -92,6 +100,10 @@ const Home = () => {
     deleteMovie(movie);
   };
 
+  const handleFilterSubmit = values => {
+    console.log("Selected Filters:", values);
+  };
+
   if (error) {
     return `Error: ${error.message}`;
   }
@@ -101,7 +113,11 @@ const Home = () => {
       {NotificationComponent}
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Paper>Filter section</Paper>
+          <Filters
+            onSubmit={handleFilterSubmit}
+            genres={genres}
+            years={years}
+          />
         </Grid>
         <Grid item xs={12} md={8}>
           <Paper>
