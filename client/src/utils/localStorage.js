@@ -14,8 +14,7 @@ export const getFromStorage = name => {
   try {
     return JSON.parse(window.localStorage.getItem(name));
   } catch (e) {
-    console.error(e);
-
+    // console.error(e);
     return null;
   }
 };

@@ -11,6 +11,9 @@ let reducer = (state, action) => {
       saveToStorage(STORAGE_KEY, action.locale);
 
       return { ...state, locale: action.locale };
+
+    default:
+      return state;
   }
 };
 
