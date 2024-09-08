@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Build and Deploy to Main
 
 on:
   push:
@@ -6,20 +6,31 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Build project
+      - name: Install and Build
         run: |
           cd client
           npm ci
           npm run build
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.MY_PERSONAL_TOKEN }}
-          publish_dir: ./client/build
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Commit and Push Build Files
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Add and commit build files
+          git add -f client/build
+          git commit -m "Add build output" || echo "No changes to commit"
+
+          # Push changes to the main branch
+          git push origin main
