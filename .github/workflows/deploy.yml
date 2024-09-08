@@ -19,7 +19,7 @@ jobs:
 
       - name: Push to main 📤
         env:
-          GITHUB_TOKEN: ${{ env.MY_PERSONAL_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
