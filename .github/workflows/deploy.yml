@@ -28,9 +28,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Add and commit build files
           git add -f client/build
           git commit -m "Add build output" || echo "No changes to commit"
-
-          # Push changes to the main branch
           git push origin main
