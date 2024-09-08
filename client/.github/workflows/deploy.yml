@@ -1,4 +1,4 @@
-name: Install and Build
+name: Install and Build to Vercel
 
 on:
   push:
@@ -13,12 +13,10 @@ jobs:
 
       - name: Install and Build 🔧
         run: |
-          cd client
           npm ci
           npm run build
-
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
-          branch: gh-pages
-          folder: client/build
+          branch: main
+          folder: build
