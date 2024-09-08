@@ -17,6 +17,7 @@ import { FormattedMessage } from "react-intl";
 
 const Filters = ({ initialValues, onSubmit, genres, years }) => {
   // Debounced function for form submission
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSubmit = useCallback(
     debounce(values => {
       onSubmit(values);

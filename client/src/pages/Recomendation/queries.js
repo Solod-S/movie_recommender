@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 
 const MOVIES_BY_IDS_QUERY = gql`
   query MoviesByIds($ids: [Int]) {

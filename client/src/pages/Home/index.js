@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Box, Grid, Paper, Pagination, Skeleton } from "@mui/material";
+import { Box, Grid, Paper, Pagination } from "@mui/material";
 import { MovieCard, SelectedMoviesSection } from "../../components";
 
 import { useQuery } from "@apollo/client";
@@ -10,7 +10,6 @@ import { useMovies } from "../../hooks/useMovies";
 import { useCustomNotification } from "../../hooks/useCustomNotification";
 import { SELECTED_MOVIES_LIMIT } from "../../config";
 import renderSkeletons from "../../utils/renderSkeletons";
-import { AppContext } from "../../providers/appContext";
 import Filters from "../../components/Filters";
 import { useFilters } from "../../hooks/useFilters";
 

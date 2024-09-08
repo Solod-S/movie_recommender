@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
 import { SELECTED_MOVIES_LIMIT } from "../../config";
 import { saveToStorage, getFromStorage } from "../../utils/localStorage";
 import { SELECTED_MOVIES_KEY } from "../../constants";

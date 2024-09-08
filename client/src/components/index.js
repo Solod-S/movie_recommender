@@ -1,4 +1,4 @@
-import Navigation from "./Navigation";
+import Navigation from "./NavBar";
 import MovieCard from "./MovieCard";
 import MovieCardSelected from "./MovieCardSelected";
 import SelectedMoviesForm from "./SelectedMoviesForm";
