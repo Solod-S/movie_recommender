@@ -19,10 +19,10 @@ jobs:
 
       - name: Push to main 📤
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ env.MY_PERSONAL_TOKEN }}
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add -f client/build
           git commit -m "Add build output"
-          git push https://github.com/${{ github.repository }}.git main
+          git push origin main
