@@ -1,11 +1,11 @@
-name: Install and Build to Vercel
+name: Build
 
 on:
   push:
     branches: [main]
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
@@ -13,10 +13,6 @@ jobs:
 
       - name: Install and Build 🔧
         run: |
+          cd client
           npm ci
           npm run build
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.1.0
-        with:
-          branch: main
-          folder: build
