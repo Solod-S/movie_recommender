@@ -39,7 +39,6 @@ export default {
       },
       sortBy: {
         label: "Trier par",
-        default: "Par défaut",
         popularity: "Popularité",
         releaseDate: "Date de sortie",
         title: "Titre",

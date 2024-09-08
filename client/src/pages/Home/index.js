@@ -12,8 +12,13 @@ import { SELECTED_MOVIES_LIMIT } from "../../config";
 import renderSkeletons from "../../utils/renderSkeletons";
 import { AppContext } from "../../providers/appContext";
 import Filters from "../../components/Filters";
+import { useFilters } from "../../hooks/useFilters";
 
 const genres = [
+  // {
+  //   id: null,
+  //   name: "All Genres",
+  // },
   {
     id: 28,
     name: "Action",
@@ -100,13 +105,25 @@ const years = Array.from(
 );
 
 const Home = () => {
-  const [page, setPage] = React.useState(1);
+  const { filter, setPage, setFilter } = useFilters();
   const { selectedMovies, selectMovie, deleteMovie } = useMovies();
   const { showNotification, NotificationComponent } = useCustomNotification();
-
   const { loading, error, data } = useQuery(MOVIES_QUERY, {
-    variables: { page },
+    variables: {
+      filter: {
+        page: filter.page,
+        sortBy: filter.sortBy,
+        sortDirection: filter.sortDirection,
+
+        year: filter.year,
+        genre: filter.genre,
+        // search: "",
+      },
+    },
   });
+  // const { loading, error, data } = useQuery(MOVIES_QUERY, {
+  //   variables: { page: filter.page },
+  // });
 
   React.useEffect(() => {
     console.log(selectedMovies);
@@ -180,6 +197,7 @@ const Home = () => {
   };
 
   const handleFilterSubmit = values => {
+    setFilter(values);
     console.log("Selected Filters:", values);
   };
 
@@ -193,6 +211,7 @@ const Home = () => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Filters
+            initialValues={filter}
             onSubmit={handleFilterSubmit}
             genres={genres}
             years={years}
@@ -226,7 +245,7 @@ const Home = () => {
                     ? 500
                     : data?.movies?.totalPages || 1
                 }
-                page={page}
+                page={filter.page}
                 onChange={paginationHandler}
               />
             </Box>

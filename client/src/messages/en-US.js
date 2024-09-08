@@ -39,7 +39,6 @@ export default {
       },
       sortBy: {
         label: "Sort By",
-        default: "Default",
         popularity: "Popularity",
         releaseDate: "Release Date",
         title: "Title",

@@ -15,7 +15,7 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { FormattedMessage } from "react-intl";
 
-const Filters = ({ onSubmit, genres, years }) => {
+const Filters = ({ initialValues, onSubmit, genres, years }) => {
   // Debounced function for form submission
   const debouncedSubmit = useCallback(
     debounce(values => {
@@ -28,18 +28,19 @@ const Filters = ({ onSubmit, genres, years }) => {
     <Paper style={{ padding: "10px" }}>
       <Form
         onSubmit={onSubmit}
-        initialValues={{
-          genre: "",
-          year: "",
-          search: "",
-          sortBy: "",
-          sortOrder: "asc",
-        }}
+        initialValues={initialValues}
+        // initialValues={{
+        //   genre: "",
+        //   year: "",
+        //   search: "",
+        //   sortBy: "",
+        //   sortDirection: "asc",
+        // }}
         render={({ handleSubmit, form, values }) => {
           const handleChange = name => event => {
             form.change(name, event.target.value);
             if (name === "sortBy" && event.target.value === "") {
-              form.change("sortOrder", "asc"); // Default to ascending if "Sort By" is default
+              form.change("sortDirection", "asc"); // Default to ascending if "Sort By" is default
             }
             form.submit();
           };
@@ -51,9 +52,9 @@ const Filters = ({ onSubmit, genres, years }) => {
           };
 
           // Toggle between ascending and descending order
-          const toggleSortOrder = () => {
-            const newOrder = values.sortOrder === "asc" ? "desc" : "asc";
-            form.change("sortOrder", newOrder);
+          const toggleSortDirection = () => {
+            const newOrder = values.sortDirection === "asc" ? "desc" : "asc";
+            form.change("sortDirection", newOrder);
             form.submit();
           };
 
@@ -216,19 +217,13 @@ const Filters = ({ onSubmit, genres, years }) => {
                             }}
                             disabled={disableFields}
                           >
-                            <MenuItem value="">
-                              <em>
-                                <FormattedMessage id="filters.sortBy.default" />
-                              </em>
-                            </MenuItem>
-
                             <MenuItem value="popularity">
                               <FormattedMessage id="filters.sortBy.popularity" />
                             </MenuItem>
                             <MenuItem value="release_date">
                               <FormattedMessage id="filters.sortBy.releaseDate" />
                             </MenuItem>
-                            <MenuItem value="title">
+                            <MenuItem value="original_title">
                               <FormattedMessage id="filters.sortBy.title" />
                             </MenuItem>
                             <MenuItem value="vote_average">
@@ -244,10 +239,10 @@ const Filters = ({ onSubmit, genres, years }) => {
                   </div>
                   {/* Toggle for ascending/descending order */}
                   <IconButton
-                    onClick={toggleSortOrder}
+                    onClick={toggleSortDirection}
                     disabled={values.sortBy === "" || disableFields} // Disable button if "Sort By" is default or search is active
                   >
-                    {values.sortOrder === "asc" ? (
+                    {values.sortDirection === "asc" ? (
                       <ArrowUpwardIcon />
                     ) : (
                       <ArrowDownwardIcon />

@@ -1,13 +1,10 @@
-const { getPopularMovies, getDetails } = require("../modules/movies");
+const { getList } = require("../modules/genres");
+const { getDetails, discoverMovie } = require("../modules/movies");
 const { Movie } = require("../modules/movies/entities/Movie");
 
 const movies = async (parent, args, context) => {
-  console.log(`context`, context);
   try {
-    const data = await getPopularMovies({
-      page: args.page,
-      language: context.locale,
-    });
+    const data = await discoverMovie(args.filter, context.locale);
 
     return data;
   } catch (error) {
@@ -23,14 +20,15 @@ const movies = async (parent, args, context) => {
 };
 
 const moviesByIds = async (parent, args, context) => {
-  console.log(`args.ids`, args.ids);
   const language = context.locale;
   try {
     const requests = args.ids.map(id => getDetails(id, language));
-    console.log(requests);
 
     const data = await Promise.all(requests);
-    const result = data.map(mpvie => new Movie(mpvie.data));
+
+    const genreList = await getList(language);
+
+    const result = data.map(movie => new Movie(movie.data, genreList));
     return result;
   } catch (error) {
     console.error(`Error in moviesByIds resolver:`, error.message);
@@ -39,4 +37,8 @@ const moviesByIds = async (parent, args, context) => {
   }
 };
 
-module.exports = { movies, moviesByIds };
+const genres = async (_, {}, { locale }) => {
+  return await getList(locale);
+};
+
+module.exports = { movies, moviesByIds, genres };
