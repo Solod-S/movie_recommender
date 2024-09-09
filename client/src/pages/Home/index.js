@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Box, Grid, Paper, Pagination } from "@mui/material";
-import { MovieCard, SelectedMoviesSection } from "../../components";
+import { MovieCard, SelectedMoviesSection, Filters } from "../../components";
 
 import { useQuery } from "@apollo/client";
 import { MOVIES_QUERY } from "./queries";
@@ -10,7 +10,7 @@ import { useMovies } from "../../hooks/useMovies";
 import { useCustomNotification } from "../../hooks/useCustomNotification";
 import { SELECTED_MOVIES_LIMIT } from "../../config";
 import renderSkeletons from "../../utils/renderSkeletons";
-import Filters from "../../components/Filters";
+
 import { useFilters } from "../../hooks/useFilters";
 
 const genres = [

@@ -4,6 +4,8 @@ import MovieCardSelected from "./MovieCardSelected";
 import SelectedMoviesForm from "./SelectedMoviesForm";
 import SelectedMoviesSection from "./SelectedMoviesSection";
 import ConfirmModal from "./ConfirmModal";
+import Filters from "./Filters";
+
 export {
   Navigation,
   MovieCard,
@@ -11,4 +13,5 @@ export {
   SelectedMoviesForm,
   SelectedMoviesSection,
   ConfirmModal,
+  Filters,
 };
