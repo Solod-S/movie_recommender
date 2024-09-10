@@ -14,6 +14,7 @@ import debounce from "lodash.debounce";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { FormattedMessage } from "react-intl";
+import PropTypes from "prop-types";
 
 const Filters = ({ initialValues, onSubmit, genres, years }) => {
   // Debounced function for form submission
@@ -30,13 +31,6 @@ const Filters = ({ initialValues, onSubmit, genres, years }) => {
       <Form
         onSubmit={onSubmit}
         initialValues={initialValues}
-        // initialValues={{
-        //   genre: "",
-        //   year: "",
-        //   search: "",
-        //   sortBy: "",
-        //   sortDirection: "asc",
-        // }}
         render={({ handleSubmit, form, values }) => {
           const handleChange = name => event => {
             form.change(name, event.target.value);
@@ -89,7 +83,15 @@ const Filters = ({ initialValues, onSubmit, genres, years }) => {
                     }}
                   />
                 </div>
-                <Box display="flex" flexDirection="row" alignItems="center">
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                  style={{
+                    opacity: disableFields ? 0.4 : 1,
+                    pointerEvents: disableFields ? "none" : "auto",
+                  }}
+                >
                   <div style={{ marginRight: "10px" }}>
                     <FormControl fullWidth style={{ minWidth: "120px" }}>
                       <InputLabel shrink>
@@ -257,6 +259,35 @@ const Filters = ({ initialValues, onSubmit, genres, years }) => {
       />
     </Paper>
   );
+};
+
+Filters.propTypes = {
+  initialValues: PropTypes.shape({
+    page: PropTypes.number.isRequired,
+    sortBy: PropTypes.oneOf([
+      "popularity",
+      "release_date",
+      "original_title",
+      "vote_average",
+      "vote_count",
+    ]).isRequired,
+    sortDirection: PropTypes.oneOf(["asc", "desc"]).isRequired,
+    search: PropTypes.string.isRequired,
+    genre: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf([null])]),
+    year: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf([null])]),
+    primaryReleaseYear: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.oneOf([null]),
+    ]),
+  }).isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  genres: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  years: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default Filters;

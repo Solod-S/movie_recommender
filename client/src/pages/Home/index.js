@@ -113,10 +113,9 @@ const Home = () => {
         page: filter.page,
         sortBy: filter.sortBy,
         sortDirection: filter.sortDirection,
-
         year: filter.year,
         genre: filter.genre,
-        // search: "",
+        search: filter.search,
       },
     },
   });

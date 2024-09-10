@@ -10,6 +10,7 @@ input MoviesFilterInput {
   sortDirection: SORT_DIRECTION
   year: Int
   genre: Int
+  search: String
 }
 
 enum SORT_DIRECTION {

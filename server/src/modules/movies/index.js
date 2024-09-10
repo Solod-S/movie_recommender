@@ -28,17 +28,22 @@ const getDetails = (id, language) => {
 };
 
 const discoverMovie = async (filter, language) => {
-  let url = `/discover/movie?include_adult=false&language=${language}&page=${
-    filter.page || 1
-  }`;
-
-  if (filter.year) url += `&primary_release_year=${filter.year}`;
-  if (filter.genre) url += `&with_genres=${filter.genre}`;
-  if (filter.sortBy && filter.sortDirection)
-    url += `&sort_by=${filter.sortBy}.${filter.sortDirection}`;
+  let url = "";
+  if (filter?.search?.trim().length > 0) {
+    url = `/search/movie?query=${
+      filter.search
+    }&include_adult=false&language=${language}&page=${filter.page || 1}`;
+  } else {
+    url = `/discover/movie?include_adult=false&language=${language}&page=${
+      filter.page || 1
+    }`;
+    if (filter.year) url += `&primary_release_year=${filter.year}`;
+    if (filter.genre) url += `&with_genres=${filter.genre}`;
+    if (filter.sortBy && filter.sortDirection)
+      url += `&sort_by=${filter.sortBy}.${filter.sortDirection}`;
+  }
 
   try {
-    console.log(`url`, url);
     const response = await themoviedbInstance.get(url);
     const genreList = await getList(language);
 
