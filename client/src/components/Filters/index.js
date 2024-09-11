@@ -67,6 +67,7 @@ const Filters = ({ initialValues, onSubmit, genres, years }) => {
               >
                 <div>
                   <TextField
+                    value={values.search || ""}
                     InputLabelProps={{
                       shrink: true,
                     }}

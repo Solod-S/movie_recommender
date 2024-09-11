@@ -5,6 +5,7 @@ import SelectedMoviesForm from "./SelectedMoviesForm";
 import SelectedMoviesSection from "./SelectedMoviesSection";
 import ConfirmModal from "./ConfirmModal";
 import Filters from "./Filters";
+import Paginator from "./Pagination";
 
 export {
   Navigation,
@@ -14,4 +15,5 @@ export {
   SelectedMoviesSection,
   ConfirmModal,
   Filters,
+  Paginator,
 };

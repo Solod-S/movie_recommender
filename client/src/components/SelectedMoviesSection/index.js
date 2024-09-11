@@ -15,7 +15,9 @@ import { useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { AppContext } from "../../providers/appContext";
 
-const CLIENT_URL = process.env.REACT_APP_CLIENT_URL_DEV;
+const CLIENT_URL =
+  process.env.REACT_APP_CLIENT_URL_DEV ||
+  "https://react-graph-ql-omega.vercel.app/";
 
 const SelectedMovies = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",

@@ -1,0 +1,53 @@
+import { fn } from "@storybook/test";
+import { SelectedMoviesSection } from "../src/components";
+import { movies } from "../src/stories/stub";
+import { BrowserRouter } from "react-router-dom";
+import { AppContextProvider } from "../src/providers/appContext";
+
+import I18nProvider from "../src/providers/i18n";
+
+// Декоратор для оборачивания в BrowserRouter, AppContextProvider и IntlProvider
+const withProviders = Story => {
+  return (
+    <BrowserRouter>
+      <AppContextProvider>
+        <I18nProvider locale="en-us">
+          <Story />
+        </I18nProvider>
+      </AppContextProvider>
+    </BrowserRouter>
+  );
+};
+
+export default {
+  title: "Card/Selected Movies Section",
+  component: SelectedMoviesSection,
+  decorators: [withProviders],
+  parameters: {
+    layout: "centered",
+  },
+  argTypes: {
+    onCardDelete: { action: "onCardDelete" },
+    selectedMovies: {
+      control: { type: "array" },
+      description: "Array of selected movies to display in the section",
+    },
+  },
+  args: {
+    onCardDelete: fn(),
+  },
+};
+
+// Story with movies
+export const Primary = {
+  args: {
+    selectedMovies: movies,
+  },
+};
+
+// Story with an empty movie list
+export const Empty = {
+  args: {
+    selectedMovies: [],
+  },
+};

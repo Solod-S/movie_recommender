@@ -1,7 +1,12 @@
 import * as React from "react";
 
 import { Box, Grid, Paper, Pagination } from "@mui/material";
-import { MovieCard, SelectedMoviesSection, Filters } from "../../components";
+import {
+  MovieCard,
+  SelectedMoviesSection,
+  Filters,
+  Paginator,
+} from "../../components";
 
 import { useQuery } from "@apollo/client";
 import { MOVIES_QUERY } from "./queries";
@@ -237,14 +242,14 @@ const Home = () => {
               pb={2}
               sx={{ display: "flex", justifyContent: "center" }}
             >
-              <Pagination
-                count={
+              <Paginator
+                totalPages={
                   Number(data?.movies?.totalPages) > 500
                     ? 500
                     : data?.movies?.totalPages || 1
                 }
                 page={filter.page}
-                onChange={paginationHandler}
+                paginationHandler={paginationHandler}
               />
             </Box>
           </Paper>

@@ -4,7 +4,7 @@ import { movies } from "./stub";
 
 // Default export for Storybook configuration
 export default {
-  title: "Card/Selected Movies Section",
+  title: "Card/Selected Movies List",
   component: SelectedMoviesSection,
   parameters: {
     layout: "centered", // Center the component in the Storybook canvas
