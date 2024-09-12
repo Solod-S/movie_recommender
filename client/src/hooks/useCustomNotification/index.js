@@ -10,7 +10,7 @@ export const useCustomNotification = () => {
     (
       message,
       type = "info",
-      duration = 6000,
+      duration = 1000,
       position = { vertical: "bottom", horizontal: "right" }
     ) => {
       setNotification({ message, type, duration, position });

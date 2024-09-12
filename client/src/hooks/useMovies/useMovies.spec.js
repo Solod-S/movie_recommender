@@ -20,7 +20,57 @@ describe("useMovies hook", () => {
     title: "The Movie Title",
   };
 
+  it("should persist selected movie in localStorage", async () => {
+    localStorage.clear();
+    let hookValue;
+
+    // Рендеринг компонента и получение значения хука
+    render(
+      <TestComponent
+        callback={value => {
+          hookValue = value;
+        }}
+      />
+    );
+
+    // Выполняем действие с использованием act
+    await act(async () => {
+      hookValue.selectMovie(basicMovie);
+    });
+
+    // Проверяем, что фильм добавлен
+    expect(hookValue.selectedMovies).toEqual([basicMovie]);
+
+    // Проверяем, что фильм сохранен в localStorage
+    const storedMovies = localStorage.getItem("selectedMovies");
+    expect(storedMovies).toBeTruthy();
+
+    // Проверяем, что данные в localStorage соответствуют ожидаемым
+    const parsedMovies = JSON.parse(storedMovies);
+    expect(parsedMovies).toEqual([basicMovie]);
+
+    // Эмулируем перезагрузку страницы или ререндер
+    // В случае с тестами, мы можем просто перерендерить компонент
+    // или смоделировать перезагрузку страницы следующим образом:
+
+    // Очищаем старое состояние
+    hookValue = null;
+
+    // Рендеринг компонента снова для имитации перезагрузки
+    render(
+      <TestComponent
+        callback={value => {
+          hookValue = value;
+        }}
+      />
+    );
+
+    // Проверяем, что фильм восстановлен
+    expect(hookValue.selectedMovies).toEqual([basicMovie]);
+  });
+
   it("should select movie", () => {
+    localStorage.clear();
     let hookValue;
 
     // Рендеринг компонента и получение значения хука
@@ -45,6 +95,7 @@ describe("useMovies hook", () => {
   });
 
   it("should select movie only once", () => {
+    localStorage.clear();
     let hookValue;
 
     // Рендеринг компонента и получение значения хука
@@ -57,6 +108,7 @@ describe("useMovies hook", () => {
     );
 
     // Проверяем начальное значение
+
     expect(hookValue.selectedMovies).toEqual([]);
 
     // Выполняем действие с использованием act
@@ -71,10 +123,12 @@ describe("useMovies hook", () => {
     });
 
     // Проверяем обновленное значение
+
     expect(hookValue.selectedMovies).toEqual([basicMovie]);
   });
 
   it(`should select movie with ${SELECTED_MOVIES_LIMIT} movies limit`, () => {
+    localStorage.clear();
     let hookValue;
 
     // Рендеринг компонента и получение значения хука
@@ -115,6 +169,7 @@ describe("useMovies hook", () => {
 
   it("should delete movie", () => {
     let hookValue;
+    localStorage.clear();
 
     // Рендеринг компонента и получение значения хука
     render(
@@ -143,6 +198,7 @@ describe("useMovies hook", () => {
   });
 
   it("should delete movie from list with many movies", () => {
+    localStorage.clear();
     let hookValue;
 
     // Рендеринг компонента и получение значения хука
@@ -197,6 +253,7 @@ describe("useMovies hook", () => {
   });
 
   it("shouldn't delete movie", () => {
+    localStorage.clear();
     let hookValue;
 
     // Рендеринг компонента и получение значения хука
