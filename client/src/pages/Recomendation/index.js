@@ -3,11 +3,12 @@ import { Box, Grid, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MOVIES_BY_IDS_QUERY } from "./queries";
-import { MovieCard } from "../../components";
+import { MoieDetailModal, MovieCard } from "../../components";
 import renderSkeletons from "../../utils/renderSkeletons";
 
 const Recomendation = () => {
   const [searchParams] = useSearchParams();
+  const [movieId, setMovieId] = useState("");
   const [params, setParams] = useState({ title: "", ids: [] });
   const [boxMinHeight, setBoxMinHeight] = useState("100vh");
 
@@ -34,6 +35,10 @@ const Recomendation = () => {
     }
   }, []);
 
+  const onCloseConfirmModal = () => {
+    setMovieId("");
+  };
+
   if (error) return <div>Error. Try again!</div>;
 
   return (
@@ -47,6 +52,12 @@ const Recomendation = () => {
         backgroundColor: "#f5f5f5",
       }}
     >
+      <MoieDetailModal
+        title={movieId}
+        movieId={movieId}
+        open={!!movieId}
+        onClose={onCloseConfirmModal}
+      />
       <Typography variant="h4" gutterBottom>
         {params.title ? params.title : "Recommended Movies"}
       </Typography>
@@ -61,6 +72,7 @@ const Recomendation = () => {
                     <MovieCard
                       movie={movie}
                       onCardSelect={() => console.log(`onCardSelect`)}
+                      openMovieDetailsById={setMovieId}
                       isPreviewMode
                     />
                   </Grid>

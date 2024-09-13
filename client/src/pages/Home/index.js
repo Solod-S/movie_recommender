@@ -6,6 +6,7 @@ import {
   SelectedMoviesSection,
   Filters,
   Paginator,
+  MoieDetailModal,
 } from "../../components";
 
 import { useQuery } from "@apollo/client";
@@ -111,6 +112,7 @@ const years = Array.from(
 const Home = () => {
   const { filter, setPage, setFilter } = useFilters();
   const { selectedMovies, selectMovie, deleteMovie } = useMovies();
+  const [movieId, setMovieId] = React.useState("");
   const { showNotification, NotificationComponent } = useCustomNotification();
   const { loading, error, data } = useQuery(MOVIES_QUERY, {
     variables: {
@@ -204,12 +206,22 @@ const Home = () => {
     console.log("Selected Filters:", values);
   };
 
+  const onCloseConfirmModal = () => {
+    setMovieId("");
+  };
+
   if (error) {
     return `Error: ${error.message}`;
   }
 
   return (
     <Box sx={{ flexGrow: 1, marginTop: 2 }}>
+      <MoieDetailModal
+        title={movieId}
+        movieId={movieId}
+        open={!!movieId}
+        onClose={onCloseConfirmModal}
+      />
       {NotificationComponent}
       <Grid container spacing={2}>
         <Grid item xs={12}>
@@ -231,6 +243,7 @@ const Home = () => {
                       <MovieCard
                         movie={movie}
                         onCardSelect={selectMovieHandler}
+                        openMovieDetailsById={setMovieId}
                       />
                     </Grid>
                   ))}

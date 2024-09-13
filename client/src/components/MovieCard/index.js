@@ -15,13 +15,22 @@ const truncateString = (string, length = 35) => {
   return string;
 };
 
-const MovieCard = ({ movie, onCardSelect, isPreviewMode = false }) => {
+const MovieCard = ({
+  movie,
+  onCardSelect,
+  isPreviewMode = false,
+  openMovieDetailsById,
+}) => {
   const menuRef = React.useRef();
 
   const callhandleClose = () => {
     if (menuRef.current) {
       menuRef.current.handleClose();
     }
+  };
+
+  const handleMovieDetails = ({ id }) => {
+    openMovieDetailsById(id);
   };
 
   return (
@@ -44,7 +53,8 @@ const MovieCard = ({ movie, onCardSelect, isPreviewMode = false }) => {
         component="img"
         image={movie.image}
         alt={movie.title}
-        style={{ height: "431px" }}
+        style={{ height: "431px", cursor: "pointer" }}
+        onClick={() => handleMovieDetails(movie)}
       />
       <CardContent style={{ paddingBottom: "16px", height: "150px" }}>
         {movie.title.length > 35 ? (
