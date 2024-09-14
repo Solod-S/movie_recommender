@@ -131,7 +131,7 @@ const Home = () => {
   // });
 
   React.useEffect(() => {
-    console.log(selectedMovies);
+    console.log("Selected Movies Updated:", selectedMovies);
   }, [selectedMovies]);
 
   const paginationHandler = (event, page) => {
@@ -171,7 +171,7 @@ const Home = () => {
         showNotification(
           "The movie has been successfully added to the list.",
           "success",
-          5000,
+          1000,
           {
             vertical: "bottom",
             horizontal: "right",
@@ -189,7 +189,7 @@ const Home = () => {
         showNotification(
           "The movie has been successfully removed from the list.",
           "success",
-          5000,
+          1000,
           {
             vertical: "bottom",
             horizontal: "right",
@@ -221,6 +221,9 @@ const Home = () => {
         movieId={movieId}
         open={!!movieId}
         onClose={onCloseConfirmModal}
+        selectedMovies={selectedMovies}
+        selectMovie={selectMovieHandler}
+        deleteMovie={deleteMovieHandler}
       />
       {NotificationComponent}
       <Grid container spacing={2}>

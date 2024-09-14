@@ -2,11 +2,13 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import CloseIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
-import { Divider, Button } from "@mui/material";
+import { Divider, Button, IconButton } from "@mui/material";
 import { useQuery } from "@apollo/client";
 import { MOVIE_DETAIL_BY_ID_QUERY } from "./queries";
 import axios from "axios"; // Добавляем axios для запросов к TMDb API
+import { useMovies } from "../../hooks/useMovies";
 
 const TMDB_API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 
@@ -44,10 +46,13 @@ const videoStyle = {
 };
 
 const MovieDetailModal = ({
+  isPreviewMode,
   open = false,
   movieId = {},
-  title = "",
   onClose = () => {},
+  selectedMovies = [],
+  selectMovie = () => {},
+  deleteMovie = () => {},
 }) => {
   const { loading, error, data } = useQuery(MOVIE_DETAIL_BY_ID_QUERY, {
     variables: { ids: [+movieId] },
@@ -78,16 +83,31 @@ const MovieDetailModal = ({
 
       fetchTrailer();
     }
+    return () => setTrailerUrl(null);
   }, [movieId]);
 
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography>Error loading data</Typography>;
 
   const movie = data?.moviesByIds[0];
-
+  console.log(
+    `!selectedMovies?.map(sm => sm.id === movie?.id`,
+    selectedMovies?.map(sm => sm.id === movie?.id)
+  );
   return (
-    <Modal open={open} onClose={onClose} aria-labelledby="modal-title">
+    <Modal open={open} onClose={onClose} aria-label="modal-title">
       <Box sx={style}>
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
         <Box sx={contentStyle}>
           <Box sx={imageStyle}>
             <img
@@ -141,12 +161,36 @@ const MovieDetailModal = ({
               {movie?.overview}
             </Typography>
 
-            <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-              Add to Selected
-            </Button>
-            <Button variant="outlined" color="secondary" sx={{ mt: 2, ml: 2 }}>
-              Add to Favorite
-            </Button>
+            {!isPreviewMode && (
+              <>
+                {!selectedMovies?.some(sm => sm.id === movie?.id) ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: 2 }}
+                    onClick={() => selectMovie(movie)}
+                  >
+                    Add to Selected
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="error"
+                    sx={{ mt: 2 }}
+                    onClick={() => deleteMovie(movie)}
+                  >
+                    Remove from Selected
+                  </Button>
+                )}
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  sx={{ mt: 2, ml: 2 }}
+                >
+                  Add to Favorite
+                </Button>
+              </>
+            )}
           </Box>
         </Box>
       </Box>

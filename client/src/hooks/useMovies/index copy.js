@@ -12,31 +12,32 @@ export const useMovies = () => {
       setSelectedMovies(savedSelectedMovies);
     }
   }, []);
-
   const selectMovie = useCallback(
     movie => {
       const length = selectedMovies.length;
       const isNewMovie = !selectedMovies.find(({ id }) => id === movie.id);
       console.log(`isNewMovie`, isNewMovie);
-
       if (isNewMovie && length < SELECTED_MOVIES_LIMIT) {
-        setSelectedMovies(prevMovies => {
-          const updatedMovies = [...prevMovies, movie];
-          saveToStorage(SELECTED_MOVIES_KEY, updatedMovies);
-          return updatedMovies;
-        });
+        // setSelectedMovies([movie, ...selectedMovies]);
+        setSelectedMovies(prevMovies => [...prevMovies, movie]);
+        saveToStorage(SELECTED_MOVIES_KEY, [movie, ...selectedMovies]);
+      } else {
+        // console.log(`isNewMovie && length < ${SELECTED_MOVIES_LIMIT}`);
       }
+      // setSelectedMovies([movie, ...selectedMovies]);
     },
     [selectedMovies]
   );
 
   const deleteMovie = useCallback(
     movie => {
-      setSelectedMovies(prevState => {
-        const updatedMovies = prevState.filter(({ id }) => id !== movie.id);
-        saveToStorage(SELECTED_MOVIES_KEY, updatedMovies);
-        return updatedMovies;
-      });
+      saveToStorage(
+        SELECTED_MOVIES_KEY,
+        selectedMovies.filter(({ id }) => id !== movie.id)
+      );
+      setSelectedMovies(prevState =>
+        prevState.filter(({ id }) => id !== movie.id)
+      );
     },
     [selectedMovies]
   );

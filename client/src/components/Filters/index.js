@@ -60,6 +60,7 @@ const Filters = ({ initialValues, onSubmit, genres, years }) => {
             <form onSubmit={handleSubmit}>
               <Box
                 display="flex"
+                flexWrap="wrap"
                 flexDirection="row"
                 gap="20px"
                 alignItems="center"
@@ -86,6 +87,8 @@ const Filters = ({ initialValues, onSubmit, genres, years }) => {
                 </div>
                 <Box
                   display="flex"
+                  flexWrap="wrap"
+                  gap="20px"
                   flexDirection="row"
                   alignItems="center"
                   style={{
@@ -93,7 +96,7 @@ const Filters = ({ initialValues, onSubmit, genres, years }) => {
                     pointerEvents: disableFields ? "none" : "auto",
                   }}
                 >
-                  <div style={{ marginRight: "10px" }}>
+                  <div>
                     <FormControl fullWidth style={{ minWidth: "120px" }}>
                       <InputLabel shrink>
                         <FormattedMessage id="filters.genre.label" />
@@ -147,7 +150,7 @@ const Filters = ({ initialValues, onSubmit, genres, years }) => {
                       </Field>
                     </FormControl>
                   </div>
-                  <div style={{ marginRight: "10px" }}>
+                  <div>
                     <FormControl fullWidth style={{ minWidth: "120px" }}>
                       <InputLabel shrink>
                         <FormattedMessage id="filters.year.label" />
@@ -190,7 +193,7 @@ const Filters = ({ initialValues, onSubmit, genres, years }) => {
                       </Field>
                     </FormControl>
                   </div>
-                  {/* Sort By select */}
+
                   <div>
                     <FormControl fullWidth style={{ minWidth: "150px" }}>
                       <InputLabel shrink>

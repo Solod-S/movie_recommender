@@ -53,6 +53,7 @@ const Recomendation = () => {
       }}
     >
       <MoieDetailModal
+        isPreviewMode
         title={movieId}
         movieId={movieId}
         open={!!movieId}
