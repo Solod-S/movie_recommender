@@ -7,9 +7,8 @@ import PropTypes from "prop-types";
 import { Divider, Button, IconButton } from "@mui/material";
 import { useQuery } from "@apollo/client";
 import { MOVIE_DETAIL_BY_ID_QUERY } from "./queries";
-import axios from "axios"; // Добавляем axios для запросов к TMDb API
-import { useMovies } from "../../hooks/useMovies";
-
+import axios from "axios";
+import DefaultPoster from "../../assets/poster.jpg";
 const TMDB_API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 
 const style = {
@@ -29,13 +28,13 @@ const contentStyle = {
 };
 
 const imageStyle = {
-  width: "40%", // Ширина для блока изображения
+  width: "40%",
   marginRight: "20px",
   borderRadius: "10px",
 };
 
 const textContentStyle = {
-  width: "60%", // Ширина для блока с текстом
+  width: "60%",
 };
 
 const videoStyle = {
@@ -48,27 +47,32 @@ const videoStyle = {
 const MovieDetailModal = ({
   isPreviewMode,
   open = false,
-  movieId = {},
+  movieId,
+  movieDetails,
   onClose = () => {},
   selectedMovies = [],
   selectMovie = () => {},
   deleteMovie = () => {},
 }) => {
   const { loading, error, data } = useQuery(MOVIE_DETAIL_BY_ID_QUERY, {
-    variables: { ids: [+movieId] },
+    variables: {
+      ids: [+movieId],
+    },
+    skip: !movieId || movieId === "",
   });
 
   const [trailerUrl, setTrailerUrl] = React.useState(null);
 
   React.useEffect(() => {
-    if (movieId) {
+    const id = movieDetails?.id || movieId;
+
+    if (id) {
       const fetchTrailer = async () => {
         try {
           // Запрос к TMDb API для получения трейлеров
           const response = await axios.get(
             `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${TMDB_API_KEY}`
           );
-          console.log(`response`, response);
           const videos = response.data.results;
           const trailer = videos.find(
             video => video.type === "Trailer" && video.site === "YouTube"
@@ -84,16 +88,13 @@ const MovieDetailModal = ({
       fetchTrailer();
     }
     return () => setTrailerUrl(null);
-  }, [movieId]);
+  }, [movieDetails, movieId]);
 
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography>Error loading data</Typography>;
 
-  const movie = data?.moviesByIds[0];
-  console.log(
-    `!selectedMovies?.map(sm => sm.id === movie?.id`,
-    selectedMovies?.map(sm => sm.id === movie?.id)
-  );
+  const movie = data?.moviesByIds[0] || movieDetails;
+
   return (
     <Modal open={open} onClose={onClose} aria-label="modal-title">
       <Box sx={style}>
@@ -111,7 +112,9 @@ const MovieDetailModal = ({
         <Box sx={contentStyle}>
           <Box sx={imageStyle}>
             <img
-              src={movie?.image}
+              src={
+                movie?.image?.includes("null") ? DefaultPoster : movie?.image
+              }
               alt={movie?.title}
               style={{ width: "100%", borderRadius: "10px" }}
             />
@@ -162,12 +165,19 @@ const MovieDetailModal = ({
             </Typography>
 
             {!isPreviewMode && (
-              <>
+              <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
                 {!selectedMovies?.some(sm => sm.id === movie?.id) ? (
                   <Button
                     variant="contained"
+                    disabled={!Boolean(data?.moviesByIds[0])}
                     color="primary"
-                    sx={{ mt: 2 }}
+                    sx={{
+                      flex: 0.8,
+                      transition: "transform 0.3s ease",
+                      "&:hover": {
+                        transform: "scale(1.03)",
+                      },
+                    }}
                     onClick={() => selectMovie(movie)}
                   >
                     Add to Selected
@@ -175,21 +185,24 @@ const MovieDetailModal = ({
                 ) : (
                   <Button
                     variant="contained"
+                    disabled={!Boolean(data?.moviesByIds[0])}
                     color="error"
-                    sx={{ mt: 2 }}
+                    sx={{
+                      flex: 0.8,
+                      transition: "transform 0.3s ease",
+                      "&:hover": {
+                        transform: "scale(1.03)",
+                      },
+                    }}
                     onClick={() => deleteMovie(movie)}
                   >
                     Remove from Selected
                   </Button>
                 )}
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  sx={{ mt: 2, ml: 2 }}
-                >
+                {/* <Button variant="outlined" color="secondary" sx={{ ml: 2 }}>
                   Add to Favorite
-                </Button>
-              </>
+                </Button> */}
+              </Box>
             )}
           </Box>
         </Box>

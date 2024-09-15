@@ -1,9 +1,17 @@
 import { Link as RouterLink } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
   AppBar,
+  Button,
+  IconButton,
   Toolbar,
+  Typography,
+  Drawer,
   Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
   Hidden,
   Link,
   Select,
@@ -11,16 +19,20 @@ import {
   FormControl,
   Avatar,
 } from "@mui/material";
+import SettingsIcon from "@mui/icons-material/Settings";
+import MenuIcon from "@mui/icons-material/Menu";
 import { LOCALES } from "../../constants";
-import { useCallback, useContext } from "react";
+
+import { useCallback, useContext, useState } from "react";
 import { AppContext } from "../../providers/appContext";
-import { framerLogoVariants } from "../../constants";
+
+import translate from "../../utils/translate";
+
 import banner from "../../assets/banner.jpg";
 import logo from "../../assets/movie-logo.png";
 
-const MotionLogo = motion(Avatar);
-
 const Navigation = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { state, dispatch } = useContext(AppContext);
 
   const setLanguage = useCallback(
@@ -33,6 +45,21 @@ const Navigation = () => {
     [dispatch]
   );
 
+  const renderListItems = () => (
+    <Box sx={{ width: 250 }} role="presentation">
+      <List>
+        <ListItem disablePadding>
+          <ListItemButton component={RouterLink} to="/settings">
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary={translate("navigation.settings")} />
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </Box>
+  );
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -43,72 +70,44 @@ const Navigation = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          justifyContent: "center",
-          position: "relative",
         }}
       >
         <Toolbar>
           <Hidden only={["lg", "xl"]}>
-            <Box
-              sx={{
-                flexGrow: 1,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={() => setIsDrawerOpen(true)}
             >
-              <Link component={RouterLink} to="/">
-                <MotionLogo
-                  src={logo}
-                  alt={"logo"}
-                  initial="start"
-                  animate="end"
-                  transition={{
-                    ...framerLogoVariants.transition_img,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                  }}
-                  variants={framerLogoVariants}
-                  style={{
-                    height: "60px",
-                    width: "auto",
-                    objectFit: "contain",
-                    borderRadius: "0",
-                    zIndex: 1,
-                  }}
-                />
-              </Link>
-            </Box>
+              <MenuIcon />
+            </IconButton>
           </Hidden>
 
-          <Hidden only={["xs", "sm", "md"]}>
-            <Link component={RouterLink} to="/">
-              <MotionLogo
+          <Link component={RouterLink} to="/">
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ color: "white", flexGrow: 1 }}
+            >
+              <Avatar
                 src={logo}
-                alt={"logo"}
-                initial="start"
-                animate="end"
-                transition={{
-                  ...framerLogoVariants.transition_img,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                }}
-                variants={framerLogoVariants}
                 style={{
                   height: "140px",
                   width: "auto",
                   objectFit: "contain",
                   borderRadius: "0",
-                  zIndex: 1, // Ensure Avatar is on top
                 }}
               />
-            </Link>
-          </Hidden>
+            </Typography>
+          </Link>
 
           <Box
             sx={{
-              marginLeft: "auto",
-              display: { lg: "flex" },
+              flexGrow: 1,
+              display: { xs: "none", lg: "flex" },
               justifyContent: "end",
               alignItems: "center",
             }}
@@ -135,9 +134,25 @@ const Navigation = () => {
                 <MenuItem value={LOCALES.GERMAN}>DE</MenuItem>
               </Select>
             </FormControl>
+
+            {/* <Button
+              component={RouterLink}
+              to="/settings"
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <FormattedMessage id="navigation.settings" />
+            </Button> */}
           </Box>
         </Toolbar>
       </AppBar>
+
+      <Drawer
+        anchor={"left"}
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      >
+        {renderListItems()}
+      </Drawer>
     </Box>
   );
 };

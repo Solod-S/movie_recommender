@@ -20,6 +20,8 @@ const movies = async (parent, args, context) => {
 };
 
 const moviesByIds = async (parent, args, context) => {
+  console.log(`args, context`, args, context);
+
   const language = context.locale;
   try {
     const requests = args.ids.map(id => getDetails(id, language));

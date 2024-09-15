@@ -5,8 +5,39 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardMenu from "../CardMenu";
 import PropTypes from "prop-types";
-import { MenuItem, Tooltip } from "@mui/material";
+import { Box, MenuItem, Tooltip } from "@mui/material";
 import { FormattedMessage } from "react-intl";
+import { SiImdb } from "react-icons/si";
+import { styled } from "@mui/material/styles";
+
+import DefaultPoster from "../../assets/poster.jpg";
+
+export const MoviesRating = styled(({ movieRating, ...other }) => (
+  <Box {...other} />
+))`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 2%;
+  left: 2%;
+  padding: 4px 8px;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: ${({ movieRating }) => {
+    if (movieRating > 6) {
+      return "#55ff00b0";
+    }
+    if (movieRating >= 4 && movieRating <= 6) {
+      return "#ffcb2f70";
+    }
+    return "#ff00009c";
+  }};
+  border-radius: 8px;
+  color: #000;
+  font-size: 1rem;
+  line-height: 1;
+`;
 
 const truncateString = (string, length = 35) => {
   if (string.length >= length) {
@@ -20,6 +51,7 @@ const MovieCard = ({
   onCardSelect,
   isPreviewMode = false,
   openMovieDetailsById,
+  setMovieDetails,
 }) => {
   const menuRef = React.useRef();
 
@@ -29,12 +61,21 @@ const MovieCard = ({
     }
   };
 
-  const handleMovieDetails = ({ id }) => {
-    openMovieDetailsById(id);
+  const handleMovieDetails = movie => {
+    openMovieDetailsById(movie.id);
+    setMovieDetails(movie);
   };
 
   return (
-    <Card sx={{ position: "relative" }}>
+    <Card
+      sx={{
+        position: "relative",
+        transition: "transform 0.3s ease",
+        "&:hover": {
+          transform: "scale(1.03)",
+        },
+      }}
+    >
       {!isPreviewMode && (
         <CardMenu ref={menuRef}>
           <MenuItem
@@ -49,9 +90,15 @@ const MovieCard = ({
           </MenuItem>
         </CardMenu>
       )}
+
+      <MoviesRating movieRating={Math.round(movie.voteAverage || 0)}>
+        <SiImdb size={25} style={{ marginRight: "4px" }} />{" "}
+        <span>{Math.round(movie.voteAverage || 0)}</span>
+      </MoviesRating>
+
       <CardMedia
         component="img"
-        image={movie.image}
+        image={movie.image.includes("null") ? DefaultPoster : movie.image}
         alt={movie.title}
         style={{ height: "431px", cursor: "pointer" }}
         onClick={() => handleMovieDetails(movie)}

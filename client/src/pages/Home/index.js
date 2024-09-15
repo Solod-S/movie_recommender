@@ -1,12 +1,12 @@
 import * as React from "react";
-
-import { Box, Grid, Paper, Pagination } from "@mui/material";
+import { motion } from "framer-motion";
+import { Box, Grid, Paper } from "@mui/material";
 import {
   MovieCard,
   SelectedMoviesSection,
   Filters,
   Paginator,
-  MoieDetailModal,
+  MovieDetailModal,
 } from "../../components";
 
 import { useQuery } from "@apollo/client";
@@ -18,6 +18,7 @@ import { SELECTED_MOVIES_LIMIT } from "../../config";
 import renderSkeletons from "../../utils/renderSkeletons";
 
 import { useFilters } from "../../hooks/useFilters";
+import { framerListVariants } from "../../constants";
 
 const genres = [
   // {
@@ -113,6 +114,7 @@ const Home = () => {
   const { filter, setPage, setFilter } = useFilters();
   const { selectedMovies, selectMovie, deleteMovie } = useMovies();
   const [movieId, setMovieId] = React.useState("");
+  const [movieDetails, setMovieDetails] = React.useState({});
   const { showNotification, NotificationComponent } = useCustomNotification();
   const { loading, error, data } = useQuery(MOVIES_QUERY, {
     variables: {
@@ -126,16 +128,13 @@ const Home = () => {
       },
     },
   });
-  // const { loading, error, data } = useQuery(MOVIES_QUERY, {
-  //   variables: { page: filter.page },
-  // });
-
-  React.useEffect(() => {
-    console.log("Selected Movies Updated:", selectedMovies);
-  }, [selectedMovies]);
 
   const paginationHandler = (event, page) => {
     setPage(page);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   const selectMovieHandler = movie => {
@@ -208,6 +207,7 @@ const Home = () => {
 
   const onCloseConfirmModal = () => {
     setMovieId("");
+    setMovieDetails({});
   };
 
   if (error) {
@@ -216,9 +216,10 @@ const Home = () => {
 
   return (
     <Box sx={{ flexGrow: 1, marginTop: 2 }}>
-      <MoieDetailModal
+      <MovieDetailModal
         title={movieId}
         movieId={movieId}
+        movieDetails={movieDetails}
         open={!!movieId}
         onClose={onCloseConfirmModal}
         selectedMovies={selectedMovies}
@@ -241,13 +242,22 @@ const Home = () => {
               {loading && renderSkeletons()}
               {data && (
                 <Grid container spacing={2}>
-                  {data.movies.results.map(movie => (
+                  {data.movies.results.map((movie, index) => (
                     <Grid key={movie.id} item xs={12} md={4} lg={3}>
-                      <MovieCard
-                        movie={movie}
-                        onCardSelect={selectMovieHandler}
-                        openMovieDetailsById={setMovieId}
-                      />
+                      <motion.div
+                        className="portfolio__item"
+                        variants={framerListVariants}
+                        initial="hidden"
+                        animate="visible"
+                        custom={index}
+                      >
+                        <MovieCard
+                          movie={movie}
+                          onCardSelect={selectMovieHandler}
+                          openMovieDetailsById={setMovieId}
+                          setMovieDetails={setMovieDetails}
+                        />
+                      </motion.div>
                     </Grid>
                   ))}
                 </Grid>

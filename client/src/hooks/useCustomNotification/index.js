@@ -3,7 +3,7 @@ import { Snackbar, Alert } from "@mui/material";
 
 // Функция для отображения уведомлений
 export const useCustomNotification = () => {
-  const [notification, setNotification] = useState(null);
+  const [notifications, setNotifications] = useState([]);
 
   // Функция для показа уведомления
   const showNotification = useCallback(
@@ -13,34 +13,41 @@ export const useCustomNotification = () => {
       duration = 1000,
       position = { vertical: "bottom", horizontal: "right" }
     ) => {
-      setNotification({ message, type, duration, position });
+      const id = new Date().getTime(); // Уникальный ID для каждой нотификации
+      setNotifications(prev => [
+        ...prev,
+        { id, message, type, duration, position },
+      ]);
     },
     []
   );
 
   // Функция для скрытия уведомления
-  const handleClose = () => {
-    setNotification(null);
-  };
+  const handleClose = useCallback(id => {
+    setNotifications(prev =>
+      prev.filter(notification => notification.id !== id)
+    );
+  }, []);
 
-  const NotificationComponent = notification ? (
+  const NotificationComponent = notifications.map(notification => (
     <Snackbar
+      key={notification.id}
       open={true}
       autoHideDuration={notification.duration}
-      onClose={handleClose}
+      onClose={() => handleClose(notification.id)}
       anchorOrigin={notification.position}
       sx={{ zIndex: 1300 }} // Setting z-index to ensure it's on top
     >
       <Alert
         variant="filled"
-        onClose={handleClose}
+        onClose={() => handleClose(notification.id)}
         severity={notification.type}
         sx={{ zIndex: 1301 }} // Setting z-index slightly higher for the Alert component
       >
         {notification.message}
       </Alert>
     </Snackbar>
-  ) : null;
+  ));
 
   return {
     showNotification,

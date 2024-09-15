@@ -3,12 +3,13 @@ import { Box, Grid, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MOVIES_BY_IDS_QUERY } from "./queries";
-import { MoieDetailModal, MovieCard } from "../../components";
+import { MovieDetailModal, MovieCard } from "../../components";
 import renderSkeletons from "../../utils/renderSkeletons";
 
 const Recomendation = () => {
   const [searchParams] = useSearchParams();
   const [movieId, setMovieId] = useState("");
+  const [movieDetails, setMovieDetails] = useState({});
   const [params, setParams] = useState({ title: "", ids: [] });
   const [boxMinHeight, setBoxMinHeight] = useState("100vh");
 
@@ -37,6 +38,7 @@ const Recomendation = () => {
 
   const onCloseConfirmModal = () => {
     setMovieId("");
+    setMovieDetails({});
   };
 
   if (error) return <div>Error. Try again!</div>;
@@ -52,9 +54,10 @@ const Recomendation = () => {
         backgroundColor: "#f5f5f5",
       }}
     >
-      <MoieDetailModal
+      <MovieDetailModal
         isPreviewMode
         title={movieId}
+        movieDetails={movieDetails}
         movieId={movieId}
         open={!!movieId}
         onClose={onCloseConfirmModal}
@@ -74,6 +77,7 @@ const Recomendation = () => {
                       movie={movie}
                       onCardSelect={() => console.log(`onCardSelect`)}
                       openMovieDetailsById={setMovieId}
+                      setMovieDetails={setMovieDetails}
                       isPreviewMode
                     />
                   </Grid>

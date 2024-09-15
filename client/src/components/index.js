@@ -6,7 +6,7 @@ import SelectedMoviesSection from "./SelectedMoviesSection";
 import ConfirmModal from "./ConfirmModal";
 import Filters from "./Filters";
 import Paginator from "./Pagination";
-import MoieDetailModal from "./MoieDetailModal";
+import MovieDetailModal from "./MovieDetailModal";
 
 export {
   Navigation,
@@ -17,5 +17,5 @@ export {
   ConfirmModal,
   Filters,
   Paginator,
-  MoieDetailModal,
+  MovieDetailModal,
 };

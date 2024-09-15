@@ -16,3 +16,34 @@ export const LOCALES = {
   GERMAN: "de-de",
   FRENCH: "fr-ca",
 };
+
+export const framerListVariants = {
+  visible: index => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.01, delay: index * 0.2 },
+  }),
+  hidden: { opacity: 0, y: -100 },
+};
+
+export const framerLogoVariants = {
+  start: { rotate: 0, scale: 1.1 },
+  end: { rotate: 5, scale: 1.2 },
+  transition_img: {
+    ease: "easeOut",
+    duration: 8,
+    repeat: Infinity,
+    repeatType: "reverse",
+  },
+};
+
+export const framerPosterVariants = {
+  start: { rotate: 0, scale: 1 },
+  end: { rotate: 1, scale: 1 },
+  transition_img: {
+    ease: "easeOut",
+    duration: 8,
+    repeat: Infinity,
+    repeatType: "reverse",
+  },
+};
