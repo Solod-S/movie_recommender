@@ -8,9 +8,13 @@ class Movie {
     this.id = movie.id;
     this.title = movie.title;
 
-    this.posterPath = `${IMG_PATH}${movie.poster_path}`;
+    this.posterPath = movie.poster_path
+      ? `${IMG_PATH}${movie.poster_path}`
+      : null;
     this.adult = movie.adult;
-    this.backdropPath = `${IMG_PATH}${movie.backdrop_path}`;
+    this.backdropPath = movie.backdrop_path
+      ? `${IMG_PATH}${movie.backdrop_path}`
+      : null;
     this.originalLanguage = movie.original_language;
     this.originalTitle = movie.original_title;
     this.overview = movie.overview;
@@ -26,12 +30,14 @@ class Movie {
               ? { id: genre.id, name: genre.name }
               : { id, name: "Unknown" };
           })
-        : movie.genre_ids.map(id => {
+        : movie?.genre_ids?.length > 0
+        ? movie.genre_ids.map(id => {
             const genre = genresList.find(g => g.id === id);
             return genre
               ? { id: genre.id, name: genre.name }
               : { id, name: "Unknown" };
-          });
+          })
+        : [];
   }
 
   releaseDate(params) {

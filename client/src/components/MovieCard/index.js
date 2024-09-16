@@ -51,7 +51,6 @@ const MovieCard = ({
   onCardSelect,
   isPreviewMode = false,
   openMovieDetailsById,
-  setMovieDetails,
 }) => {
   const menuRef = React.useRef();
 
@@ -63,7 +62,6 @@ const MovieCard = ({
 
   const handleMovieDetails = movie => {
     openMovieDetailsById(movie.id);
-    setMovieDetails(movie);
   };
 
   return (
@@ -98,7 +96,7 @@ const MovieCard = ({
 
       <CardMedia
         component="img"
-        image={movie.image.includes("null") ? DefaultPoster : movie.image}
+        image={!movie.image ? DefaultPoster : movie.image}
         alt={movie.title}
         style={{ height: "431px", cursor: "pointer" }}
         onClick={() => handleMovieDetails(movie)}

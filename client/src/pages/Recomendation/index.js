@@ -9,7 +9,6 @@ import renderSkeletons from "../../utils/renderSkeletons";
 const Recomendation = () => {
   const [searchParams] = useSearchParams();
   const [movieId, setMovieId] = useState("");
-  const [movieDetails, setMovieDetails] = useState({});
   const [params, setParams] = useState({ title: "", ids: [] });
   const [boxMinHeight, setBoxMinHeight] = useState("100vh");
 
@@ -38,7 +37,6 @@ const Recomendation = () => {
 
   const onCloseConfirmModal = () => {
     setMovieId("");
-    setMovieDetails({});
   };
 
   if (error) return <div>Error. Try again!</div>;
@@ -57,7 +55,6 @@ const Recomendation = () => {
       <MovieDetailModal
         isPreviewMode
         title={movieId}
-        movieDetails={movieDetails}
         movieId={movieId}
         open={!!movieId}
         onClose={onCloseConfirmModal}
@@ -77,7 +74,6 @@ const Recomendation = () => {
                       movie={movie}
                       onCardSelect={() => console.log(`onCardSelect`)}
                       openMovieDetailsById={setMovieId}
-                      setMovieDetails={setMovieDetails}
                       isPreviewMode
                     />
                   </Grid>

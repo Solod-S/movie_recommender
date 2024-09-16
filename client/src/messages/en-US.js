@@ -47,6 +47,12 @@ export default {
         voteCount: "Vote Count",
       },
     },
+    movie_details: {
+      vote: "Vote",
+      release_date: "Release Date",
+      original_title: "Original Title",
+      genre: "Genre",
+    },
     no_selected_movies: "No selected movies",
     put_the_list_name: "Put the list name",
     share_with_friends: "Share with friends",

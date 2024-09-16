@@ -114,7 +114,8 @@ const Home = () => {
   const { filter, setPage, setFilter } = useFilters();
   const { selectedMovies, selectMovie, deleteMovie } = useMovies();
   const [movieId, setMovieId] = React.useState("");
-  const [movieDetails, setMovieDetails] = React.useState({});
+
+  const [moviesList, setmoviesList] = React.useState([]);
   const { showNotification, NotificationComponent } = useCustomNotification();
   const { loading, error, data } = useQuery(MOVIES_QUERY, {
     variables: {
@@ -129,12 +130,27 @@ const Home = () => {
     },
   });
 
+  React.useEffect(() => {
+    if (data?.movies?.results.length > 0)
+      setmoviesList(prevState => {
+        return data.movies.results.map(newMovie => {
+          const oldMovie = prevState.find(movie => movie.id === newMovie.id);
+
+          return {
+            ...newMovie,
+            image: oldMovie ? oldMovie.image : newMovie.image,
+          };
+        });
+      });
+    else setmoviesList([]);
+  }, [data]);
+
   const paginationHandler = (event, page) => {
-    setPage(page);
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
+    setPage(page);
   };
 
   const selectMovieHandler = movie => {
@@ -202,12 +218,10 @@ const Home = () => {
 
   const handleFilterSubmit = values => {
     setFilter(values);
-    console.log("Selected Filters:", values);
   };
 
   const onCloseConfirmModal = () => {
     setMovieId("");
-    setMovieDetails({});
   };
 
   if (error) {
@@ -219,7 +233,6 @@ const Home = () => {
       <MovieDetailModal
         title={movieId}
         movieId={movieId}
-        movieDetails={movieDetails}
         open={!!movieId}
         onClose={onCloseConfirmModal}
         selectedMovies={selectedMovies}
@@ -240,9 +253,9 @@ const Home = () => {
           <Paper>
             <Box sx={{ flexGrow: 1, padding: 2 }}>
               {loading && renderSkeletons()}
-              {data && (
+              {moviesList && moviesList.length > 0 && (
                 <Grid container spacing={2}>
-                  {data.movies.results.map((movie, index) => (
+                  {moviesList.map((movie, index) => (
                     <Grid key={movie.id} item xs={12} md={4} lg={3}>
                       <motion.div
                         className="portfolio__item"
@@ -255,7 +268,6 @@ const Home = () => {
                           movie={movie}
                           onCardSelect={selectMovieHandler}
                           openMovieDetailsById={setMovieId}
-                          setMovieDetails={setMovieDetails}
                         />
                       </motion.div>
                     </Grid>

@@ -1,6 +1,6 @@
 const { themoviedbInstance } = require("../../services/axios");
 const { getList } = require("../genres");
-const { Movies } = require("./entities/Movies");
+const { Movies } = require("../movies/entities/Movies");
 
 const getPopularMovies = async (args = {}) => {
   const { page = 1, language = "en-US" } = args;
@@ -56,4 +56,8 @@ const discoverMovie = async (filter, language) => {
   }
 };
 
-module.exports = { getPopularMovies, getDetails, discoverMovie };
+module.exports = {
+  getPopularMovies,
+  getDetails,
+  discoverMovie,
+};

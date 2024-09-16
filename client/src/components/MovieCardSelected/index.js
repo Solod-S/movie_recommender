@@ -10,6 +10,8 @@ import CardMenu from "../CardMenu";
 import { MenuItem } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 
+import DefaultPoster from "../../assets/poster.jpg";
+
 const MovieCardSelected = ({ movie, onCardDelete }) => {
   const menuRef = React.useRef();
 
@@ -23,7 +25,7 @@ const MovieCardSelected = ({ movie, onCardDelete }) => {
       <CardMedia
         component="img"
         sx={{ width: 100 }}
-        image={movie.image}
+        image={movie.image ? movie.image : DefaultPoster}
         alt={movie.title}
       />
       <Box
@@ -84,7 +86,7 @@ const MovieCardSelected = ({ movie, onCardDelete }) => {
 
 MovieCardSelected.protoTypes = {
   movie: PropTypes.shape({
-    image: PropTypes.string.isRequired,
+    image: PropTypes.string,
     title: PropTypes.string.isRequired,
     releaseDate: PropTypes.string,
     genres: PropTypes.arrayOf(

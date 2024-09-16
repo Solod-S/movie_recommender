@@ -1,6 +1,9 @@
 type Query {
   movies(filter: MoviesFilterInput): Movies
+  reviews(filter: ReviewsFilterInput): Reviews
   moviesByIds(ids: [Int], language: String): [Movie]
+  trailersById(id: Int): [Treiler]
+  creditsById(id: Int): [Credit]
   genres: [Genre]
 }
 
@@ -11,6 +14,11 @@ input MoviesFilterInput {
   year: Int
   genre: Int
   search: String
+}
+
+input ReviewsFilterInput {
+  id: Int
+  page: Int
 }
 
 enum SORT_DIRECTION {
@@ -42,7 +50,82 @@ type Movie {
   voteCount: Int
 }
 
+type Reviews {
+  page: Int!
+  totalResults: Int!
+  totalPages: Int!
+  results: [Review]!
+}
+
+type AuthorDetails {
+  name: String
+  username: String!
+  avatar_path: String
+  rating: Float
+}
+
+type Review {
+  author: String!
+  authorDetails: AuthorDetails
+  content: String!
+  createdAt: String!
+  id: ID!
+  updatedAt: String!
+  url: String!
+}
+
+type Treiler {
+  iso_639_1: String
+  iso_3166_1: String
+  name: String
+  key: String
+  site: String
+  size: Int
+  type: String
+  official: Boolean
+  published_at: String
+  id: String
+}
+
+type Credit {
+  adult: Boolean
+  gender: Int
+  id: Int
+  knownForDepartment: String
+  name: String
+  originalName: String
+  popularity: Float
+  posterPath: String
+  castId: Int
+  character: String
+  creditId: String
+  order: Int
+}
+
 type Genre {
   id: Int!
   name: String!
 }
+
+# {
+#     "id": 1139817,
+#     "page": 1,
+#     "results": [
+#         {
+#             "author": "MovieGuys",
+#             "author_details": {
+#                 "name": "",
+#                 "username": "MovieGuys",
+#                 "avatar_path": null,
+#                 "rating": 8
+#             },
+#             "content": "Want to know how to make a crash hot action movie with heart? Well Hollywood, my advice, is take a good hard look at Korean crime action flick, Officer Black Belt. \r\n\r\nYes, I'll admit, the title is a little lame but that's about the only rather trivial fault, I could find with this film. This is a martial arts action packed film done right. Strong characterisations, backed by a real heart felt message. To round things out, is great acting, with excellent chemistry, between the cast.\r\n\r\nIn summary, THIS is how you make an enjoyable, truly entertaining, action flick. Loved it!",
+#             "created_at": "2024-09-14T04:31:20.622Z",
+#             "id": "66e51198f3d3f8bff96d657f",
+#             "updated_at": "2024-09-14T04:50:36.108Z",
+#             "url": "https://www.themoviedb.org/review/66e51198f3d3f8bff96d657f"
+#         }
+#     ],
+#     "total_pages": 1,
+#     "total_results": 1
+# }

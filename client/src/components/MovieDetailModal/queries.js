@@ -24,4 +24,14 @@ const MOVIE_DETAIL_BY_ID_QUERY = gql`
   }
 `;
 
-export { MOVIE_DETAIL_BY_ID_QUERY };
+const TRAILERS_BY_ID_QUERY = gql`
+  query TrailersById($id: Int) {
+    trailersById(id: $id) {
+      key
+      site
+      type
+    }
+  }
+`;
+
+export { MOVIE_DETAIL_BY_ID_QUERY, TRAILERS_BY_ID_QUERY };

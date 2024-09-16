@@ -126,7 +126,7 @@ SelectedMoviesSection.propTypes = {
   selectedMovies: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-      image: PropTypes.string.isRequired,
+      // image: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
       releaseDate: PropTypes.string,
       genres: PropTypes.arrayOf(
