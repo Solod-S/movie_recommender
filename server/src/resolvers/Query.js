@@ -73,8 +73,9 @@ const genres = async (_, {}, { locale }) => {
 
 const reviews = async (parent, args, context) => {
   try {
+    console.log(`args`, args);
     const data = await getReviews(args.filter, context.locale);
-
+    console.log(`data`, data);
     return data;
   } catch (error) {
     console.error(`Error in reviews resolver:`, error.message);

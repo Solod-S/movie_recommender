@@ -7,7 +7,7 @@ const getCredits = async id => {
 
     return videos;
   } catch (error) {
-    console.error("Error fetching movies:", error);
+    console.error("Error fetching credits:", error);
     throw error;
   }
 };

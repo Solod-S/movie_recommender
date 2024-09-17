@@ -4,25 +4,18 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
-import { formatDistanceToNow } from "date-fns";
 import {
   Divider,
   Button,
   IconButton,
   useMediaQuery,
   Tooltip,
-  List,
-  ListItem,
-  ListItemAvatar,
-  Avatar,
-  ListItemText,
 } from "@mui/material";
 import { useQuery } from "@apollo/client";
 import {
   MOVIE_DETAIL_BY_ID_QUERY,
   TRAILERS_BY_ID_QUERY,
   CASTS_BY_ID_QUERY,
-  REVIEWS_BY_ID_QUERY,
 } from "./queries";
 import DefaultPoster from "../../assets/poster.jpg";
 import { FormattedMessage } from "react-intl";
@@ -66,45 +59,10 @@ const MovieDetailModal = ({
     skip: !movieId || movieId === "",
   });
 
-  // const {
-  //   // loading, error,
-  //   data: reviewsData,
-  // } = useQuery(REVIEWS_BY_ID_QUERY, {
-  // variables: {
-  //   filter: {
-  //     page: 1,
-  //     id: +movieId,
-  //   },
-  //     skip: !movieId || movieId === "",
-  //   },
-  // });
-  const {
-    // loading,
-    // error,
-    data: reviewsData,
-
-    refetch,
-  } = useQuery(REVIEWS_BY_ID_QUERY, {
-    variables: {
-      filter: {
-        page: 1,
-        id: +movieId,
-      },
-    },
-    skip: !movieId || isNaN(Number(movieId)) || Number(movieId) <= 0,
-  });
-
-  React.useEffect(() => {
-    if (movieId && !isNaN(Number(movieId)) && Number(movieId) > 0) {
-      refetch(); // Выполнить запрос, если movieId валиден
-    }
-  }, [movieId, refetch]);
-
   const [trailerUrl, setTrailerUrl] = React.useState(null);
   const [casts, setCasts] = React.useState([]);
-  const [reviews, setReviews] = React.useState([]);
   const isLargeScreen = useMediaQuery("(min-width:1280px)");
-  console.log(`movieId`, movieId);
+
   const contentStyle = {
     display: "flex",
     flexDirection: isLargeScreen ? "row" : "column",
@@ -162,7 +120,7 @@ const MovieDetailModal = ({
   };
 
   React.useEffect(() => {
-    if (trailersData && trailersData?.trailersById?.length > 0) {
+    if (trailersData && trailersData.trailersById.length > 0) {
       const trailer = trailersData.trailersById.find(
         video => video.type === "Trailer" && video.site === "YouTube"
       );
@@ -171,20 +129,14 @@ const MovieDetailModal = ({
         setTrailerUrl(`https://www.youtube.com/embed/${trailer.key}`);
       }
     }
-    if (castsData && castsData?.creditsById?.length > 0) {
+    if (castsData && castsData.creditsById.length > 0) {
       setCasts(castsData.creditsById.slice(0, 10));
     }
-    console.log(`reviewsData?.reviews?.results`, reviewsData?.reviews?.results);
-    if (reviewsData && reviewsData?.reviews?.results?.length > 0) {
-      setReviews(reviewsData.reviews.results.slice(0, 5));
-    }
-
     return () => {
       setTrailerUrl(null);
       setCasts([]);
-      setReviews([]);
     };
-  }, [trailersData, castsData, reviewsData]);
+  }, [trailersData, castsData]);
 
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography>Error loading data</Typography>;
@@ -335,66 +287,6 @@ const MovieDetailModal = ({
                   Add to Favorite
                 </Button> */}
               </Box>
-            )}
-            {reviews && reviews.length > 0 && (
-              <>
-                <Typography
-                  variant="h6"
-                  gutterBottom
-                  sx={{ textAlign: "center", marginTop: "16px" }}
-                >
-                  Reviews
-                </Typography>
-                <List>
-                  {reviews.map(review => (
-                    <React.Fragment key={review.id}>
-                      <ListItem>
-                        <ListItemAvatar>
-                          <Avatar
-                            src={review.authorDetails.avatar_path}
-                            alt={review.authorDetails.name || review.author}
-                          />
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={
-                            <Typography
-                              variant="body1"
-                              component="div"
-                              fontWeight="bold"
-                            >
-                              {review.authorDetails.name || review.author}
-                            </Typography>
-                          }
-                          secondary={
-                            <Box>
-                              <Typography
-                                variant="body2"
-                                color="textPrimary"
-                                component="div"
-                              >
-                                <span
-                                  dangerouslySetInnerHTML={{
-                                    __html: review.content,
-                                  }}
-                                />
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary">
-                                {formatDistanceToNow(
-                                  new Date(review.createdAt),
-                                  {
-                                    addSuffix: true,
-                                  }
-                                )}
-                              </Typography>
-                            </Box>
-                          }
-                        />
-                      </ListItem>
-                      <Divider variant="inset" component="li" />
-                    </React.Fragment>
-                  ))}
-                </List>
-              </>
             )}
           </Box>
         </Box>

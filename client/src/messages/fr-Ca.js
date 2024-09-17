@@ -52,6 +52,7 @@ export default {
       release_date: "Date de sortie",
       original_title: "Titre original",
       genre: "Genre",
+      cast: "Distribution",
     },
     no_selected_movies: "Aucun film sélectionné", // "No selected movies"
     put_the_list_name: "Entrez le nom de la liste", // "Put the list name"

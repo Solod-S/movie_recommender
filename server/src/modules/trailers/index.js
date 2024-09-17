@@ -7,7 +7,7 @@ const getTrailers = async id => {
 
     return videos;
   } catch (error) {
-    console.error("Error fetching movies:", error);
+    console.error("Error fetching trailers:", error);
     throw error;
   }
 };

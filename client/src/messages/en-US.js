@@ -52,6 +52,7 @@ export default {
       release_date: "Release Date",
       original_title: "Original Title",
       genre: "Genre",
+      cast: "Cast",
     },
     no_selected_movies: "No selected movies",
     put_the_list_name: "Put the list name",
