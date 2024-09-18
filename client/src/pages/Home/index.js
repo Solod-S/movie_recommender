@@ -19,6 +19,7 @@ import renderSkeletons from "../../utils/renderSkeletons";
 
 import { useFilters } from "../../hooks/useFilters";
 import { framerListVariants } from "../../constants";
+import { FormattedMessage } from "react-intl";
 
 const genres = [
   // {
@@ -160,7 +161,7 @@ const Home = () => {
     switch (true) {
       case !isNewMovie:
         showNotification(
-          "This movie is already on the selected movies list.",
+          <FormattedMessage id="notification.movie_already_selected" />,
           "error",
           5000,
           {
@@ -172,7 +173,7 @@ const Home = () => {
 
       case length >= SELECTED_MOVIES_LIMIT:
         showNotification(
-          "The limit of the list has been reached.",
+          <FormattedMessage id="notification.list_limit_reached" />,
           "error",
           5000,
           {
@@ -184,7 +185,7 @@ const Home = () => {
 
       default:
         showNotification(
-          "The movie has been successfully added to the list.",
+          <FormattedMessage id="notification.movie_added_successfully" />,
           "success",
           1000,
           {
@@ -202,7 +203,7 @@ const Home = () => {
     switch (true) {
       default:
         showNotification(
-          "The movie has been successfully removed from the list.",
+          <FormattedMessage id="notification.movie_removed_successfully" />,
           "success",
           1000,
           {
@@ -268,6 +269,9 @@ const Home = () => {
                           movie={movie}
                           onCardSelect={selectMovieHandler}
                           openMovieDetailsById={setMovieId}
+                          selected={selectedMovies.find(
+                            ({ id }) => id === movie.id
+                          )}
                         />
                       </motion.div>
                     </Grid>

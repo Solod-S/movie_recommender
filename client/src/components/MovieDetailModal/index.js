@@ -66,23 +66,10 @@ const MovieDetailModal = ({
     skip: !movieId || movieId === "",
   });
 
-  // const {
-  //   // loading, error,
-  //   data: reviewsData,
-  // } = useQuery(REVIEWS_BY_ID_QUERY, {
-  // variables: {
-  //   filter: {
-  //     page: 1,
-  //     id: +movieId,
-  //   },
-  //     skip: !movieId || movieId === "",
-  //   },
-  // });
   const {
-    // loading,
+    // loading: reviewLoading,
     // error,
     data: reviewsData,
-
     refetch,
   } = useQuery(REVIEWS_BY_ID_QUERY, {
     variables: {
@@ -104,7 +91,7 @@ const MovieDetailModal = ({
   const [casts, setCasts] = React.useState([]);
   const [reviews, setReviews] = React.useState([]);
   const isLargeScreen = useMediaQuery("(min-width:1280px)");
-  console.log(`movieId`, movieId);
+  // console.log(`movieId`, movieId);
   const contentStyle = {
     display: "flex",
     flexDirection: isLargeScreen ? "row" : "column",
@@ -174,7 +161,7 @@ const MovieDetailModal = ({
     if (castsData && castsData?.creditsById?.length > 0) {
       setCasts(castsData.creditsById.slice(0, 10));
     }
-    console.log(`reviewsData?.reviews?.results`, reviewsData?.reviews?.results);
+
     if (reviewsData && reviewsData?.reviews?.results?.length > 0) {
       setReviews(reviewsData.reviews.results.slice(0, 5));
     }
@@ -312,7 +299,7 @@ const MovieDetailModal = ({
                     }}
                     onClick={() => selectMovie(movie)}
                   >
-                    Add to Selected
+                    <FormattedMessage id="movie_details.add_to_selected_btn" />
                   </Button>
                 ) : (
                   <Button
@@ -328,7 +315,7 @@ const MovieDetailModal = ({
                     }}
                     onClick={() => deleteMovie(movie)}
                   >
-                    Remove from Selected
+                    <FormattedMessage id="movie_details.remove_selected_btn" />
                   </Button>
                 )}
                 {/* <Button variant="outlined" color="secondary" sx={{ ml: 2 }}>
@@ -343,9 +330,28 @@ const MovieDetailModal = ({
                   gutterBottom
                   sx={{ textAlign: "center", marginTop: "16px" }}
                 >
-                  Reviews
+                  <FormattedMessage id="movie_details.reviews" />
                 </Typography>
-                <List>
+                <List
+                  sx={{
+                    maxHeight: "350px",
+                    overflow: "auto",
+                    scrollbarWidth: "thin",
+                    "&::-webkit-scrollbar": {
+                      width: "6px", // Для WebKit-браузеров (Chrome, Safari, Edge)
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      backgroundColor: "transparent", // Цвет трека полосы
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "#888", // Цвет ползунка
+                      borderRadius: "10px",
+                    },
+                    "&::-webkit-scrollbar-thumb:hover": {
+                      backgroundColor: "#555", // Цвет ползунка при наведении
+                    },
+                  }}
+                >
                   {reviews.map(review => (
                     <React.Fragment key={review.id}>
                       <ListItem>

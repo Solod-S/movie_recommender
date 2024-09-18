@@ -14,25 +14,6 @@ export default {
       genre: {
         label: "Genre",
         allGenres: "Tous les genres",
-        action: "Action",
-        adventure: "Aventure",
-        animation: "Animation",
-        comedy: "Comédie",
-        crime: "Crime",
-        documentary: "Documentaire",
-        drama: "Drame",
-        family: "Famille",
-        fantasy: "Fantastique",
-        history: "Histoire",
-        horror: "Horreur",
-        music: "Musique",
-        mystery: "Mystère",
-        romance: "Romance",
-        scienceFiction: "Science-fiction",
-        tVMovie: "Téléfilm",
-        thriller: "Thriller",
-        war: "Guerre",
-        western: "Western",
       },
       year: {
         label: "Année",
@@ -53,6 +34,17 @@ export default {
       original_title: "Titre original",
       genre: "Genre",
       cast: "Distribution",
+      reviews: "Avis",
+      remove_selected_btn: "Retirer de la sélection",
+      add_to_selected_btn: "Ajouter à la sélection",
+    },
+    notification: {
+      movie_already_selected:
+        "Ce film est déjà dans la liste des films sélectionnés.",
+      list_limit_reached: "La limite de la liste a été atteinte.",
+      movie_added_successfully: "Le film a été ajouté avec succès à la liste.",
+      movie_removed_successfully:
+        "Le film a été retiré avec succès de la liste.",
     },
     no_selected_movies: "Aucun film sélectionné", // "No selected movies"
     put_the_list_name: "Entrez le nom de la liste", // "Put the list name"

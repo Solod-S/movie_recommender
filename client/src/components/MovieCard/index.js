@@ -11,6 +11,7 @@ import { SiImdb } from "react-icons/si";
 import { styled } from "@mui/material/styles";
 
 import DefaultPoster from "../../assets/poster.jpg";
+import { MdOutlineBookmarkAdded } from "react-icons/md";
 
 export const MoviesRating = styled(({ movieRating, ...other }) => (
   <Box {...other} />
@@ -51,6 +52,7 @@ const MovieCard = ({
   onCardSelect,
   isPreviewMode = false,
   openMovieDetailsById,
+  selected = false,
 }) => {
   const menuRef = React.useRef();
 
@@ -74,6 +76,19 @@ const MovieCard = ({
         },
       }}
     >
+      {selected && (
+        <MdOutlineBookmarkAdded
+          color="#FF6700"
+          size={25}
+          style={{
+            position: "absolute",
+            bottom: 5,
+            right: 5,
+            zIndex: 1,
+          }}
+        />
+      )}
+
       {!isPreviewMode && (
         <CardMenu ref={menuRef}>
           <MenuItem

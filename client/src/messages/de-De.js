@@ -14,25 +14,6 @@ export default {
       genre: {
         label: "Genre",
         allGenres: "Alle Genres",
-        action: "Action",
-        adventure: "Abenteuer",
-        animation: "Animation",
-        comedy: "Komödie",
-        crime: "Krimi",
-        documentary: "Dokumentarfilm",
-        drama: "Drama",
-        family: "Familie",
-        fantasy: "Fantasy",
-        history: "Geschichte",
-        horror: "Horror",
-        music: "Musik",
-        mystery: "Mystery",
-        romance: "Romanze",
-        scienceFiction: "Science-Fiction",
-        tVMovie: "TV-Film",
-        thriller: "Thriller",
-        war: "Krieg",
-        western: "Western",
       },
       year: {
         label: "Jahr",
@@ -53,6 +34,18 @@ export default {
       original_title: "Originaltitel",
       genre: "Genre",
       cast: "Besetzung",
+      reviews: "Bewertungen",
+      remove_selected_btn: "Aus Auswahl entfernen",
+      add_to_selected_btn: "Zur Auswahl hinzufügen",
+    },
+    notification: {
+      movie_already_selected:
+        "Dieser Film ist bereits in der Liste der ausgewählten Filme.",
+      list_limit_reached: "Das Limit der Liste wurde erreicht.",
+      movie_added_successfully:
+        "Der Film wurde erfolgreich zur Liste hinzugefügt.",
+      movie_removed_successfully:
+        "Der Film wurde erfolgreich von der Liste entfernt.",
     },
     no_selected_movies: "Keine ausgewählten Filme", // "No selected movies"
     put_the_list_name: "Listenname eingeben", // "Put the list name"
