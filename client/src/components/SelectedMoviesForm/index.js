@@ -3,9 +3,11 @@ import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import CheckIcon from "@mui/icons-material/Check";
+import { TbStackPush } from "react-icons/tb";
+
 import { Form, Field } from "react-final-form";
-import { useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
+import { Tooltip } from "@mui/material";
 
 const required = value => (value ? undefined : "Required");
 
@@ -45,15 +47,20 @@ const SelectedMoviesForm = ({ onSubmit }) => {
             />
 
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-
-            <IconButton
-              type="submit"
-              color="primary"
-              sx={{ p: "10px" }}
-              aria-label="directions"
+            <Tooltip
+              title={<FormattedMessage id="tooltip.generate_msg" />}
+              placement="top"
+              arrow
             >
-              <CheckIcon />
-            </IconButton>
+              <IconButton
+                type="submit"
+                color="primary"
+                sx={{ p: "10px" }}
+                aria-label="directions"
+              >
+                <TbStackPush />
+              </IconButton>
+            </Tooltip>
           </Paper>
         </form>
       )}

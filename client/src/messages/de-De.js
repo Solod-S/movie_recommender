@@ -3,9 +3,18 @@ import { LOCALES } from "../constants";
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   [LOCALES.GERMAN]: {
+    tooltip: { generate_msg: "Klicken Sie, um einen Link zu generieren" },
     navigation: {
-      home: "Filme Empfehlung", // "Movies recommendation"
-      settings: "Einstellungen", // "Settings"
+      home: "Filme Empfehlung",
+      settings: "Einstellungen",
+      homeBtn: "Startseite",
+      favoriteBtn: "Favoriten",
+      loginBtn: "Anmelden",
+    },
+    footer: {
+      privacy_policy: "Datenschutzbestimmungen",
+      about_author: "Über den Autor",
+      rights: "Alle Rechte vorbehalten.",
     },
     filters: {
       search: {

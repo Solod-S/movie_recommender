@@ -1,3 +1,4 @@
+import Layout from "./Layout";
 import Navigation from "./NavBar";
 import MovieCard from "./MovieCard";
 import MovieCardSelected from "./MovieCardSelected";
@@ -7,6 +8,8 @@ import ConfirmModal from "./ConfirmModal";
 import Filters from "./Filters";
 import Paginator from "./Pagination";
 import MovieDetailModal from "./MovieDetailModal";
+import Footer from "./Footer";
+import ServerError from "./ServerErrorSection";
 
 export {
   Navigation,
@@ -18,4 +21,7 @@ export {
   Filters,
   Paginator,
   MovieDetailModal,
+  Footer,
+  Layout,
+  ServerError,
 };

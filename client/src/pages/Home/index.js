@@ -7,6 +7,7 @@ import {
   Filters,
   Paginator,
   MovieDetailModal,
+  ServerError,
 } from "../../components";
 
 import { useQuery } from "@apollo/client";
@@ -226,7 +227,8 @@ const Home = () => {
   };
 
   if (error) {
-    return `Error: ${error.message}`;
+    return <ServerError />;
+    // return `Error: ${error.message}`;
   }
 
   return (

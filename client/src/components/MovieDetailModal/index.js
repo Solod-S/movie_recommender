@@ -37,6 +37,7 @@ const MovieDetailModal = ({
   selectMovie = () => {},
   deleteMovie = () => {},
 }) => {
+  console.log(`movieId`, movieId);
   const { loading, error, data } = useQuery(MOVIE_DETAIL_BY_ID_QUERY, {
     variables: {
       ids: [+movieId],

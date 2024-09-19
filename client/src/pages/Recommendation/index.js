@@ -6,7 +6,7 @@ import { MOVIES_BY_IDS_QUERY } from "./queries";
 import { MovieDetailModal, MovieCard } from "../../components";
 import renderSkeletons from "../../utils/renderSkeletons";
 
-const Recomendation = () => {
+const Recommendation = () => {
   const [searchParams] = useSearchParams();
   const [movieId, setMovieId] = useState("");
   const [params, setParams] = useState({ title: "", ids: [] });
@@ -87,4 +87,4 @@ const Recomendation = () => {
   );
 };
 
-export default Recomendation;
+export default Recommendation;

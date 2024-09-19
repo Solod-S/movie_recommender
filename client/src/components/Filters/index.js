@@ -1,5 +1,14 @@
 import React, { useCallback } from "react";
-import { Paper, Box, TextField, IconButton } from "@mui/material";
+import {
+  Paper,
+  MenuItem,
+  Box,
+  Select,
+  InputLabel,
+  FormControl,
+  TextField,
+  IconButton,
+} from "@mui/material";
 import { Form, Field } from "react-final-form";
 import debounce from "lodash.debounce";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
@@ -10,12 +19,17 @@ import { GET_GENRES_QUERY } from "./queries";
 import { useQuery } from "@apollo/client";
 
 const Filters = ({ initialValues, onSubmit, years }) => {
-  const { data: genres } = useQuery(GET_GENRES_QUERY);
+  const {
+    // loading, error,
+    data: genres,
+  } = useQuery(GET_GENRES_QUERY);
 
+  // Debounced function for form submission
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSubmit = useCallback(
     debounce(values => {
       onSubmit(values);
-    }, 500), // Увеличьте задержку, если нужно
+    }, 300),
     [onSubmit]
   );
 
@@ -33,17 +47,20 @@ const Filters = ({ initialValues, onSubmit, years }) => {
             form.submit();
           };
 
+          // Handle search input change with debounced submit
           const handleSearchChange = event => {
             form.change("search", event.target.value);
             debouncedSubmit(form.getState().values);
           };
 
+          // Toggle between ascending and descending order
           const toggleSortDirection = () => {
             const newOrder = values.sortDirection === "asc" ? "desc" : "asc";
             form.change("sortDirection", newOrder);
             form.submit();
           };
 
+          // Disable other fields if search value is greater than 0
           const disableFields = values.search.length > 0;
 
           return (
@@ -86,10 +103,153 @@ const Filters = ({ initialValues, onSubmit, years }) => {
                     pointerEvents: disableFields ? "none" : "auto",
                   }}
                 >
-                  {/* Your other fields here */}
+                  <div>
+                    <FormControl fullWidth style={{ minWidth: "120px" }}>
+                      <InputLabel shrink>
+                        <FormattedMessage id="filters.genre.label" />
+                      </InputLabel>
+                      <Field name="genre">
+                        {({ input }) => (
+                          <Select
+                            {...input}
+                            value={input.value || ""}
+                            label={
+                              <FormattedMessage id="filters.genre.label" />
+                            }
+                            displayEmpty
+                            onChange={handleChange("genre")}
+                            inputProps={{
+                              style: { padding: "7px" },
+                            }}
+                            MenuProps={{
+                              PaperProps: {
+                                style: { padding: "0px" },
+                              },
+                            }}
+                            sx={{
+                              ".MuiSelect-select": {
+                                padding: "7px",
+                              },
+                            }}
+                            disabled={disableFields}
+                          >
+                            <MenuItem value="">
+                              <em>
+                                <FormattedMessage id="filters.genre.allGenres" />
+                              </em>
+                            </MenuItem>
+                            {genres &&
+                              genres.genres.length > 0 &&
+                              genres.genres.map(genre => {
+                                return (
+                                  <MenuItem key={genre.id} value={genre.id}>
+                                    {genre.name}
+                                  </MenuItem>
+                                );
+                              })}
+                          </Select>
+                        )}
+                      </Field>
+                    </FormControl>
+                  </div>
+                  <div>
+                    <FormControl fullWidth style={{ minWidth: "120px" }}>
+                      <InputLabel shrink>
+                        <FormattedMessage id="filters.year.label" />
+                      </InputLabel>
+                      <Field name="year">
+                        {({ input }) => (
+                          <Select
+                            {...input}
+                            value={input.value || ""}
+                            label={<FormattedMessage id="filters.year.label" />}
+                            displayEmpty
+                            onChange={handleChange("year")}
+                            inputProps={{
+                              style: { padding: "7px" },
+                            }}
+                            MenuProps={{
+                              PaperProps: {
+                                style: { padding: "0px" },
+                              },
+                            }}
+                            sx={{
+                              ".MuiSelect-select": {
+                                padding: "7px",
+                              },
+                            }}
+                            disabled={disableFields}
+                          >
+                            <MenuItem value="">
+                              <em>
+                                <FormattedMessage id="filters.year.allYears" />
+                              </em>
+                            </MenuItem>
+                            {years.map(year => (
+                              <MenuItem key={year} value={year}>
+                                {year}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        )}
+                      </Field>
+                    </FormControl>
+                  </div>
+
+                  <div>
+                    <FormControl fullWidth style={{ minWidth: "150px" }}>
+                      <InputLabel shrink>
+                        <FormattedMessage id="filters.sortBy.label" />
+                      </InputLabel>
+                      <Field name="sortBy">
+                        {({ input }) => (
+                          <Select
+                            {...input}
+                            value={input.value || ""}
+                            label={
+                              <FormattedMessage id="filters.sortBy.label" />
+                            }
+                            displayEmpty
+                            onChange={handleChange("sortBy")}
+                            inputProps={{
+                              style: { padding: "7px" },
+                            }}
+                            MenuProps={{
+                              PaperProps: {
+                                style: { padding: "0px" },
+                              },
+                            }}
+                            sx={{
+                              ".MuiSelect-select": {
+                                padding: "7px",
+                              },
+                            }}
+                            disabled={disableFields}
+                          >
+                            <MenuItem value="popularity">
+                              <FormattedMessage id="filters.sortBy.popularity" />
+                            </MenuItem>
+                            <MenuItem value="release_date">
+                              <FormattedMessage id="filters.sortBy.releaseDate" />
+                            </MenuItem>
+                            <MenuItem value="original_title">
+                              <FormattedMessage id="filters.sortBy.title" />
+                            </MenuItem>
+                            <MenuItem value="vote_average">
+                              <FormattedMessage id="filters.sortBy.voteAverage" />
+                            </MenuItem>
+                            <MenuItem value="vote_count">
+                              <FormattedMessage id="filters.sortBy.voteCount" />
+                            </MenuItem>
+                          </Select>
+                        )}
+                      </Field>
+                    </FormControl>
+                  </div>
+                  {/* Toggle for ascending/descending order */}
                   <IconButton
                     onClick={toggleSortDirection}
-                    disabled={values.sortBy === "" || disableFields}
+                    disabled={values.sortBy === "" || disableFields} // Disable button if "Sort By" is default or search is active
                   >
                     {values.sortDirection === "asc" ? (
                       <ArrowUpwardIcon />

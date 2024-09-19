@@ -1,4 +1,4 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   AppBar,
@@ -10,6 +10,7 @@ import {
   MenuItem,
   FormControl,
   Avatar,
+  Button,
 } from "@mui/material";
 import { LOCALES } from "../../constants";
 import { useCallback, useContext } from "react";
@@ -17,11 +18,14 @@ import { AppContext } from "../../providers/appContext";
 import { framerLogoVariants } from "../../constants";
 import banner from "../../assets/banner.jpg";
 import logo from "../../assets/movie-logo.png";
+import { FormattedMessage } from "react-intl";
 
 const MotionLogo = motion(Avatar);
 
 const Navigation = () => {
   const { state, dispatch } = useContext(AppContext);
+  const location = useLocation();
+  const isActive = path => location.pathname === path;
 
   const setLanguage = useCallback(
     locale => {
@@ -48,7 +52,7 @@ const Navigation = () => {
         }}
       >
         <Toolbar>
-          <Hidden only={["lg", "xl"]}>
+          {/* <Hidden only={["lg", "xl"]}>
             <Box
               sx={{
                 flexGrow: 1,
@@ -57,7 +61,7 @@ const Navigation = () => {
                 alignItems: "center",
               }}
             >
-              <Link component={RouterLink} to="/">
+              <Link end="true" component={RouterLink} to="/">
                 <MotionLogo
                   src={logo}
                   alt={"logo"}
@@ -79,7 +83,7 @@ const Navigation = () => {
                 />
               </Link>
             </Box>
-          </Hidden>
+          </Hidden> */}
 
           <Hidden only={["xs", "sm", "md"]}>
             <Link component={RouterLink} to="/">
@@ -113,6 +117,44 @@ const Navigation = () => {
               alignItems: "center",
             }}
           >
+            <Button
+              component={RouterLink}
+              to="/"
+              sx={{
+                my: 2,
+                color: isActive("/") ? "yellow" : "white",
+                display: "block",
+                borderBottom: isActive("/") ? "2px solid yellow" : "none",
+              }}
+            >
+              <FormattedMessage id="navigation.homeBtn" />
+            </Button>
+
+            <Button
+              component={RouterLink}
+              to="/favorites"
+              sx={{
+                my: 2,
+                color: isActive("/favorites") ? "yellow" : "white",
+                display: "block",
+                borderBottom: isActive("/favorites")
+                  ? "2px solid yellow"
+                  : "none",
+              }}
+            >
+              <FormattedMessage id="navigation.favoriteBtn" />
+            </Button>
+            <Button
+              component="button"
+              sx={{
+                my: 2,
+                color: "white",
+                display: "block",
+              }}
+            >
+              <FormattedMessage id="navigation.loginBtn" />
+            </Button>
+
             <FormControl sx={{ m: 1 }} variant="standard">
               <Select
                 value={state.locale}
