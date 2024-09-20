@@ -23,6 +23,5 @@
       "src": "/(.*)",
       "dest": "server/src/vercel_server.js"
     }
-  ],
-  "buildCommand": "npm install --prefix server && npx prisma generate --schema=server/prisma/schema.prisma"
+  ]
 }
