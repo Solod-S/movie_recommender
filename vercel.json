@@ -6,7 +6,7 @@
       "use": "@vercel/node",
       "config": {
         "zeroConfig": true,
-        "buildCommand": "npm run build"
+        "buildCommand": "cd server && npx prisma generate"
       }
     },
     {
