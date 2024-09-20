@@ -1,5 +1,5 @@
 const { ApolloServer } = require("apollo-server-express");
-const { PrismaClient } = require("@prisma/client");
+// const { PrismaClient } = require("@prisma/client");
 const cors = require("cors");
 const {
   ApolloServerPluginDrainHttpServer,
@@ -10,7 +10,7 @@ const express = require("express");
 const http = require("http");
 const path = require("path");
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 const context = ({ req, res }) => ({
   locale: req?.headers?.locale || "en-US",
