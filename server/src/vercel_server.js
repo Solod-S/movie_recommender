@@ -1,5 +1,5 @@
 const { ApolloServer } = require("apollo-server-express");
-// const { PrismaClient } = require("@prisma/client");
+const { PrismaClient } = require("@prisma/client");
 const cors = require("cors");
 const {
   ApolloServerPluginDrainHttpServer,
