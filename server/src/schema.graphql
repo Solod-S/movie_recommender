@@ -107,6 +107,41 @@ type Genre {
   name: String!
 }
 
+type Mutation {
+  signup(email: String!, password: String!, name: String!): AuthPayload
+}
+
+type AuthPayload {
+  accessToken: String
+  refreshToken: String
+  user: User
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  savedMovies: [SavedMovie]
+}
+
+type SavedMovie {
+  id: ID!
+  title: String!
+  releaseDate(format: String): String!
+  posterPath: String
+  genres: [String]
+  adult: Boolean
+  backdropPath: String
+  originalLanguage: String
+  originalTitle: String
+  overview: String
+  popularity: Float
+  video: Boolean
+  voteAverage: Float
+  voteCount: Int
+  userId: Int
+}
+
 # {
 #     "id": 1139817,
 #     "page": 1,
