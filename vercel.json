@@ -4,7 +4,10 @@
     {
       "src": "server/src/vercel_server.js",
       "use": "@vercel/node",
-      "config": { "includeFiles": ["server/prisma/schema.prisma"] }
+      "config": {
+        "zeroConfig": true,
+        "buildCommand": "npm run build"
+      }
     },
     {
       "src": "client/build/**",
@@ -24,6 +27,5 @@
       "src": "/(.*)",
       "dest": "server/src/vercel_server.js"
     }
-  ],
-  "buildCommand": "npm run build"
+  ]
 }
