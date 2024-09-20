@@ -8,7 +8,7 @@
     "server:start": "cd server && npm run server",
     "storybook:start": "cd client && npm run storybook",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cd server && npm install && npx prisma generate --schema=server/prisma/schema.prisma && cd ../client && npm install && npm run build"
+    "build": "cd server && npm install && npx prisma generate && cd ../client && npm install && npm run build"
   },
   "keywords": [],
   "author": "",
