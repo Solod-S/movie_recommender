@@ -14,8 +14,8 @@ const prisma = new PrismaClient();
 
 const context = ({ req, res }) => ({
   locale: req?.headers?.locale || "en-US",
-  prisma,
-  userId: req?.headers?.authorization ? getUserId(req) : null,
+  // prisma,
+  // userId: req?.headers?.authorization ? getUserId(req) : null,
 });
 
 const resolvers = {
