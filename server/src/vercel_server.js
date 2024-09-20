@@ -15,9 +15,13 @@ const prisma = new PrismaClient();
 const context = ({ req, res }) => ({
   locale: req?.headers?.locale || "en-US",
   prisma,
+  userId: req?.headers?.authorization ? getUserId(req) : null,
 });
 
-const resolvers = { Query: require("./resolvers/Query") };
+const resolvers = {
+  Query: require("./resolvers/Query"),
+  Mutation: require("./resolvers/Mutation"),
+};
 
 const typeDefs = fs.readFileSync(
   path.join(__dirname, "schema.graphql"),
