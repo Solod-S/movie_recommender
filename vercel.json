@@ -3,11 +3,7 @@
   "builds": [
     {
       "src": "server/src/vercel_server.js",
-      "use": "@vercel/node",
-      "config": {
-        "zeroConfig": true,
-        "buildCommand": "npx prisma generate"
-      }
+      "use": "@vercel/node"
     },
     {
       "src": "client/build/**",
