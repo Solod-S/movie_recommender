@@ -3,7 +3,8 @@
   "builds": [
     {
       "src": "server/src/vercel_server.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": { "includeFiles": ["server/prisma/schema.prisma"] }
     },
     {
       "src": "client/build/**",
@@ -24,5 +25,5 @@
       "dest": "server/src/vercel_server.js"
     }
   ],
-  "buildCommand": "npm install --prefix server && npx prisma generate --schema=server/prisma/schema.prisma"
+  "buildCommand": "npm install --prefix server && npx prisma generate --schema=server/prisma/schema.prisma && npm run build --prefix client"
 }
