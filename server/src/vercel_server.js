@@ -20,7 +20,7 @@ const context = ({ req, res }) => ({
 
 const resolvers = {
   Query: require("./resolvers/Query"),
-  Mutation: require("./resolvers/Mutation"),
+  // Mutation: require("./resolvers/Mutation"),
 };
 
 const typeDefs = fs.readFileSync(
