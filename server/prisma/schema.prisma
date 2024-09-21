@@ -31,8 +31,16 @@ model SavedMovie {
   video            Boolean
   voteAverage      Float
   voteCount        Int
-  user             User     @relation(fields: [userId], references: [id])
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           String   @db.ObjectId
 }
 
 
+// Generate prisma/schema.prisma (and .env)
+// npx prisma init
+
+// Generate assets based on schema file
+// npx prisma generate 
+
+// Save to the actual database server
+// npx prisma db push 
