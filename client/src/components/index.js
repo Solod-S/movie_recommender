@@ -10,6 +10,7 @@ import Paginator from "./Pagination";
 import MovieDetailModal from "./MovieDetailModal";
 import Footer from "./Footer";
 import ServerError from "./ServerErrorSection";
+import AuthModal from "./AuthModal";
 
 export {
   Navigation,
@@ -24,4 +25,5 @@ export {
   Footer,
   Layout,
   ServerError,
+  AuthModal,
 };

@@ -13,16 +13,18 @@ import {
   Button,
 } from "@mui/material";
 import { LOCALES } from "../../constants";
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useState } from "react";
 import { AppContext } from "../../providers/appContext";
 import { framerLogoVariants } from "../../constants";
 import banner from "../../assets/banner.jpg";
 import logo from "../../assets/movie-logo.png";
 import { FormattedMessage } from "react-intl";
+import AuthModal from "../AuthModal";
 
 const MotionLogo = motion(Avatar);
 
 const Navigation = () => {
+  const [openAuthModal, setOpenAuthModal] = useState(false);
   const { state, dispatch } = useContext(AppContext);
   const location = useLocation();
   const isActive = path => location.pathname === path;
@@ -39,6 +41,7 @@ const Navigation = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
+      <AuthModal open={openAuthModal} setOpenAuthModal={setOpenAuthModal} />
       <AppBar
         position="static"
         sx={{
@@ -146,6 +149,7 @@ const Navigation = () => {
             </Button>
             <Button
               component="button"
+              onClick={() => setOpenAuthModal(true)}
               sx={{
                 my: 2,
                 color: "white",
