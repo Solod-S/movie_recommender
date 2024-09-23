@@ -132,32 +132,35 @@ const Navigation = () => {
             >
               <FormattedMessage id="navigation.homeBtn" />
             </Button>
-
-            <Button
-              component={RouterLink}
-              to="/favorites"
-              sx={{
-                my: 2,
-                color: isActive("/favorites") ? "yellow" : "white",
-                display: "block",
-                borderBottom: isActive("/favorites")
-                  ? "2px solid yellow"
-                  : "none",
-              }}
-            >
-              <FormattedMessage id="navigation.favoriteBtn" />
-            </Button>
-            <Button
-              component="button"
-              onClick={() => setOpenAuthModal(true)}
-              sx={{
-                my: 2,
-                color: "white",
-                display: "block",
-              }}
-            >
-              <FormattedMessage id="navigation.loginBtn" />
-            </Button>
+            {state.user && (
+              <Button
+                component={RouterLink}
+                to="/favorites"
+                sx={{
+                  my: 2,
+                  color: isActive("/favorites") ? "yellow" : "white",
+                  display: "block",
+                  borderBottom: isActive("/favorites")
+                    ? "2px solid yellow"
+                    : "none",
+                }}
+              >
+                <FormattedMessage id="navigation.favoriteBtn" />
+              </Button>
+            )}
+            {!state.user && (
+              <Button
+                component="button"
+                onClick={() => setOpenAuthModal(true)}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  display: "block",
+                }}
+              >
+                <FormattedMessage id="navigation.loginBtn" />
+              </Button>
+            )}
 
             <FormControl sx={{ m: 1 }} variant="standard">
               <Select
@@ -181,6 +184,21 @@ const Navigation = () => {
                 <MenuItem value={LOCALES.GERMAN}>DE</MenuItem>
               </Select>
             </FormControl>
+            {state.user && (
+              <Button
+                sx={{
+                  my: 2,
+                  color: isActive("/favorites") ? "yellow" : "white",
+                  display: "block",
+                  borderBottom: isActive("/favorites")
+                    ? "2px solid yellow"
+                    : "none",
+                }}
+                onClick={() => dispatch({ type: "clearUser" })}
+              >
+                <FormattedMessage id="navigation.logoutBtn" />
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </AppBar>

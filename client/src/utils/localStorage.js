@@ -18,3 +18,11 @@ export const getFromStorage = name => {
     return null;
   }
 };
+
+export const removeFromStorage = name => {
+  if (!window || !window.localStorage) {
+    return;
+  }
+
+  window.localStorage.removeItem(name);
+};

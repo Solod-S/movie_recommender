@@ -23,12 +23,19 @@ const AuthModal = ({ open = false, setOpenAuthModal }) => {
   return (
     <Modal
       open={open}
-      onClose={() => setOpenAuthModal(false)}
+      onClose={() => {
+        setMode("SignIn");
+        setOpenAuthModal(false);
+      }}
       aria-label="modal-title"
     >
       <Box sx={style}>
-        {mode === "SignIn" && <Login setMode={setMode} />}
-        {mode === "SignUp" && <Register setMode={setMode} />}
+        {mode === "SignIn" && (
+          <Login setMode={setMode} setOpenAuthModal={setOpenAuthModal} />
+        )}
+        {mode === "SignUp" && (
+          <Register setMode={setMode} setOpenAuthModal={setOpenAuthModal} />
+        )}
       </Box>
     </Modal>
   );

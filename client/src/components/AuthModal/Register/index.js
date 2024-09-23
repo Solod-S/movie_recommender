@@ -11,7 +11,11 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useMutation } from "@apollo/client";
+import { SIGN_UP_MUTATION } from "../queries";
 import logoSvg from "../../../assets/logo.webp";
+import { useCustomNotification } from "../../../hooks/useCustomNotification";
+import { AppContext } from "../../../providers/appContext";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   borderRadius: "15px",
@@ -33,7 +37,10 @@ const Card = styled(MuiCard)(({ theme }) => ({
   }),
 }));
 
-const Register = ({ setMode }) => {
+const Register = ({ setMode, setOpenAuthModal }) => {
+  const [signUp, { loading }] = useMutation(SIGN_UP_MUTATION);
+  const { dispatch } = React.useContext(AppContext);
+  const { showNotification, NotificationComponent } = useCustomNotification();
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
   const [passwordError, setPasswordError] = React.useState(false);
@@ -85,19 +92,49 @@ const Register = ({ setMode }) => {
     return isValid;
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get("name"),
-      lastName: data.get("lastName"),
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    if (validateInputs()) {
+      const data = new FormData(event.currentTarget);
+      const email = data.get("email");
+      const password = data.get("password");
+      const name = data.get("name");
+      console.log({
+        name: data.get("name"),
+        lastName: data.get("lastName"),
+        email: data.get("email"),
+        password: data.get("password"),
+      });
+
+      try {
+        const result = await signUp({
+          variables: { email, password, name },
+        });
+        console.log("Registration successful:", result);
+
+        document.getElementById("email").value = "";
+        document.getElementById("password").value = "";
+        document.getElementById("name").value = "";
+        showNotification("User was successfully created.", "success", 3000, {
+          vertical: "top",
+          horizontal: "left",
+        });
+        result.data.signUp &&
+          dispatch({ type: "setUser", user: result.data.signUp });
+        setOpenAuthModal(false);
+      } catch (err) {
+        console.error("Registration error:", err.message);
+        showNotification(err.message, "error", 3000, {
+          vertical: "top",
+          horizontal: "left",
+        });
+      }
+    }
   };
 
   return (
     <>
+      {NotificationComponent}
       <Card variant="outlined">
         <Box
           component="img"
@@ -187,6 +224,7 @@ const Register = ({ setMode }) => {
               },
             }}
             type="submit"
+            disabled={loading}
             fullWidth
             variant="contained"
             onClick={validateInputs}

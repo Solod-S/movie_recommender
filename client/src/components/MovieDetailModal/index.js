@@ -37,7 +37,6 @@ const MovieDetailModal = ({
   selectMovie = () => {},
   deleteMovie = () => {},
 }) => {
-  console.log(`movieId`, movieId);
   const { loading, error, data } = useQuery(MOVIE_DETAIL_BY_ID_QUERY, {
     variables: {
       ids: [+movieId],
@@ -92,7 +91,6 @@ const MovieDetailModal = ({
   const [casts, setCasts] = React.useState([]);
   const [reviews, setReviews] = React.useState([]);
   const isLargeScreen = useMediaQuery("(min-width:1280px)");
-  // console.log(`movieId`, movieId);
   const contentStyle = {
     display: "flex",
     flexDirection: isLargeScreen ? "row" : "column",

@@ -7,20 +7,29 @@ const {
 } = require("../utils");
 
 // auth
-const signup = async (parent, args, context, info) => {
-  const password = await hashPassword(args.password, 10);
+const signUp = async (parent, args, context, info) => {
+  try {
+    const password = await hashPassword(args.password, 10);
 
-  const user = await context.prisma.user.create({
-    data: { ...args, password },
-  });
+    const user = await context.prisma.user.create({
+      data: { ...args, password },
+    });
 
-  const accessToken = generateAccessToken({ userId: user.id });
-  const refreshToken = generateRefreshToken({ userId: user.id });
-  return {
-    accessToken,
-    refreshToken,
-    user,
-  };
+    const accessToken = generateAccessToken({ userId: user.id });
+    const refreshToken = generateRefreshToken({ userId: user.id });
+
+    return {
+      accessToken,
+      refreshToken,
+      user,
+    };
+  } catch (error) {
+    if (error.code === "P2002" && error.meta?.target === "User_email_key") {
+      throw new Error("User with this email already exists.");
+    }
+
+    throw new Error(`Registration error: ${error.message}`);
+  }
 };
 
 const updateUser = async (parent, args, context) => {
@@ -31,7 +40,7 @@ const updateUser = async (parent, args, context) => {
     where: { id: userId },
   });
   if (!user) {
-    throw new Error("No such user found");
+    throw new Error("User not found.");
   }
   let hashedPassword;
   if (password) hashedPassword = await hashPassword(args.password, 10);
@@ -54,7 +63,7 @@ const login = async (parent, args, context, info) => {
   });
 
   if (!user) {
-    throw new Error("No such user found");
+    throw new Error("User not found.");
   }
 
   const valid = await comparePassword(args.password, user.password);
@@ -79,7 +88,7 @@ const removeUser = async (parent, args, context, info) => {
     where: { id: dellUserId },
   });
   if (!user) {
-    throw new Error("No such user found");
+    throw new Error("User not found.");
   }
 
   if (user.id !== userId) {
@@ -100,7 +109,7 @@ const refreshTokens = async (parent, args, context, info) => {
   });
 
   if (!user) {
-    throw new Error("No such user found");
+    throw new Error("User not found.");
   }
   const accessToken = generateAccessToken({ userId: Number(args.id) });
   const refreshToken = generateRefreshToken({ userId: Number(args.id) });
@@ -113,7 +122,7 @@ const refreshTokens = async (parent, args, context, info) => {
 };
 
 module.exports = {
-  signup,
+  signUp,
   updateUser,
   login,
   removeUser,

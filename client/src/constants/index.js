@@ -1,4 +1,5 @@
-export const STORAGE_KEY = "locale";
+export const STORAGE_LOCALE_KEY = "locale";
+export const STORAGE_USER_KEY = "user";
 export const SELECTED_MOVIES_KEY = "selectedMovies";
 export const SORT_DIRECTION = { ASC: "asc", DESC: "desc" };
 // export const SORT_OPTIONS = [

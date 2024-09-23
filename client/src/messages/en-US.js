@@ -10,6 +10,7 @@ export default {
       homeBtn: "Home",
       favoriteBtn: "Favorite",
       loginBtn: "Login",
+      logoutBtn: "Logout",
     },
     footer: {
       privacy_policy: "Privacy Policy",
