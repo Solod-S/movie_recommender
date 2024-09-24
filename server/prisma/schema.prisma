@@ -21,7 +21,7 @@ model SavedMovie {
   title            String
   releaseDate      String
   posterPath       String
-  genres           String[]  
+  genres           Int[]  
   adult            Boolean
   backdropPath     String
   originalLanguage String

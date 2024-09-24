@@ -16,6 +16,7 @@ const getUserId = (req, authToken) => {
         throw new Error("No token found");
       }
       const { userId } = getTokenPayload(token);
+
       return userId;
     }
   } else if (authToken) {

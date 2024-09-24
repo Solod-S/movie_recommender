@@ -12,6 +12,18 @@ export default {
       loginBtn: "Anmelden",
       logoutBtn: "Abmelden",
     },
+    auth: {
+      login: "Anmelden",
+      email: "E-Mail",
+      password: "Passwort",
+      loginBtn: "Anmelden",
+      logoutBtn: "Abmelden",
+      register: "Registrieren",
+      loginFooterMessage: "Noch keinen Account?",
+      fullName: "Vollständiger Name",
+      signUp: "Registrieren",
+      registerFooterMessage: "Haben Sie schon ein Konto?",
+    },
     footer: {
       privacy_policy: "Datenschutzbestimmungen",
       about_author: "Über den Autor",
@@ -57,11 +69,12 @@ export default {
       movie_removed_successfully:
         "Der Film wurde erfolgreich von der Liste entfernt.",
     },
-    no_selected_movies: "Keine ausgewählten Filme", // "No selected movies"
-    put_the_list_name: "Listenname eingeben", // "Put the list name"
-    share_with_friends: "Mit Freunden teilen", // "Share with friends"
-    copied: "Kopiert!", // "Copied!"
-    select: "Auswählen", // "Select"
-    delete: "Löschen", // "Delete"
+    no_selected_movies: "Keine ausgewählten Filme",
+    put_the_list_name: "Listenname eingeben",
+    share_with_friends: "Mit Freunden teilen",
+    copied: "Kopiert!",
+    addToSelected: "Auswählen",
+    delete: "Löschen",
+    addToFavorite: "Favorisieren",
   },
 };

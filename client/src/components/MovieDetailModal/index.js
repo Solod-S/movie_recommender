@@ -31,7 +31,6 @@ const MovieDetailModal = ({
   isPreviewMode,
   open = false,
   movieId,
-
   onClose = () => {},
   selectedMovies = [],
   selectMovie = () => {},
@@ -43,6 +42,9 @@ const MovieDetailModal = ({
     },
     skip: !movieId || movieId === "",
   });
+  React.useEffect(() => {
+    console.log(`data`, data);
+  }, [data]);
 
   const {
     // loading: trailersLoading,

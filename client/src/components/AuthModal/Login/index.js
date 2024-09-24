@@ -16,6 +16,7 @@ import logoSvg from "../../../assets/logo.webp";
 import { useMutation } from "@apollo/client";
 import { useCustomNotification } from "../../../hooks/useCustomNotification";
 import { AppContext } from "../../../providers/appContext";
+import { FormattedMessage } from "react-intl";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   borderRadius: "15px",
@@ -45,7 +46,7 @@ const Login = ({ setMode, setOpenAuthModal }) => {
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-  const [showPassword, setShowPassword] = React.useState(false); // Состояние для видимости пароля
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -139,7 +140,9 @@ const Login = ({ setMode, setOpenAuthModal }) => {
           }}
         >
           <FormControl>
-            <FormLabel htmlFor="email">Email</FormLabel>
+            <FormLabel htmlFor="email">
+              <FormattedMessage id="auth.email" />
+            </FormLabel>
             <TextField
               error={emailError}
               helperText={emailErrorMessage}
@@ -158,14 +161,16 @@ const Login = ({ setMode, setOpenAuthModal }) => {
           </FormControl>
           <FormControl>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password">
+                <FormattedMessage id="auth.password" />
+              </FormLabel>
             </Box>
             <TextField
               error={passwordError}
               helperText={passwordErrorMessage}
               name="password"
               placeholder="••••••"
-              type={showPassword ? "text" : "password"} // переключаем тип поля
+              type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
               autoFocus
@@ -193,7 +198,7 @@ const Login = ({ setMode, setOpenAuthModal }) => {
             sx={{
               backgroundColor: "#282F3D",
               "&:hover": {
-                backgroundColor: "#3A4455", // Цвет при наведении (более светлый)
+                backgroundColor: "#3A4455",
               },
             }}
             disabled={loading}
@@ -202,10 +207,10 @@ const Login = ({ setMode, setOpenAuthModal }) => {
             variant="contained"
             onClick={validateInputs}
           >
-            Login
+            <FormattedMessage id="auth.login" />
           </Button>
           <Typography sx={{ textAlign: "center" }}>
-            Don&apos;t have an account?{" "}
+            <FormattedMessage id="auth.loginFooterMessage" />{" "}
             <span
               style={{ color: "#1976d2", cursor: "pointer" }}
               onClick={() => {
@@ -213,7 +218,7 @@ const Login = ({ setMode, setOpenAuthModal }) => {
                 setMode("SignUp");
               }}
             >
-              Register
+              <FormattedMessage id="auth.register" />
             </span>
           </Typography>
         </Box>

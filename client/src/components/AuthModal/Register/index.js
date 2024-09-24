@@ -16,6 +16,7 @@ import { SIGN_UP_MUTATION } from "../queries";
 import logoSvg from "../../../assets/logo.webp";
 import { useCustomNotification } from "../../../hooks/useCustomNotification";
 import { AppContext } from "../../../providers/appContext";
+import { FormattedMessage } from "react-intl";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   borderRadius: "15px",
@@ -150,7 +151,7 @@ const Register = ({ setMode, setOpenAuthModal }) => {
           variant="h4"
           sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
         >
-          Register
+          <FormattedMessage id="auth.register" />
         </Typography>
         <Box
           component="form"
@@ -158,7 +159,9 @@ const Register = ({ setMode, setOpenAuthModal }) => {
           sx={{ display: "flex", flexDirection: "column", gap: 2 }}
         >
           <FormControl>
-            <FormLabel htmlFor="name">Full name</FormLabel>
+            <FormLabel htmlFor="name">
+              <FormattedMessage id="auth.fullName" />
+            </FormLabel>
             <TextField
               autoComplete="name"
               name="name"
@@ -172,7 +175,10 @@ const Register = ({ setMode, setOpenAuthModal }) => {
             />
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="email">Email</FormLabel>
+            <FormLabel htmlFor="email">
+              {" "}
+              <FormattedMessage id="auth.email" />
+            </FormLabel>
             <TextField
               required
               fullWidth
@@ -187,7 +193,9 @@ const Register = ({ setMode, setOpenAuthModal }) => {
             />
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="password">Password</FormLabel>
+            <FormLabel htmlFor="password">
+              <FormattedMessage id="auth.password" />
+            </FormLabel>
             <TextField
               required
               fullWidth
@@ -232,12 +240,12 @@ const Register = ({ setMode, setOpenAuthModal }) => {
             Sign up
           </Button>
           <Typography sx={{ textAlign: "center" }}>
-            Already have an account?{" "}
+            <FormattedMessage id="auth.registerFooterMessage" />{" "}
             <span
               style={{ color: "#1976d2", cursor: "pointer" }}
               onClick={() => setMode("SignIn")}
             >
-              Sign in
+              <FormattedMessage id="auth.login" />
             </span>
           </Typography>
         </Box>

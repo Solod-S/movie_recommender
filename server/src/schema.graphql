@@ -113,6 +113,24 @@ type Mutation {
   login(email: String!, password: String!): AuthPayload
   removeUser(id: ID!): User!
   refreshTokens(refreshToken: String!): AuthPayload
+  saveMovie(movie: MovieInput!): SavedMovie!
+}
+
+input MovieInput {
+  id: ID!
+  title: String!
+  releaseDate: String!
+  posterPath: String
+  genres: [Int]
+  adult: Boolean
+  backdropPath: String
+  originalLanguage: String
+  originalTitle: String
+  overview: String
+  popularity: Float
+  video: Boolean
+  voteAverage: Float
+  voteCount: Int
 }
 
 type AuthPayload {
@@ -132,8 +150,8 @@ type SavedMovie {
   id: ID!
   title: String!
   releaseDate(format: String): String!
-  posterPath: String
-  genres: [String]
+  image: String
+  genres: [Int]
   adult: Boolean
   backdropPath: String
   originalLanguage: String
@@ -143,7 +161,7 @@ type SavedMovie {
   video: Boolean
   voteAverage: Float
   voteCount: Int
-  userId: Int
+  userId: String
 }
 
 # {

@@ -12,6 +12,18 @@ export default {
       loginBtn: "Login",
       logoutBtn: "Logout",
     },
+    auth: {
+      login: "Login",
+      email: "Email",
+      password: "Password",
+      loginBtn: "Login",
+      logoutBtn: "Logout",
+      register: "Register",
+      loginFooterMessage: "Don't have an account?",
+      fullName: "Full name",
+      signUp: "Sign Up",
+      registerFooterMessage: "Already have an account",
+    },
     footer: {
       privacy_policy: "Privacy Policy",
       about_author: "About author",
@@ -61,7 +73,8 @@ export default {
     put_the_list_name: "Put the list name",
     share_with_friends: "Share with friends",
     copied: "Copied!",
-    select: "Select",
+    addToSelected: "Select",
+    addToFavorite: "Favorite",
     delete: "Delete",
   },
 };

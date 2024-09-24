@@ -121,10 +121,51 @@ const refreshTokens = async (parent, args, context, info) => {
   };
 };
 
+// collection
+const saveMovie = async (parent, { movie }, context, info) => {
+  try {
+    if (!context.userId) {
+      throw new Error("Unauthorized.");
+    }
+
+    console.log(`context`, context.userId);
+    const user = await context.prisma.user.findUnique({
+      where: { id: context.userId },
+    });
+    if (!user) {
+      throw new Error("User not found.");
+    }
+    console.log(`movie`, context.userId);
+    const newSavedMovie = await context.prisma.savedMovie.create({
+      data: {
+        movieId: movie.id,
+        title: movie.title,
+        releaseDate: movie.releaseDate,
+        posterPath: movie.posterPath,
+        genres: movie.genres,
+        adult: movie.adult,
+        backdropPath: movie.backdropPath,
+        originalLanguage: movie.originalLanguage,
+        originalTitle: movie.originalTitle,
+        overview: movie.overview,
+        popularity: movie.popularity,
+        video: movie.video,
+        voteAverage: movie.voteAverage,
+        voteCount: movie.voteCount,
+        userId: context.userId,
+      },
+    });
+    return newSavedMovie;
+  } catch (error) {
+    throw new Error(`Save movie error: ${error.message}`);
+  }
+};
+
 module.exports = {
   signUp,
   updateUser,
   login,
   removeUser,
   refreshTokens,
+  saveMovie,
 };
