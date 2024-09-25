@@ -127,15 +127,13 @@ const saveMovie = async (parent, { movie }, context, info) => {
     if (!context.userId) {
       throw new Error("Unauthorized.");
     }
-
-    console.log(`context`, context.userId);
     const user = await context.prisma.user.findUnique({
       where: { id: context.userId },
     });
     if (!user) {
       throw new Error("User not found.");
     }
-    console.log(`movie`, context.userId);
+
     const newSavedMovie = await context.prisma.savedMovie.create({
       data: {
         movieId: movie.id,
@@ -161,6 +159,35 @@ const saveMovie = async (parent, { movie }, context, info) => {
   }
 };
 
+const removeMovie = async (parent, args, context, info) => {
+  try {
+    console.log(`args.id`, +args.id);
+    if (!context.userId) {
+      throw new Error("Unauthorized.");
+    }
+    const user = await context.prisma.user.findUnique({
+      where: { id: context.userId },
+    });
+
+    if (!user) {
+      throw new Error("User not found.");
+    }
+
+    const removedMovie = await context.prisma.savedMovie.delete({
+      where: {
+        movieId_userId: {
+          movieId: args.id,
+          userId: user.id,
+        },
+      },
+    });
+    console.log(`removedMovie`, removedMovie);
+    return removedMovie;
+  } catch (error) {
+    throw new Error(`Remove movie error: ${error.message}`);
+  }
+};
+
 module.exports = {
   signUp,
   updateUser,
@@ -168,4 +195,5 @@ module.exports = {
   removeUser,
   refreshTokens,
   saveMovie,
+  removeMovie,
 };

@@ -33,6 +33,9 @@ model SavedMovie {
   voteCount        Int
   user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           String   @db.ObjectId
+
+   @@unique([movieId, userId]) // Уникальный составной индекс для сохрания
+  //  @@unique([id, userId])  // Составной уникальный индекс для удаления
 }
 
 

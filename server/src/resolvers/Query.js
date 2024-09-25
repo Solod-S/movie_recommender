@@ -87,7 +87,45 @@ const reviews = async (parent, args, context) => {
     };
   }
 };
-// getReviews
+
+const getSavedMovies = async (parent, args, context) => {
+  if (!context.userId) {
+    throw new Error("Unauthorized.");
+  }
+
+  const user = await context.prisma.user.findUnique({
+    where: { id: context.userId },
+  });
+
+  if (!user) {
+    throw new Error("User not found.");
+  }
+
+  const perPage = 10;
+  const page = args.page || 1;
+  const skip = (page - 1) * perPage;
+
+  // Находим общее количество сохраненных фильмов
+  const totalResults = await context.prisma.savedMovie.count({
+    where: { userId: user.id },
+  });
+
+  // Получаем сохраненные фильмы с учетом пагинации
+  const movies = await context.prisma.savedMovie.findMany({
+    where: { userId: user.id },
+    skip,
+    take: perPage,
+  });
+
+  const totalPages = Math.ceil(totalResults / perPage);
+
+  return {
+    page,
+    totalResults,
+    totalPages,
+    results: movies,
+  };
+};
 
 module.exports = {
   movies,
@@ -96,4 +134,5 @@ module.exports = {
   trailersById,
   creditsById,
   reviews,
+  getSavedMovies,
 };

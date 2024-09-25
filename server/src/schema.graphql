@@ -5,6 +5,7 @@ type Query {
   trailersById(id: Int): [Treiler]
   creditsById(id: Int): [Credit]
   genres: [Genre]
+  getSavedMovies(page: Int): SavedMovies
 }
 
 input MoviesFilterInput {
@@ -107,6 +108,13 @@ type Genre {
   name: String!
 }
 
+type SavedMovies {
+  page: Int!
+  totalResults: Int!
+  totalPages: Int!
+  results: [SavedMovie]!
+}
+
 type Mutation {
   signUp(email: String!, password: String!, name: String!): AuthPayload
   updateUser(email: String, password: String, name: String): User!
@@ -114,6 +122,7 @@ type Mutation {
   removeUser(id: ID!): User!
   refreshTokens(refreshToken: String!): AuthPayload
   saveMovie(movie: MovieInput!): SavedMovie!
+  removeMovie(id: ID!): SavedMovie!
 }
 
 input MovieInput {
@@ -148,6 +157,7 @@ type User {
 
 type SavedMovie {
   id: ID!
+  movieId: ID!
   title: String!
   releaseDate(format: String): String!
   image: String
