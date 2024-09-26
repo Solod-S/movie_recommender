@@ -9,10 +9,13 @@ import { Box, MenuItem, Tooltip } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import { SiImdb } from "react-icons/si";
 import { styled } from "@mui/material/styles";
-import { TbSelect } from "react-icons/tb";
+// import { TbSelect } from "react-icons/tb";
 
 import DefaultPoster from "../../assets/poster.jpg";
-import { MdFavoriteBorder, MdOutlineBookmarkAdded } from "react-icons/md";
+import {
+  // MdFavoriteBorder,
+  MdOutlineBookmarkAdded,
+} from "react-icons/md";
 
 export const MoviesRating = styled(({ movieRating, ...other }) => (
   <Box {...other} />
@@ -100,11 +103,11 @@ const MovieCard = ({
               }, 100);
             }}
           >
-            <TbSelect />
-            &nbsp;
+            {/* <TbSelect />
+            &nbsp; */}
             <FormattedMessage id="addToSelected" />
           </MenuItem>
-          <MenuItem
+          {/* <MenuItem
             onClick={() => {
               callhandleClose();
               setTimeout(() => {
@@ -115,7 +118,7 @@ const MovieCard = ({
             <MdFavoriteBorder />
             &nbsp;
             <FormattedMessage id="addToFavorite" />
-          </MenuItem>
+          </MenuItem> */}
         </CardMenu>
       )}
 

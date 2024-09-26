@@ -13,7 +13,7 @@ export const SIGN_UP_MUTATION = gql`
           id
           title
           releaseDate(format: "dd.MM.yyyy")
-          posterPath
+          image
           genres
           adult
           backdropPath
@@ -44,7 +44,7 @@ export const LOGIN_MUTATION = gql`
           id
           title
           releaseDate(format: "dd.MM.yyyy")
-          posterPath
+          image
           genres
           adult
           backdropPath

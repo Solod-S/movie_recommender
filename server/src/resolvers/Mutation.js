@@ -8,6 +8,7 @@ const {
 
 // auth
 const signUp = async (parent, args, context, info) => {
+  console.log(`args`, args);
   try {
     const password = await hashPassword(args.password, 10);
 
@@ -70,20 +71,23 @@ const login = async (parent, args, context, info) => {
   if (!valid) {
     throw new Error("Invalid password");
   }
+  const movies = await context.prisma.savedMovie.findMany({
+    where: { userId: user.id },
+  });
 
   const accessToken = generateAccessToken({ userId: user.id });
   const refreshToken = generateRefreshToken({ userId: user.id });
   return {
     accessToken,
     refreshToken,
-    user,
+    user: { ...user, savedMovies: movies || [] },
   };
 };
 
 const removeUser = async (parent, args, context, info) => {
   const { userId } = context;
   const dellUserId = args.id;
-  console.log(`dellUserId`, args.id);
+
   const user = await context.prisma.user.findUnique({
     where: { id: dellUserId },
   });
@@ -130,6 +134,7 @@ const saveMovie = async (parent, { movie }, context, info) => {
     const user = await context.prisma.user.findUnique({
       where: { id: context.userId },
     });
+    console.log(`user`, user);
     if (!user) {
       throw new Error("User not found.");
     }
@@ -139,29 +144,29 @@ const saveMovie = async (parent, { movie }, context, info) => {
         movieId: movie.id,
         title: movie.title,
         releaseDate: movie.releaseDate,
-        posterPath: movie.posterPath,
-        genres: movie.genres,
-        adult: movie.adult,
-        backdropPath: movie.backdropPath,
-        originalLanguage: movie.originalLanguage,
-        originalTitle: movie.originalTitle,
-        overview: movie.overview,
-        popularity: movie.popularity,
-        video: movie.video,
-        voteAverage: movie.voteAverage,
-        voteCount: movie.voteCount,
+        posterPath: movie.posterPath || "",
+        genres: movie.genres || [],
+        adult: movie.adult || false,
+        backdropPath: movie.backdropPath || "",
+        originalLanguage: movie.originalLanguage || "",
+        originalTitle: movie.originalTitle || "",
+        overview: movie.overview || "",
+        popularity: movie.popularity || 0,
+        video: movie.video || false,
+        voteAverage: movie.voteAverage || 0,
+        voteCount: movie.voteCount || 0,
         userId: context.userId,
       },
     });
     return newSavedMovie;
   } catch (error) {
+    console.log(`error.message`, error.message);
     throw new Error(`Save movie error: ${error.message}`);
   }
 };
 
 const removeMovie = async (parent, args, context, info) => {
   try {
-    console.log(`args.id`, +args.id);
     if (!context.userId) {
       throw new Error("Unauthorized.");
     }

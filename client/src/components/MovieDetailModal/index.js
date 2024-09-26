@@ -28,6 +28,7 @@ import DefaultPoster from "../../assets/poster.jpg";
 import { FormattedMessage } from "react-intl";
 
 const MovieDetailModal = ({
+  user,
   isPreviewMode,
   open = false,
   movieId,
@@ -35,6 +36,8 @@ const MovieDetailModal = ({
   selectedMovies = [],
   selectMovie = () => {},
   deleteMovie = () => {},
+  addFavoriteMovie,
+  removeFavoriteMovie,
 }) => {
   const { loading, error, data } = useQuery(MOVIE_DETAIL_BY_ID_QUERY, {
     variables: {
@@ -285,14 +288,21 @@ const MovieDetailModal = ({
             </Typography>
 
             {!isPreviewMode && (
-              <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "10px",
+                  mt: 2,
+                }}
+              >
                 {!selectedMovies?.some(sm => sm.id === movie?.id) ? (
                   <Button
                     variant="contained"
                     disabled={!Boolean(data?.moviesByIds[0])}
                     color="primary"
                     sx={{
-                      flex: 0.8,
+                      flex: user ? 0.4 : 0.8,
                       transition: "transform 0.3s ease",
                       "&:hover": {
                         transform: "scale(1.03)",
@@ -308,7 +318,7 @@ const MovieDetailModal = ({
                     disabled={!Boolean(data?.moviesByIds[0])}
                     color="error"
                     sx={{
-                      flex: 0.8,
+                      flex: user ? 0.4 : 0.8,
                       transition: "transform 0.3s ease",
                       "&:hover": {
                         transform: "scale(1.03)",
@@ -319,9 +329,44 @@ const MovieDetailModal = ({
                     <FormattedMessage id="movie_details.remove_selected_btn" />
                   </Button>
                 )}
-                {/* <Button variant="outlined" color="secondary" sx={{ ml: 2 }}>
-                  Add to Favorite
-                </Button> */}
+                {user &&
+                  (!user?.savedMovies?.some(sm => sm.movieId === movie?.id) ? (
+                    <Button
+                      variant="contained"
+                      disabled={!Boolean(data?.moviesByIds[0])}
+                      color="primary"
+                      sx={{
+                        background: "#FFBC01",
+                        flex: 0.4,
+                        transition: "transform 0.3s ease",
+                        "&:hover": {
+                          transform: "scale(1.03)",
+                          background: "#FFBC01",
+                        },
+                      }}
+                      onClick={() => addFavoriteMovie(movie)}
+                    >
+                      Add to Favorite
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      disabled={!Boolean(data?.moviesByIds[0])}
+                      color="error"
+                      sx={{
+                        background: "#B2B2B2",
+                        flex: 0.4,
+                        transition: "transform 0.3s ease",
+                        "&:hover": {
+                          transform: "scale(1.03)",
+                          background: "#B2B2B2",
+                        },
+                      }}
+                      onClick={() => removeFavoriteMovie(movie)}
+                    >
+                      Remove from Favorite
+                    </Button>
+                  ))}
               </Box>
             )}
             {reviews && reviews.length > 0 && (

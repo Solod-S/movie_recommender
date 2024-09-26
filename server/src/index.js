@@ -39,6 +39,7 @@ const startApolloServer = async (typeDefs, resolvers) => {
     context,
     csrfPrevention: true,
     cache: "bounded",
+    introspection: true,
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
       ApolloServerPluginLandingPageLocalDefault({ embed: true }),

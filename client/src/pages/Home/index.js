@@ -21,6 +21,7 @@ import renderSkeletons from "../../utils/renderSkeletons";
 import { useFilters } from "../../hooks/useFilters";
 import { framerListVariants } from "../../constants";
 import { FormattedMessage } from "react-intl";
+import { AppContext } from "../../providers/appContext";
 
 const genres = [
   // {
@@ -113,6 +114,7 @@ const years = Array.from(
 );
 
 const Home = () => {
+  const { state, dispatch } = React.useContext(AppContext);
   const { filter, setPage, setFilter } = useFilters();
   const { selectedMovies, selectMovie, deleteMovie } = useMovies();
   const [movieId, setMovieId] = React.useState("");
@@ -146,6 +148,36 @@ const Home = () => {
       });
     else setmoviesList([]);
   }, [data]);
+
+  const addFavoriteMovie = async movie => {
+    // if (state.user.user) return;
+
+    console.log(`movie`, movie);
+    console.log(`state.user.savedMovies`, state.user.savedMovies);
+    dispatch({
+      type: "setUser",
+      user: {
+        ...state.user,
+        savedMovies: [...state.user.savedMovies, movie],
+      },
+    });
+  };
+
+  const removeFavoriteMovie = async movie => {
+    if (state.user.user) return;
+
+    console.log(`movie`, movie);
+    const updatedMovies = state.user.user.savedMovies.filter(
+      m => m.id !== movie.id
+    );
+    dispatch({
+      type: "setUser",
+      user: {
+        ...state.user.user,
+        savedMovies: updatedMovies,
+      },
+    });
+  };
 
   const paginationHandler = (event, page) => {
     window.scrollTo({
@@ -234,6 +266,7 @@ const Home = () => {
   return (
     <Box sx={{ flexGrow: 1, marginTop: 2 }}>
       <MovieDetailModal
+        user={state.user || null}
         title={movieId}
         movieId={movieId}
         open={!!movieId}
@@ -241,6 +274,8 @@ const Home = () => {
         selectedMovies={selectedMovies}
         selectMovie={selectMovieHandler}
         deleteMovie={deleteMovieHandler}
+        addFavoriteMovie={addFavoriteMovie}
+        removeFavoriteMovie={removeFavoriteMovie}
       />
 
       {NotificationComponent}

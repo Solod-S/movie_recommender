@@ -120,6 +120,7 @@ const Register = ({ setMode, setOpenAuthModal }) => {
           vertical: "top",
           horizontal: "left",
         });
+
         result.data.signUp &&
           dispatch({ type: "setUser", user: result.data.signUp });
         setOpenAuthModal(false);
