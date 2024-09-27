@@ -38,6 +38,7 @@ const MovieDetailModal = ({
   deleteMovie = () => {},
   addFavoriteMovie,
   removeFavoriteMovie,
+  savedMovies,
 }) => {
   const { loading, error, data } = useQuery(MOVIE_DETAIL_BY_ID_QUERY, {
     variables: {
@@ -45,9 +46,6 @@ const MovieDetailModal = ({
     },
     skip: !movieId || movieId === "",
   });
-  React.useEffect(() => {
-    console.log(`data`, data);
-  }, [data]);
 
   const {
     // loading: trailersLoading,
@@ -330,43 +328,44 @@ const MovieDetailModal = ({
                   </Button>
                 )}
                 {user &&
-                  (!user?.savedMovies?.some(sm => sm.movieId === movie?.id) ? (
-                    <Button
-                      variant="contained"
-                      disabled={!Boolean(data?.moviesByIds[0])}
-                      color="primary"
-                      sx={{
+                Array.isArray(savedMovies) &&
+                !savedMovies.some(sm => sm.movieId === movie?.id) ? (
+                  <Button
+                    variant="contained"
+                    disabled={!Boolean(data?.moviesByIds[0])}
+                    color="primary"
+                    sx={{
+                      background: "#FFBC01",
+                      flex: 0.4,
+                      transition: "transform 0.3s ease",
+                      "&:hover": {
+                        transform: "scale(1.03)",
                         background: "#FFBC01",
-                        flex: 0.4,
-                        transition: "transform 0.3s ease",
-                        "&:hover": {
-                          transform: "scale(1.03)",
-                          background: "#FFBC01",
-                        },
-                      }}
-                      onClick={() => addFavoriteMovie(movie)}
-                    >
-                      Add to Favorite
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      disabled={!Boolean(data?.moviesByIds[0])}
-                      color="error"
-                      sx={{
+                      },
+                    }}
+                    onClick={() => addFavoriteMovie(movie)}
+                  >
+                    Add to Favorite
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    disabled={!Boolean(data?.moviesByIds[0])}
+                    color="error"
+                    sx={{
+                      background: "#B2B2B2",
+                      flex: 0.4,
+                      transition: "transform 0.3s ease",
+                      "&:hover": {
+                        transform: "scale(1.03)",
                         background: "#B2B2B2",
-                        flex: 0.4,
-                        transition: "transform 0.3s ease",
-                        "&:hover": {
-                          transform: "scale(1.03)",
-                          background: "#B2B2B2",
-                        },
-                      }}
-                      onClick={() => removeFavoriteMovie(movie)}
-                    >
-                      Remove from Favorite
-                    </Button>
-                  ))}
+                      },
+                    }}
+                    onClick={() => removeFavoriteMovie(movie)}
+                  >
+                    Remove from Favorite
+                  </Button>
+                )}
               </Box>
             )}
             {reviews && reviews.length > 0 && (

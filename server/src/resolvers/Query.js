@@ -89,42 +89,57 @@ const reviews = async (parent, args, context) => {
 };
 
 const getSavedMovies = async (parent, args, context) => {
-  if (!context.userId) {
-    throw new Error("Unauthorized.");
+  try {
+    if (!context.userId) {
+      throw new Error("Unauthorized.");
+    }
+
+    const user = await context.prisma.user.findUnique({
+      where: { id: context.userId },
+    });
+
+    if (!user) {
+      throw new Error("User not found.");
+    }
+
+    const perPage = 10;
+    const page = args.page || null;
+
+    const totalResults = await context.prisma.savedMovie.count({
+      where: { userId: user.id },
+    });
+
+    let movies;
+    let totalPages = 1; // По умолчанию хотя бы одна страница
+
+    if (page) {
+      // Если передан аргумент page, применяем пагинацию
+      const skip = (page - 1) * perPage;
+
+      // Получаем фильмы с учетом пагинации
+      movies = await context.prisma.savedMovie.findMany({
+        where: { userId: user.id },
+        skip,
+        take: perPage,
+      });
+
+      totalPages = Math.ceil(totalResults / perPage);
+    } else {
+      // Если page не передан, возвращаем все фильмы без пагинации
+      movies = await context.prisma.savedMovie.findMany({
+        where: { userId: user.id },
+      });
+    }
+
+    return {
+      page: page || 1,
+      totalResults,
+      totalPages,
+      results: movies,
+    };
+  } catch (error) {
+    console.error(`Error in getSavedMovies resolver:`, error.message);
   }
-
-  const user = await context.prisma.user.findUnique({
-    where: { id: context.userId },
-  });
-
-  if (!user) {
-    throw new Error("User not found.");
-  }
-
-  const perPage = 10;
-  const page = args.page || 1;
-  const skip = (page - 1) * perPage;
-
-  // Находим общее количество сохраненных фильмов
-  const totalResults = await context.prisma.savedMovie.count({
-    where: { userId: user.id },
-  });
-
-  // Получаем сохраненные фильмы с учетом пагинации
-  const movies = await context.prisma.savedMovie.findMany({
-    where: { userId: user.id },
-    skip,
-    take: perPage,
-  });
-
-  const totalPages = Math.ceil(totalResults / perPage);
-
-  return {
-    page,
-    totalResults,
-    totalPages,
-    results: movies,
-  };
 };
 
 module.exports = {

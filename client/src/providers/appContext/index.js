@@ -17,7 +17,6 @@ const reducer = (state, action) => {
       return { ...state, locale: action.locale };
 
     case "setUser":
-      console.log(`!setUser`, action.user);
       saveToStorage(STORAGE_USER_KEY, action.user);
       return { ...state, user: action.user };
 

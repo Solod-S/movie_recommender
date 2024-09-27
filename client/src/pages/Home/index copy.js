@@ -154,11 +154,33 @@ const Home = () => {
   }, [data]);
 
   const addFavoriteMovie = async movie => {
-    addMovieToSaved(movie);
+    // if (state.user.user) return;
+
+    // console.log(`movie`, movie);
+    // console.log(`state.user.savedMovies`, state.user.user.savedMovies);
+    dispatch({
+      type: "setUser",
+      user: {
+        ...state.user,
+        savedMovies: [...state.user.user.savedMovies, movie],
+      },
+    });
   };
 
   const removeFavoriteMovie = async movie => {
-    removeMovieFromSaved(movie);
+    if (state.user.user) return;
+
+    console.log(`movie`, movie);
+    const updatedMovies = state.user.user.savedMovies.filter(
+      m => m.id !== movie.id
+    );
+    dispatch({
+      type: "setUser",
+      user: {
+        ...state.user.user,
+        savedMovies: updatedMovies,
+      },
+    });
   };
 
   const paginationHandler = (event, page) => {
@@ -258,7 +280,6 @@ const Home = () => {
         deleteMovie={deleteMovieHandler}
         addFavoriteMovie={addFavoriteMovie}
         removeFavoriteMovie={removeFavoriteMovie}
-        savedMovies={savedMovies}
       />
 
       {NotificationComponent}

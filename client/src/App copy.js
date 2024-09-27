@@ -1,5 +1,4 @@
-import { Box, Container, CssBaseline } from "@mui/material";
-import { Footer, Navigation } from "./components";
+import { Layout } from "./components";
 import { Navigate, Route, Routes } from "react-router-dom";
 import {
   ApolloClient,
@@ -10,7 +9,7 @@ import {
   from,
 } from "@apollo/client";
 import I18nProvider from "./providers/i18n";
-import { Home, Recomendation } from "./pages";
+import { Home, Recommendation } from "./pages";
 import { useContext } from "react";
 import { AppContext } from "./providers/appContext";
 
@@ -42,22 +41,13 @@ function App() {
   return (
     <I18nProvider locale={state.locale}>
       <ApolloProvider client={client}>
-        <CssBaseline />
-        <Navigation />
-        <Box
-          sx={{
-            backgroundColor: theme => theme.palette.grey[100],
-          }}
-        >
-          <Container maxWidth="xxl">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="recommend" element={<Recomendation />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </Container>
-        </Box>
-        <Footer />
+        <Routes>
+          <Route end path="/" element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="recommend" element={<Recommendation />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
+        </Routes>
       </ApolloProvider>
     </I18nProvider>
   );

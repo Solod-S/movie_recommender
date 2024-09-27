@@ -128,13 +128,14 @@ const refreshTokens = async (parent, args, context, info) => {
 // collection
 const saveMovie = async (parent, { movie }, context, info) => {
   try {
+    console.log(`movie`, movie);
     if (!context.userId) {
       throw new Error("Unauthorized.");
     }
     const user = await context.prisma.user.findUnique({
       where: { id: context.userId },
     });
-    console.log(`user`, user);
+
     if (!user) {
       throw new Error("User not found.");
     }
