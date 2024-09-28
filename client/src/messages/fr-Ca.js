@@ -59,6 +59,8 @@ export default {
       reviews: "Avis",
       remove_selected_btn: "Retirer de la sélection",
       add_to_selected_btn: "Ajouter à la sélection",
+      remove_from_favorite_btn: "Retirer des favoris",
+      add_to_favorite_btn: "Ajouter aux favoris",
     },
     notification: {
       movie_already_selected:
@@ -67,6 +69,10 @@ export default {
       movie_added_successfully: "Le film a été ajouté avec succès à la liste.",
       movie_removed_successfully:
         "Le film a été retiré avec succès de la liste.",
+      movie_add_to_favorite_successfully:
+        "Le film a été ajouté avec succès à la liste des favoris.",
+      movie_removed_from_favorite_successfully:
+        "Le film a été retiré avec succès de la liste des favoris.",
     },
     no_selected_movies: "Aucun film sélectionné",
     put_the_list_name: "Entrez le nom de la liste",

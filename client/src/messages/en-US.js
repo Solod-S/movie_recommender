@@ -59,6 +59,8 @@ export default {
       reviews: "Reviews",
       remove_selected_btn: "Remove from Selected",
       add_to_selected_btn: "Add to Selected",
+      remove_from_favorite_btn: "Remove from Favorite",
+      add_to_favorite_btn: "Add to Favorite",
     },
     notification: {
       movie_already_selected:
@@ -68,6 +70,10 @@ export default {
         "The movie has been successfully added to the list.",
       movie_removed_successfully:
         "The movie has been successfully removed from the list.",
+      movie_add_to_favorite_successfully:
+        "The movie has been successfully added to the favorite list.",
+      movie_removed_from_favorite_successfully:
+        "The movie has been successfully removed from the favorite list.",
     },
     no_selected_movies: "No selected movies",
     put_the_list_name: "Put the list name",

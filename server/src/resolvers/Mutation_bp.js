@@ -5,11 +5,6 @@ const {
   generateRefreshToken,
   getTokenPayload,
 } = require("../utils");
-const {
-  AuthenticationError,
-  ForbiddenError,
-  UserInputError,
-} = require("apollo-server-errors");
 
 // auth
 const signUp = async (parent, args, context, info) => {
@@ -30,7 +25,7 @@ const signUp = async (parent, args, context, info) => {
     };
   } catch (error) {
     if (error.code === "P2002" && error.meta?.target === "User_email_key") {
-      throw new UserInputError("User with this email already exists.");
+      throw new Error("User with this email already exists.");
     }
 
     throw new Error(`Registration error: ${error.message}`);
@@ -45,13 +40,11 @@ const updateUser = async (parent, args, context) => {
     const user = await context.prisma.user.findUnique({
       where: { id: userId },
     });
-
     if (!user) {
-      throw new UserInputError("User not found.");
+      throw new Error("User not found.");
     }
-
     let hashedPassword;
-    if (password) hashedPassword = await hashPassword(password, 10);
+    if (password) hashedPassword = await hashPassword(args.password, 10);
 
     const updatedUser = await context.prisma.user.update({
       where: { id: userId },
@@ -75,21 +68,19 @@ const login = async (parent, args, context, info) => {
     });
 
     if (!user) {
-      throw new UserInputError("User not found.");
+      throw new Error("User not found.");
     }
 
     const valid = await comparePassword(args.password, user.password);
     if (!valid) {
-      throw new AuthenticationError("Invalid password");
+      throw new Error("Invalid password");
     }
-
     const movies = await context.prisma.savedMovie.findMany({
       where: { userId: user.id },
     });
 
     const accessToken = generateAccessToken({ userId: user.id });
     const refreshToken = generateRefreshToken({ userId: user.id });
-
     return {
       accessToken,
       refreshToken,
@@ -108,13 +99,12 @@ const removeUser = async (parent, args, context, info) => {
     const user = await context.prisma.user.findUnique({
       where: { id: dellUserId },
     });
-
     if (!user) {
-      throw new UserInputError("User not found.");
+      throw new Error("User not found.");
     }
 
     if (user.id !== userId) {
-      throw new ForbiddenError("You are not authorized to delete this user");
+      throw new Error("You are not authorized to delete this user");
     }
 
     const deletedUser = await context.prisma.user.delete({
@@ -135,11 +125,10 @@ const refreshTokens = async (parent, args, context, info) => {
     });
 
     if (!user) {
-      throw new UserInputError("User not found.");
+      throw new Error("User not found.");
     }
-
-    const accessToken = generateAccessToken({ userId });
-    const refreshToken = generateRefreshToken({ userId });
+    const accessToken = generateAccessToken({ userId: Number(args.id) });
+    const refreshToken = generateRefreshToken({ userId: Number(args.id) });
 
     return {
       accessToken,
@@ -154,16 +143,16 @@ const refreshTokens = async (parent, args, context, info) => {
 // collection
 const saveMovie = async (parent, { movie }, context, info) => {
   try {
+    console.log(`userId`, context.userId);
     if (!context.userId) {
-      throw new AuthenticationError("Unauthorized.");
+      throw new Error("Unauthorized.");
     }
-
     const user = await context.prisma.user.findUnique({
       where: { id: context.userId },
     });
 
     if (!user) {
-      throw new UserInputError("User not found.");
+      throw new Error("User not found.");
     }
 
     const newSavedMovie = await context.prisma.savedMovie.create({
@@ -185,7 +174,6 @@ const saveMovie = async (parent, { movie }, context, info) => {
         userId: context.userId,
       },
     });
-
     return newSavedMovie;
   } catch (error) {
     throw new Error(`Save movie error: ${error.message}`);
@@ -195,15 +183,14 @@ const saveMovie = async (parent, { movie }, context, info) => {
 const removeMovie = async (parent, args, context, info) => {
   try {
     if (!context.userId) {
-      throw new AuthenticationError("Unauthorized.");
+      throw new Error("Unauthorized.");
     }
-
     const user = await context.prisma.user.findUnique({
       where: { id: context.userId },
     });
 
     if (!user) {
-      throw new UserInputError("User not found.");
+      throw new Error("User not found.");
     }
 
     const removedMovie = await context.prisma.savedMovie.delete({
@@ -214,7 +201,7 @@ const removeMovie = async (parent, args, context, info) => {
         },
       },
     });
-
+    console.log(`removedMovie`, removedMovie);
     return removedMovie;
   } catch (error) {
     throw new Error(`Remove movie error: ${error.message}`);

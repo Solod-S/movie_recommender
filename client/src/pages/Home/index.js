@@ -115,10 +115,14 @@ const years = Array.from(
 );
 
 const Home = () => {
-  const { savedMovies, addMovieToSaved, removeMovieFromSaved } =
-    useSavedMovies();
+  const {
+    savedMovies,
+    addMovieToSaved,
+    removeMovieFromSaved,
+    savedMoviesLoading,
+  } = useSavedMovies();
 
-  const { state, dispatch } = React.useContext(AppContext);
+  const { state } = React.useContext(AppContext);
   const { filter, setPage, setFilter } = useFilters();
   const { selectedMovies, selectMovie, deleteMovie } = useMovies();
   const [movieId, setMovieId] = React.useState("");
@@ -154,11 +158,44 @@ const Home = () => {
   }, [data]);
 
   const addFavoriteMovie = async movie => {
-    addMovieToSaved(movie);
+    const result = await addMovieToSaved(movie);
+
+    if (!result) {
+      showNotification("Error in saving movie", "error", 5000, {
+        vertical: "bottom",
+        horizontal: "right",
+      });
+    } else {
+      showNotification(
+        <FormattedMessage id="notification.movie_add_to_favorite_successfully" />,
+        "success",
+        1000,
+        {
+          vertical: "bottom",
+          horizontal: "right",
+        }
+      );
+    }
   };
 
   const removeFavoriteMovie = async movie => {
-    removeMovieFromSaved(movie);
+    const result = await removeMovieFromSaved(movie);
+    if (!result) {
+      showNotification("Error in removing movie", "error", 5000, {
+        vertical: "bottom",
+        horizontal: "right",
+      });
+    } else {
+      showNotification(
+        <FormattedMessage id="notification.movie_removed_successfully" />,
+        "success",
+        1000,
+        {
+          vertical: "bottom",
+          horizontal: "right",
+        }
+      );
+    }
   };
 
   const paginationHandler = (event, page) => {
@@ -244,7 +281,6 @@ const Home = () => {
     return <ServerError />;
     // return `Error: ${error.message}`;
   }
-
   return (
     <Box sx={{ flexGrow: 1, marginTop: 2 }}>
       <MovieDetailModal
@@ -259,6 +295,7 @@ const Home = () => {
         addFavoriteMovie={addFavoriteMovie}
         removeFavoriteMovie={removeFavoriteMovie}
         savedMovies={savedMovies}
+        savedMoviesLoading={savedMoviesLoading}
       />
 
       {NotificationComponent}

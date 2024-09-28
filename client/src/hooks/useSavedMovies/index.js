@@ -5,6 +5,7 @@ import { useMutation, useQuery } from "@apollo/client";
 
 export const useSavedMovies = () => {
   const { state } = useContext(AppContext);
+  const [savedMoviesLoading, setSavedMoviesLoading] = useState(false);
   const [saveMovie] = useMutation(SAVE_MOVIE);
   const { loading, error, data, refetch } = useQuery(GET_SAVED_MOVIES, {
     variables: { page: 1 },
@@ -22,73 +23,85 @@ export const useSavedMovies = () => {
 
   useLayoutEffect(() => {
     if (data && data?.getSavedMovies) {
-      console.log(`savedMovies`, data.getSavedMovies.results);
+      console.log(`render`);
       setSavedMovies(data.getSavedMovies.results); // Устанавливаем фильмы, когда есть данные
     }
   }, [data]);
 
-  const addMovieToSaved = useCallback(
-    async movie => {
-      const isNewMovie = !savedMovies.find(({ id }) => id === movie.id);
-      console.log(`movie`, movie);
-      if (isNewMovie) {
-        setSavedMovies(prevMovies => {
-          const updatedMovies = [...prevMovies, movie];
-          return updatedMovies;
-        });
-
-        try {
-          const movieObj = {
-            id: movie.id,
-            title: movie.title,
-            releaseDate: movie.releaseDate,
-            posterPath: movie.image || "",
-            genres: movie?.genres?.map(m => m.id) || [],
-            adult: movie.adult || false,
-            backdropPath: movie.backdropPath || "",
-            originalLanguage: movie.originalLanguage || "",
-            originalTitle: movie.originalTitle || "",
-            overview: movie.overview || "",
-            popularity: movie.popularity || 0,
-            video: movie.video || false,
-            voteAverage: movie.voteAverage || 0,
-            voteCount: movie.voteCount || 0,
-          };
-          const response = await saveMovie({
-            variables: {
-              movie: movieObj,
-            },
-          });
-
-          setSavedMovies({ ...movie, movieId: movie.id });
-        } catch (error) {
-          console.error("Error saving movie:", error);
-        }
-      }
-    },
-    [saveMovie, savedMovies]
-  );
-
-  const removeMovieFromSaved = useCallback(
-    movie => {
-      setSavedMovies(prevState => {
-        const updatedMovies = prevState.filter(({ id }) => id !== movie.id);
+  const addMovieToSaved = async movie => {
+    setSavedMoviesLoading(true);
+    const isNewMovie = !savedMovies.find(({ id }) => id === movie.id);
+    if (isNewMovie) {
+      setSavedMovies(prevMovies => {
+        const updatedMovies = [...prevMovies, { ...movie, movieId: movie.id }];
         return updatedMovies;
       });
-      removeMovie({
+
+      try {
+        const movieObj = {
+          id: movie.id,
+          title: movie.title,
+          releaseDate: movie.releaseDate,
+          posterPath: movie.image || "",
+          genres: movie?.genres?.map(m => m.id) || [],
+          adult: movie.adult || false,
+          backdropPath: movie.backdropPath || "",
+          originalLanguage: movie.originalLanguage || "",
+          originalTitle: movie.originalTitle || "",
+          overview: movie.overview || "",
+          popularity: movie.popularity || 0,
+          video: movie.video || false,
+          voteAverage: movie.voteAverage || 0,
+          voteCount: movie.voteCount || 0,
+        };
+        await saveMovie({
+          variables: {
+            movie: movieObj,
+          },
+        });
+        return true;
+      } catch (error) {
+        console.error("Error saving movie:", error);
+        return false;
+      } finally {
+        setSavedMoviesLoading(false);
+      }
+    }
+  };
+
+  const removeMovieFromSaved = async movie => {
+    setSavedMoviesLoading(true);
+    try {
+      await removeMovie({
         variables: {
-          id: "12345",
+          id: movie.id,
         },
       });
-    },
-    [removeMovie]
-  );
+      setSavedMovies(prevMovies => {
+        const updatedMovies = prevMovies.filter(m => {
+          const movieIdCheck = m.movieId
+            ? String(m.movieId) !== String(movie.id)
+            : true;
+          return String(m.id) !== String(movie.id) && movieIdCheck;
+        });
+
+        return updatedMovies;
+      });
+      return true;
+    } catch (error) {
+      console.error("Error removing movie:", error);
+      return false;
+    } finally {
+      setSavedMoviesLoading(false);
+    }
+  };
 
   return {
     savedMovies,
     addMovieToSaved,
     removeMovieFromSaved,
-    loading, // Вы можете использовать это для отображения состояния загрузки
-    error, // Обработка ошибок
+    savedMoviesLoading,
+    loading,
+    error,
   };
 };

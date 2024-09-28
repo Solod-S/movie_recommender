@@ -286,7 +286,7 @@ const MovieDetailModal = ({
               {movie?.overview}
             </Typography>
 
-            {!isPreviewMode ? (
+            {!isPreviewMode && (
               <Box
                 sx={{
                   display: "flex",
@@ -328,59 +328,6 @@ const MovieDetailModal = ({
                     <FormattedMessage id="movie_details.remove_selected_btn" />
                   </Button>
                 )}
-                {user &&
-                  (Array.isArray(savedMovies) &&
-                  !savedMovies.some(sm => sm.movieId === movie?.id) ? (
-                    <Button
-                      variant="contained"
-                      disabled={
-                        !Boolean(data?.moviesByIds[0]) || savedMoviesLoading
-                      }
-                      color="primary"
-                      sx={{
-                        background: "#FFBC01",
-                        flex: 0.4,
-                        transition: "transform 0.3s ease",
-                        "&:hover": {
-                          transform: "scale(1.03)",
-                          background: "#FFBC01",
-                        },
-                      }}
-                      onClick={() => addFavoriteMovie(movie)}
-                    >
-                      <FormattedMessage id="movie_details.add_to_favorite_btn" />
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      disabled={
-                        !Boolean(data?.moviesByIds[0]) || savedMoviesLoading
-                      }
-                      color="error"
-                      sx={{
-                        background: "#B2B2B2",
-                        flex: 0.4,
-                        transition: "transform 0.3s ease",
-                        "&:hover": {
-                          transform: "scale(1.03)",
-                          background: "#B2B2B2",
-                        },
-                      }}
-                      onClick={() => removeFavoriteMovie(movie)}
-                    >
-                      <FormattedMessage id="movie_details.remove_from_favorite_btn" />
-                    </Button>
-                  ))}
-              </Box>
-            ) : (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "10px",
-                  mt: 2,
-                }}
-              >
                 {user &&
                   (Array.isArray(savedMovies) &&
                   !savedMovies.some(sm => sm.movieId === movie?.id) ? (
