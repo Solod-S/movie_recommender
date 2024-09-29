@@ -8,14 +8,15 @@ import PropTypes from "prop-types";
 import { Box, MenuItem, Tooltip } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import { SiImdb } from "react-icons/si";
-import { styled } from "@mui/material/styles";
-// import { TbSelect } from "react-icons/tb";
-
-import DefaultPoster from "../../assets/poster.jpg";
+import { MdOutlineFavoriteBorder } from "react-icons/md";
 import {
   // MdFavoriteBorder,
   MdOutlineBookmarkAdded,
 } from "react-icons/md";
+import { styled } from "@mui/material/styles";
+// import { TbSelect } from "react-icons/tb";
+
+import DefaultPoster from "../../assets/poster.jpg";
 
 export const MoviesRating = styled(({ movieRating, ...other }) => (
   <Box {...other} />
@@ -57,6 +58,7 @@ const MovieCard = ({
   isPreviewMode = false,
   openMovieDetailsById,
   selected = false,
+  favorites = false,
 }) => {
   const menuRef = React.useRef();
 
@@ -75,22 +77,54 @@ const MovieCard = ({
       sx={{
         position: "relative",
         transition: "transform 0.3s ease",
+        cursor: "pointer",
         "&:hover": {
           transform: "scale(1.03)",
         },
       }}
+      onClick={event => {
+        if (
+          event.target.closest(".MuiButtonBase-root") ||
+          document.querySelector(".MuiList-padding.MuiMenu-list")
+        ) {
+          return;
+        }
+        handleMovieDetails(movie);
+      }}
     >
       {selected && (
-        <MdOutlineBookmarkAdded
-          color="#FF6700"
-          size={25}
-          style={{
+        <Tooltip
+          title={<span style={{ fontSize: "15px" }}>Selected</span>}
+          placement="top"
+          sx={{
             position: "absolute",
             bottom: 5,
             right: 5,
             zIndex: 1,
+            cursor: "pointer",
           }}
-        />
+        >
+          <Box component="span">
+            <MdOutlineBookmarkAdded color="#FF6700" size={25} />
+          </Box>
+        </Tooltip>
+      )}
+      {favorites && (
+        <Tooltip
+          title={<span style={{ fontSize: "15px" }}>Favorite</span>}
+          placement="top"
+          sx={{
+            position: "absolute",
+            bottom: 5,
+            left: 5,
+            zIndex: 1,
+            cursor: "pointer",
+          }}
+        >
+          <Box component="span">
+            <MdOutlineFavoriteBorder color="#FF6700" size={25} />
+          </Box>
+        </Tooltip>
       )}
 
       {!isPreviewMode && (
@@ -131,8 +165,8 @@ const MovieCard = ({
         component="img"
         image={!movie.image ? DefaultPoster : movie.image}
         alt={movie.title}
-        style={{ height: "431px", cursor: "pointer" }}
-        onClick={() => handleMovieDetails(movie)}
+        style={{ height: "431px" }}
+        // onClick={() => handleMovieDetails(movie)}
       />
       <CardContent style={{ paddingBottom: "16px", height: "150px" }}>
         {movie.title.length > 35 ? (

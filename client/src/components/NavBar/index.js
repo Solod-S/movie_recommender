@@ -188,11 +188,8 @@ const Navigation = () => {
               <Button
                 sx={{
                   my: 2,
-                  color: isActive("/favorites") ? "yellow" : "white",
+                  color: "white",
                   display: "block",
-                  borderBottom: isActive("/favorites")
-                    ? "2px solid yellow"
-                    : "none",
                 }}
                 onClick={() => dispatch({ type: "clearUser" })}
               >

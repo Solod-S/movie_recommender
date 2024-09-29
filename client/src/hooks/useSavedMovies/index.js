@@ -1,4 +1,4 @@
-import { useCallback, useContext, useLayoutEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { AppContext } from "../../providers/appContext";
 import { GET_SAVED_MOVIES, SAVE_MOVIE, REMOVE_MOVIE } from "./queries";
 import { useMutation, useQuery } from "@apollo/client";

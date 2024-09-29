@@ -199,11 +199,13 @@ const Home = () => {
   };
 
   const paginationHandler = (event, page) => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
     setPage(page);
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }, 100);
   };
 
   const selectMovieHandler = movie => {
@@ -330,6 +332,10 @@ const Home = () => {
                           selected={selectedMovies.find(
                             ({ id }) => id === movie.id
                           )}
+                          favorites={savedMovies.find(
+                            ({ id, movieId }) =>
+                              id === movie.id || movie.id === movieId
+                          )}
                         />
                       </motion.div>
                     </Grid>
@@ -365,4 +371,5 @@ const Home = () => {
     </Box>
   );
 };
+
 export default Home;

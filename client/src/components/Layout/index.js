@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { Suspense } from "react";
+import Loader from "../Loader/index.js";
 import { Navigation, Footer } from "../index";
 import { Box, Container, CssBaseline } from "@mui/material";
 
@@ -9,7 +10,7 @@ const Layout = () => {
       <CssBaseline />
       <Navigation />
 
-      <Suspense fallback={<div>Loading page...</div>}>
+      <Suspense fallback={<Loader />}>
         <Box
           sx={{
             backgroundColor: theme => theme.palette.grey[100],

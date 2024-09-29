@@ -11,6 +11,9 @@ import MovieDetailModal from "./MovieDetailModal";
 import Footer from "./Footer";
 import ServerError from "./ServerErrorSection";
 import AuthModal from "./AuthModal";
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./PublicRoute";
+import Loader from "./Loader";
 
 export {
   Navigation,
@@ -26,4 +29,7 @@ export {
   Layout,
   ServerError,
   AuthModal,
+  PrivateRoute,
+  PublicRoute,
+  Loader,
 };
