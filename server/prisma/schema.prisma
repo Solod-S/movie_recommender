@@ -20,7 +20,7 @@ model SavedMovie {
   movieId          String
   title            String
   releaseDate      String
-  posterPath       String
+  image       String
   genres           Int[]  
   adult            Boolean
   backdropPath     String

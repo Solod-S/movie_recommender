@@ -5,7 +5,7 @@ type Query {
   trailersById(id: Int): [Treiler]
   creditsById(id: Int): [Credit]
   genres: [Genre]
-  getSavedMovies(page: Int): SavedMovies
+  getSavedMovies(page: Int, perPage: Int): SavedMovies
 }
 
 input MoviesFilterInput {
@@ -129,7 +129,7 @@ input MovieInput {
   id: ID!
   title: String!
   releaseDate: String!
-  posterPath: String
+  image: String # Добавить сюда, если это требуется
   genres: [Int]
   adult: Boolean
   backdropPath: String

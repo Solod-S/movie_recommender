@@ -23,7 +23,6 @@ export const useSavedMovies = () => {
 
   useLayoutEffect(() => {
     if (data && data?.getSavedMovies) {
-      console.log(`render`);
       setSavedMovies(data.getSavedMovies.results); // Устанавливаем фильмы, когда есть данные
     }
   }, [data]);
@@ -31,6 +30,7 @@ export const useSavedMovies = () => {
   const addMovieToSaved = async movie => {
     setSavedMoviesLoading(true);
     const isNewMovie = !savedMovies.find(({ id }) => id === movie.id);
+
     if (isNewMovie) {
       setSavedMovies(prevMovies => {
         const updatedMovies = [...prevMovies, { ...movie, movieId: movie.id }];
@@ -42,7 +42,7 @@ export const useSavedMovies = () => {
           id: movie.id,
           title: movie.title,
           releaseDate: movie.releaseDate,
-          posterPath: movie.image || "",
+          image: movie.image || "",
           genres: movie?.genres?.map(m => m.id) || [],
           adult: movie.adult || false,
           backdropPath: movie.backdropPath || "",
@@ -54,11 +54,13 @@ export const useSavedMovies = () => {
           voteAverage: movie.voteAverage || 0,
           voteCount: movie.voteCount || 0,
         };
+
         await saveMovie({
           variables: {
             movie: movieObj,
           },
         });
+
         return true;
       } catch (error) {
         console.error("Error saving movie:", error);

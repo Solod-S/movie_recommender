@@ -3,7 +3,7 @@ import { Box, Grid, Paper, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MOVIES_BY_IDS_QUERY } from "./queries";
-import { MovieDetailModal, MovieCard } from "../../components";
+import { MovieDetailModal, MovieCard, ServerError } from "../../components";
 import renderSkeletons from "../../utils/renderSkeletons";
 import { AppContext } from "../../providers/appContext";
 import { FormattedMessage } from "react-intl";
@@ -40,10 +40,13 @@ const Recommendation = () => {
 
   useEffect(() => {
     // Dynamically find the header and calculate its height
-    const headerElement = document.querySelector("header"); // Adjust selector to match your actual header element
+    const headerElement = document.querySelector("header");
+    const footerElement = document.querySelector("footer");
+
     if (headerElement) {
       const headerHeight = headerElement.offsetHeight;
-      setBoxMinHeight(`calc(100vh - ${headerHeight}px)`);
+      const footerHeight = footerElement.offsetHeight;
+      setBoxMinHeight(`calc(100vh - ${headerHeight + footerHeight}px)`);
     }
   }, []);
 
@@ -92,7 +95,9 @@ const Recommendation = () => {
     }
   };
 
-  if (error) return <div>Error. Try again!</div>;
+  if (error) {
+    return <ServerError />;
+  }
 
   return (
     <Box

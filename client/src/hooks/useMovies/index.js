@@ -17,7 +17,7 @@ export const useMovies = () => {
     movie => {
       const length = selectedMovies.length;
       const isNewMovie = !selectedMovies.find(({ id }) => id === movie.id);
-
+      console.log(`movie`, movie);
       if (isNewMovie && length < SELECTED_MOVIES_LIMIT) {
         setSelectedMovies(prevMovies => {
           const updatedMovies = [...prevMovies, movie];

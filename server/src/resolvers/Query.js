@@ -100,7 +100,7 @@ const getSavedMovies = async (parent, args, context) => {
       throw new UserInputError("User not found.");
     }
 
-    const perPage = 10;
+    const perPage = args.perPage || 10;
     const page = args.page || 1;
 
     const totalResults = await context.prisma.savedMovie.count({

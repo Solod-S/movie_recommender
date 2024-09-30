@@ -171,7 +171,7 @@ const saveMovie = async (parent, { movie }, context, info) => {
         movieId: movie.id,
         title: movie.title,
         releaseDate: movie.releaseDate,
-        posterPath: movie.posterPath || "",
+        image: movie.image || "",
         genres: movie.genres || [],
         adult: movie.adult || false,
         backdropPath: movie.backdropPath || "",

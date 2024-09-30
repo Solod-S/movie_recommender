@@ -1,23 +1,20 @@
 import { gql } from "@apollo/client";
 
-const MOVIES_BY_IDS_QUERY = gql`
-  query MoviesByIds($ids: [Int]) {
-    moviesByIds(ids: $ids) {
-      releaseDate(format: "dd MMM yyy")
-      image: posterPath
-      title
-      id
-      # adult
-      # backdropPath
-      # originalLanguage
-      # originalTitle
-      # overview
-      # popularity
-      # video
-      voteAverage
-      voteCount
+export const GET_SAVED_MOVIES = gql`
+  query GetSavedMovies($page: Int) {
+    getSavedMovies(page: $page, perPage: 12) {
+      page
+      totalResults
+      totalPages
+      results {
+        id
+        movieId
+        title
+        image
+        releaseDate(format: "dd.MM.yyyy")
+        voteAverage
+        voteCount
+      }
     }
   }
 `;
-
-export { MOVIES_BY_IDS_QUERY };

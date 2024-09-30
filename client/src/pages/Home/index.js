@@ -143,7 +143,7 @@ const Home = () => {
   });
 
   React.useEffect(() => {
-    if (data?.movies?.results.length > 0)
+    if (data?.movies?.results?.length > 0)
       setmoviesList(prevState => {
         return data.movies.results.map(newMovie => {
           const oldMovie = prevState.find(movie => movie.id === newMovie.id);
@@ -281,7 +281,6 @@ const Home = () => {
 
   if (error) {
     return <ServerError />;
-    // return `Error: ${error.message}`;
   }
   return (
     <Box sx={{ flexGrow: 1, marginTop: 2 }}>

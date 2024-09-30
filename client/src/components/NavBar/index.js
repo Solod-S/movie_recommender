@@ -1,4 +1,5 @@
 import { Link as RouterLink, useLocation } from "react-router-dom";
+
 import { motion } from "framer-motion";
 import {
   AppBar,
@@ -16,7 +17,8 @@ import { LOCALES } from "../../constants";
 import { useCallback, useContext, useState } from "react";
 import { AppContext } from "../../providers/appContext";
 import { framerLogoVariants } from "../../constants";
-import banner from "../../assets/banner.jpg";
+import defaultBackground from "../../assets/banner.jpg";
+import favoritesBackground from "../../assets/favorites.jpg";
 import logo from "../../assets/movie-logo.png";
 import { FormattedMessage } from "react-intl";
 import AuthModal from "../AuthModal";
@@ -28,6 +30,7 @@ const Navigation = () => {
   const { state, dispatch } = useContext(AppContext);
   const location = useLocation();
   const isActive = path => location.pathname === path;
+  const isFavorite = location.pathname === "/favorites";
 
   const setLanguage = useCallback(
     locale => {
@@ -46,7 +49,7 @@ const Navigation = () => {
         position="static"
         sx={{
           minHeight: 150,
-          backgroundImage: `url(${banner})`,
+          backgroundImage: `url(${isFavorite ? favoritesBackground : defaultBackground})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
