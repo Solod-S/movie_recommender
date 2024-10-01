@@ -1,26 +1,47 @@
 import { useQuery } from "@apollo/client";
 import { GET_SAVED_MOVIES } from "./queries";
 import { useEffect, useState } from "react";
-import { MovieCard, Paginator, ServerError } from "../../components";
+import {
+  MovieCard,
+  MovieDetailModal,
+  Paginator,
+  ServerError,
+} from "../../components";
 import { Box, Grid, Paper } from "@mui/material";
 import { motion } from "framer-motion";
 import renderSkeletons from "../../utils/renderSkeletons";
 import { framerListVariants } from "../../constants";
+import { useContext } from "react";
+import { AppContext } from "../../providers/appContext";
+import { useMovies } from "../../hooks/useMovies";
+import { FormattedMessage } from "react-intl";
+import { useCustomNotification } from "../../hooks/useCustomNotification";
+import { SELECTED_MOVIES_LIMIT } from "../../config";
+import { useSavedMovies } from "../../hooks/useSavedMovies";
 
 const Favorites = () => {
+  const { state } = useContext(AppContext);
+
+  const [movieId, setMovieId] = useState("");
   const [moviesList, setMoviesList] = useState([]);
   const [page, setPage] = useState(1);
   const [boxMinHeight, setBoxMinHeight] = useState();
-  const { loading, error, data } = useQuery(GET_SAVED_MOVIES, {
+
+  const { showNotification, NotificationComponent } = useCustomNotification();
+  const { selectedMovies, selectMovie, deleteMovie } = useMovies();
+  const {
+    savedMovies,
+    removeMovieFromSaved,
+    addMovieToSaved,
+    savedMoviesLoading,
+  } = useSavedMovies();
+
+  const { loading, error, data, refetch } = useQuery(GET_SAVED_MOVIES, {
     variables: { page },
   });
 
   useEffect(() => {
     if (data?.getSavedMovies?.results?.length > 0) {
-      console.log(
-        `data?.getSavedMovies?.results`,
-        data?.getSavedMovies?.results
-      );
       setMoviesList(prevState => {
         return data.getSavedMovies.results.map(newMovie => {
           const oldMovie = prevState.find(movie => movie.id === newMovie.id);
@@ -55,7 +76,119 @@ const Favorites = () => {
     }, 100);
   };
 
+  const onCloseConfirmModal = () => {
+    setMovieId("");
+  };
+  const selectMovieHandler = movie => {
+    const length = selectedMovies.length;
+    const isNewMovie = !selectedMovies.find(({ id }) => id === movie.id);
+
+    switch (true) {
+      case !isNewMovie:
+        showNotification(
+          <FormattedMessage id="notification.movie_already_selected" />,
+          "error",
+          5000,
+          {
+            vertical: "bottom",
+            horizontal: "right",
+          }
+        );
+        return;
+
+      case length >= SELECTED_MOVIES_LIMIT:
+        showNotification(
+          <FormattedMessage id="notification.list_limit_reached" />,
+          "error",
+          5000,
+          {
+            vertical: "bottom",
+            horizontal: "right",
+          }
+        );
+        return;
+
+      default:
+        showNotification(
+          <FormattedMessage id="notification.movie_added_successfully" />,
+          "success",
+          1000,
+          {
+            vertical: "bottom",
+            horizontal: "right",
+          }
+        );
+        break;
+    }
+
+    selectMovie(movie);
+  };
+
+  const deleteMovieHandler = movie => {
+    switch (true) {
+      default:
+        showNotification(
+          <FormattedMessage id="notification.movie_removed_successfully" />,
+          "success",
+          1000,
+          {
+            vertical: "bottom",
+            horizontal: "right",
+          }
+        );
+        break;
+    }
+
+    deleteMovie(movie);
+  };
+
+  const removeFavoriteMovie = async movie => {
+    const result = await removeMovieFromSaved(movie);
+
+    if (!result) {
+      showNotification("Error in removing movie", "error", 5000, {
+        vertical: "bottom",
+        horizontal: "right",
+      });
+    } else {
+      refetch();
+      showNotification(
+        <FormattedMessage id="notification.movie_removed_successfully" />,
+        "success",
+        1000,
+        {
+          vertical: "bottom",
+          horizontal: "right",
+        }
+      );
+    }
+  };
+
+  const addFavoriteMovie = async movie => {
+    console.log(`movie`, movie);
+    const result = await addMovieToSaved(movie);
+
+    if (!result) {
+      showNotification("Error in saving movie", "error", 5000, {
+        vertical: "bottom",
+        horizontal: "right",
+      });
+    } else {
+      refetch();
+      showNotification(
+        <FormattedMessage id="notification.movie_add_to_favorite_successfully" />,
+        "success",
+        1000,
+        {
+          vertical: "bottom",
+          horizontal: "right",
+        }
+      );
+    }
+  };
+
   if (error) {
+    console.log(`error in favorite page: ${error}`);
     return <ServerError />;
   }
 
@@ -70,12 +203,27 @@ const Favorites = () => {
         backgroundColor: "#f5f5f5",
       }}
     >
+      {NotificationComponent}
+      <MovieDetailModal
+        user={state.user || null}
+        title={movieId}
+        movieId={movieId}
+        open={!!movieId}
+        onClose={onCloseConfirmModal}
+        selectedMovies={selectedMovies}
+        selectMovie={selectMovieHandler}
+        deleteMovie={deleteMovieHandler}
+        removeFavoriteMovie={removeFavoriteMovie}
+        addFavoriteMovie={addFavoriteMovie}
+        savedMovies={savedMovies}
+        savedMoviesLoading={savedMoviesLoading}
+      />
       <dix style={{ height: "80%" }}></dix>
 
       <Grid item xs={12} md={8} sx={{ width: "100%" }}>
         <Paper sx={{ padding: 2, minHeight: "400px" }}>
           <Box sx={{ flexGrow: 1, marginBottom: "16px" }}>
-            {loading && renderSkeletons()}
+            {loading && renderSkeletons({ favoriteMode: true })}
             {moviesList && (
               <Grid container spacing={2}>
                 {moviesList.map((movie, index) => (
@@ -90,7 +238,13 @@ const Favorites = () => {
                       <MovieCard
                         movie={movie}
                         onCardSelect={() => console.log(`onCardSelect`)}
-                        // openMovieDetailsById={setMovieId}
+                        openMovieDetailsById={setMovieId}
+                        selected={selectedMovies.find(
+                          ({ id }) => id === movie.id
+                        )}
+                        favorites={savedMovies.find(
+                          ({ id, movieId }) => movie.id === movieId
+                        )}
                         isPreviewMode
                       />
                     </motion.div>

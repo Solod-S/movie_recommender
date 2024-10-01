@@ -5,7 +5,7 @@ type Query {
   trailersById(id: Int): [Treiler]
   creditsById(id: Int): [Credit]
   genres: [Genre]
-  getSavedMovies(page: Int, perPage: Int): SavedMovies
+  getSavedMovies(page: Int, perPage: Int, all: Boolean): SavedMovies
 }
 
 input MoviesFilterInput {

@@ -96,6 +96,7 @@ const Recommendation = () => {
   };
 
   if (error) {
+    console.log(`error in recommendation page: ${error}`);
     return <ServerError />;
   }
 
@@ -128,7 +129,7 @@ const Recommendation = () => {
       <Grid item xs={12} md={8} sx={{ width: "100%" }}>
         <Paper sx={{ padding: 2, minHeight: "400px" }}>
           <Box sx={{ flexGrow: 1 }}>
-            {loading && renderSkeletons()}
+            {loading && renderSkeletons({ favoriteMode: true })}
             {data && (
               <Grid container spacing={2}>
                 {data.moviesByIds.map(movie => (

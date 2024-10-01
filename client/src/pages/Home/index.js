@@ -280,6 +280,7 @@ const Home = () => {
   };
 
   if (error) {
+    console.log(`error in home page: ${error}`);
     return <ServerError />;
   }
   return (
@@ -312,7 +313,7 @@ const Home = () => {
         <Grid item xs={12} md={8}>
           <Paper>
             <Box sx={{ flexGrow: 1, padding: 2 }}>
-              {loading && renderSkeletons()}
+              {loading && renderSkeletons({ favoriteMode: false })}
               {moviesList && moviesList.length > 0 && (
                 <Grid container spacing={2}>
                   {moviesList.map((movie, index) => (

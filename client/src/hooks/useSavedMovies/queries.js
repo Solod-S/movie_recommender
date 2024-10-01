@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_SAVED_MOVIES = gql`
-  query GetSavedMovies($page: Int) {
-    getSavedMovies(page: $page) {
+  query GetSavedMovies($page: Int, $all: Boolean) {
+    getSavedMovies(page: $page, all: $all) {
       page
       totalResults
       totalPages

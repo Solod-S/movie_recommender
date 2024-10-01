@@ -69,9 +69,9 @@ const MovieCard = ({
   };
 
   const handleMovieDetails = movie => {
-    openMovieDetailsById(movie.id);
+    openMovieDetailsById(movie.movieId || movie.id);
   };
-
+  console.log(`movie`, movie);
   return (
     <Card
       sx={{
@@ -126,7 +126,6 @@ const MovieCard = ({
           </Box>
         </Tooltip>
       )}
-
       {!isPreviewMode && (
         <CardMenu ref={menuRef}>
           <MenuItem
@@ -155,7 +154,6 @@ const MovieCard = ({
           </MenuItem> */}
         </CardMenu>
       )}
-
       <MoviesRating movieRating={Math.round(movie.voteAverage || 0)}>
         <SiImdb size={25} style={{ marginRight: "4px" }} />{" "}
         <span>{Math.round(movie.voteAverage || 0)}</span>
