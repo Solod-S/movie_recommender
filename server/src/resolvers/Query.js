@@ -88,6 +88,7 @@ const reviews = async (parent, args, context) => {
 
 const getSavedMovies = async (parent, args, context) => {
   try {
+    console.log(`context`, context);
     if (!context.userId) {
       throw new AuthenticationError("Unauthorized.");
     }

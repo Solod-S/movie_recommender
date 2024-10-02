@@ -5,6 +5,7 @@ import {
   ApolloLink,
   from,
 } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -13,19 +14,40 @@ const httpLink = new HttpLink({
   credentials: "same-origin",
 });
 
-export const createApolloClient = (locale, userData) => {
+export const createApolloClient = ({ locale, userData, dispatch }) => {
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+      graphQLErrors.forEach(({ message, locations, path }) => {
+        console.log(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        );
+
+        // Пример обработки ошибки авторизации
+        if (message === "Context creation failed: Not authenticated") {
+          dispatch({ type: "setUser", user: null }); // Очищаем данные пользователя
+        }
+      });
+    }
+
+    if (networkError) {
+      console.log(`[Network error]: ${networkError}`);
+    }
+  });
+
   const localMiddleware = new ApolloLink((operation, forward) => {
     operation.setContext({
       headers: {
         locale,
-        Authorization: userData?.accessToken ? userData?.accessToken : "",
+        Authorization: userData?.accessToken
+          ? `Bearer ${userData.accessToken}`
+          : "",
       },
     });
     return forward(operation);
   });
 
   return new ApolloClient({
-    link: from([localMiddleware, httpLink]),
+    link: from([errorLink, localMiddleware, httpLink]),
     cache: new InMemoryCache(),
     connectToDevTools: true,
   });

@@ -10,6 +10,9 @@ export const useSavedMovies = () => {
   const { loading, error, data, refetch } = useQuery(GET_SAVED_MOVIES, {
     variables: { page: 1, all: true },
     // skip: true, // Изначально пропускаем запрос
+    // onError: async error => {
+    //   console.log(`Error loading`, error);
+    // },
   });
   const [removeMovie] = useMutation(REMOVE_MOVIE);
   const [savedMovies, setSavedMovies] = useState([]);

@@ -1,30 +1,45 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const { AuthenticationError } = require("apollo-server-core");
 const { APP_SECRET, JWT_ACCESS_EXPIRATION, JWT_REFRESH_EXPIRATION } =
   process.env;
 
 const getTokenPayload = token => {
-  return jwt.verify(token, APP_SECRET);
+  try {
+    console.log(`5`, 5);
+    const userData = jwt.verify(token, APP_SECRET);
+    console.log(`userData`, userData);
+    return userData;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const getUserId = (req, authToken) => {
-  if (req) {
-    const authHeader = req.headers.authorization;
-    if (authHeader) {
-      const token = authHeader.replace("Bearer ", "");
-      if (!token) {
-        throw new Error("No token found");
-      }
-      const { userId } = getTokenPayload(token);
+  try {
+    if (req) {
+      const authHeader = req.headers.authorization;
 
+      if (authHeader) {
+        const token = authHeader.replace("Bearer ", "");
+
+        if (!token) {
+          throw new Error("No token found");
+        }
+
+        const { userId } = getTokenPayload(token);
+
+        return userId;
+      }
+    } else if (authToken) {
+      const { userId } = getTokenPayload(authToken);
       return userId;
     }
-  } else if (authToken) {
-    const { userId } = getTokenPayload(authToken);
-    return userId;
-  }
 
-  throw new Error("Not authenticated");
+    throw new AuthenticationError("Not authenticated");
+  } catch (error) {
+    throw new AuthenticationError("Not authenticated");
+  }
 };
 
 const generateAccessToken = payload => {

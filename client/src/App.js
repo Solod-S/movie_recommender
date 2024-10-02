@@ -6,8 +6,12 @@ import { createApolloClient } from "./apolloClient";
 import UserRoutes from "./UserRoutes";
 
 function App() {
-  const { state } = useContext(AppContext);
-  const client = createApolloClient(state.locale, state?.user);
+  const { state, dispatch } = useContext(AppContext);
+  const client = createApolloClient({
+    locale: state.locale,
+    userData: state?.user,
+    dispatch,
+  });
 
   return (
     <I18nProvider locale={state.locale}>
