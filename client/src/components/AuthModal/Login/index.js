@@ -66,7 +66,6 @@ const Login = ({ setMode, setOpenAuthModal }) => {
         variables: { email, password },
       });
 
-      console.log("Login successful:", result.data.login);
       document.getElementById("email").value = "";
       document.getElementById("password").value = "";
       result.data.login &&

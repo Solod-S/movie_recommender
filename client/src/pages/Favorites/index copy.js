@@ -157,10 +157,7 @@ const Favorites = () => {
       if (moviesLength % 12 === 0 && page > 1) {
         setPage(prevPage => prevPage - 1);
       }
-      setTimeout(() => {
-        refetch();
-      }, 100);
-
+      refetch();
       showNotification(
         <FormattedMessage id="notification.movie_removed_successfully" />,
         "success",

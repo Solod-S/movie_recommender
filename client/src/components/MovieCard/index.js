@@ -71,7 +71,7 @@ const MovieCard = ({
   const handleMovieDetails = movie => {
     openMovieDetailsById(movie.movieId || movie.id);
   };
-  console.log(`movie`, movie);
+
   return (
     <Card
       sx={{

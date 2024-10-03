@@ -6,9 +6,8 @@ const { APP_SECRET, JWT_ACCESS_EXPIRATION, JWT_REFRESH_EXPIRATION } =
 
 const getTokenPayload = token => {
   try {
-    console.log(`5`, 5);
     const userData = jwt.verify(token, APP_SECRET);
-    console.log(`userData`, userData);
+
     return userData;
   } catch (error) {
     throw error;
@@ -36,9 +35,9 @@ const getUserId = (req, authToken) => {
       return userId;
     }
 
-    throw new AuthenticationError("Not authenticated");
+    throw new AuthenticationError("Not authenticated", "getUserId");
   } catch (error) {
-    throw new AuthenticationError("Not authenticated");
+    throw new AuthenticationError("Not authenticated", "getUserId");
   }
 };
 

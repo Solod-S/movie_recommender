@@ -6,7 +6,6 @@ import {
   from,
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
-import { fromPromise } from "@apollo/client";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -56,37 +55,33 @@ export const createApolloClient = ({ locale, userData, dispatch }) => {
           if (message === "Context creation failed: Not authenticated") {
             // Если токен истек, пробуем обновить
             if (userData?.refreshToken) {
-              // Используем fromPromise для преобразования промиса в Observable
-              return fromPromise(refreshToken(userData.refreshToken)).flatMap(
-                newUserData => {
-                  if (newUserData) {
-                    // Обновляем токены
-                    userData.accessToken = newUserData.accessToken;
-                    userData.refreshToken = newUserData.refreshToken;
-                    console.log(`newUserData`, newUserData);
-                    dispatch({ type: "setUser", user: newUserData });
+              return refreshToken(userData.refreshToken).then(newUserData => {
+                if (newUserData) {
+                  // Обновляем токены
+                  userData.accessToken = newUserData.accessToken;
+                  userData.refreshToken = newUserData.refreshToken;
+                  console.log(`newUserData`, newUserData);
+                  dispatch({ type: "setUser", user: newUserData });
 
-                    // Обновляем заголовки и повторяем запрос
-                    operation.setContext(({ headers = {} }) => ({
-                      headers: {
-                        ...headers,
-                        Authorization: `Bearer ${newUserData.accessToken}`,
-                      },
-                    }));
+                  // Обновляем заголовки и повторяем запрос
+                  operation.setContext(({ headers = {} }) => ({
+                    headers: {
+                      ...headers,
+                      Authorization: `Bearer ${newUserData.accessToken}`,
+                    },
+                  }));
 
-                    return forward(operation);
-                  } else {
-                    dispatch({ type: "setUser", user: null }); // Если не удалось обновить токены, очищаем пользователя
-                    operation.setContext(({ headers = {} }) => ({
-                      headers: {
-                        ...headers,
-                        Authorization: "",
-                      },
-                    }));
-                    return forward(operation); // Пропускаем запрос
-                  }
+                  return forward(operation);
+                } else {
+                  dispatch({ type: "setUser", user: null }); // Если не удалось обновить токены, очищаем пользователя
+                  operation.setContext(({ headers = {} }) => ({
+                    headers: {
+                      ...headers,
+                      Authorization: "",
+                    },
+                  }));
                 }
-              );
+              });
             } else {
               dispatch({ type: "setUser", user: null });
             }
