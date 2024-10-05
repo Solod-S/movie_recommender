@@ -11,7 +11,8 @@ import {
 } from "@apollo/client";
 
 // Конфигурация Apollo Client
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+// const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+const SERVER_URL = process.env.REACT_APP_PRODUCT_SERVER_URL;
 
 const httpLink = new HttpLink({
   uri: SERVER_URL,

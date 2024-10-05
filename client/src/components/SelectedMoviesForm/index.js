@@ -1,13 +1,15 @@
-import * as React from "react";
+import { Form, Field } from "react-final-form";
+import { FormattedMessage, useIntl } from "react-intl";
+
+import PropTypes from "prop-types";
+
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import { TbStackPush } from "react-icons/tb";
-
-import { Form, Field } from "react-final-form";
-import { FormattedMessage, useIntl } from "react-intl";
 import { Tooltip } from "@mui/material";
+
+import { TbStackPush } from "react-icons/tb";
 
 const required = value => (value ? undefined : "Required");
 
@@ -66,6 +68,10 @@ const SelectedMoviesForm = ({ onSubmit }) => {
       )}
     />
   );
+};
+
+SelectedMoviesForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default SelectedMoviesForm;

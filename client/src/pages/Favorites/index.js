@@ -1,23 +1,22 @@
+import { useEffect, useState, useContext } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_SAVED_MOVIES } from "./queries";
-import { useEffect, useState } from "react";
+import { Box, Grid, Paper } from "@mui/material";
+import { motion } from "framer-motion";
 import {
   MovieCard,
   MovieDetailModal,
   Paginator,
   ServerError,
 } from "../../components";
-import { Box, Grid, Paper } from "@mui/material";
-import { motion } from "framer-motion";
 import renderSkeletons from "../../utils/renderSkeletons";
 import { framerListVariants } from "../../constants";
-import { useContext } from "react";
 import { AppContext } from "../../providers/appContext";
 import { useMovies } from "../../hooks/useMovies";
-import { FormattedMessage } from "react-intl";
 import { useCustomNotification } from "../../hooks/useCustomNotification";
 import { SELECTED_MOVIES_LIMIT } from "../../config";
 import { useSavedMovies } from "../../hooks/useSavedMovies";
+import { FormattedMessage } from "react-intl";
 
 const Favorites = () => {
   const { state } = useContext(AppContext);
@@ -43,7 +42,7 @@ const Favorites = () => {
   useEffect(() => {
     if (data?.getSavedMovies?.results?.length > 0) {
       setTotalPages(data?.getSavedMovies?.totalPages || 1);
-      console.log(`loading`, data?.getSavedMovies);
+
       setMoviesList(prevState => {
         return data.getSavedMovies.results.map(newMovie => {
           const oldMovie = prevState.find(movie => movie.id === newMovie.id);
@@ -226,10 +225,9 @@ const Favorites = () => {
         savedMovies={savedMovies}
         savedMoviesLoading={savedMoviesLoading}
       />
-      {/* <div style={{ height: "80%" }}></div> */}
 
       <Grid item xs={12} md={8} sx={{ width: "100%" }}>
-        <Paper sx={{ padding: 2, minHeight: "400px" }}>
+        <Paper sx={{ padding: 2, minHeight: "55vh" }}>
           <Box sx={{ flexGrow: 1, marginBottom: "16px" }}>
             {loading && renderSkeletons({ favoriteMode: true })}
             {moviesList && (

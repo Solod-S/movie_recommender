@@ -1,11 +1,11 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import CloseIcon from "@mui/icons-material/Close";
+import { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { formatDistanceToNow } from "date-fns";
+import { useQuery } from "@apollo/client";
+
 import {
+  Box,
+  Typography,
+  Modal,
   Divider,
   Button,
   IconButton,
@@ -17,29 +17,34 @@ import {
   Avatar,
   ListItemText,
 } from "@mui/material";
-import { useQuery } from "@apollo/client";
+
+import CloseIcon from "@mui/icons-material/Close";
+
+import { formatDistanceToNow } from "date-fns";
+
 import {
   MOVIE_DETAIL_BY_ID_QUERY,
   TRAILERS_BY_ID_QUERY,
   CASTS_BY_ID_QUERY,
   REVIEWS_BY_ID_QUERY,
 } from "./queries";
+
 import DefaultPoster from "../../assets/poster.jpg";
 import { FormattedMessage } from "react-intl";
 
 const MovieDetailModal = ({
   user,
-  isPreviewMode,
+  isPreviewMode = true,
   open = false,
-  movieId,
-  onClose = () => {},
   selectedMovies = [],
+  savedMovies = [],
+  movieId,
+  savedMoviesLoading,
+  onClose = () => {},
   selectMovie = () => {},
   deleteMovie = () => {},
   addFavoriteMovie = () => {},
   removeFavoriteMovie = () => {},
-  savedMovies,
-  savedMoviesLoading,
 }) => {
   const { loading, error, data } = useQuery(MOVIE_DETAIL_BY_ID_QUERY, {
     variables: {
@@ -85,15 +90,15 @@ const MovieDetailModal = ({
     skip: !movieId || isNaN(Number(movieId)) || Number(movieId) <= 0,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (movieId && !isNaN(Number(movieId)) && Number(movieId) > 0) {
       refetch(); // Выполнить запрос, если movieId валиден
     }
   }, [movieId, refetch]);
 
-  const [trailerUrl, setTrailerUrl] = React.useState(null);
-  const [casts, setCasts] = React.useState([]);
-  const [reviews, setReviews] = React.useState([]);
+  const [trailerUrl, setTrailerUrl] = useState(null);
+  const [casts, setCasts] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const isLargeScreen = useMediaQuery("(min-width:1280px)");
   const contentStyle = {
     display: "flex",
@@ -151,7 +156,7 @@ const MovieDetailModal = ({
     borderRadius: "10px",
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (trailersData && trailersData?.trailersById?.length > 0) {
       const trailer = trailersData.trailersById.find(
         video => video.type === "Trailer" && video.site === "YouTube"
@@ -243,7 +248,7 @@ const MovieDetailModal = ({
                   :
                 </strong>{" "}
                 {casts.map((actor, index) => (
-                  <React.Fragment key={actor.id}>
+                  <Fragment key={actor.id}>
                     <Tooltip
                       title={
                         <img
@@ -257,7 +262,7 @@ const MovieDetailModal = ({
                       <span style={{ cursor: "pointer" }}>{actor.name}</span>
                     </Tooltip>
                     {index < casts.length - 1 ? ", " : "..."}
-                  </React.Fragment>
+                  </Fragment>
                 ))}
               </Typography>
             )}
@@ -456,7 +461,7 @@ const MovieDetailModal = ({
                   }}
                 >
                   {reviews.map(review => (
-                    <React.Fragment key={review.id}>
+                    <Fragment key={review.id}>
                       <ListItem>
                         <ListItemAvatar>
                           <Avatar
@@ -500,7 +505,7 @@ const MovieDetailModal = ({
                         />
                       </ListItem>
                       <Divider variant="inset" component="li" />
-                    </React.Fragment>
+                    </Fragment>
                   ))}
                 </List>
               </>
@@ -513,10 +518,50 @@ const MovieDetailModal = ({
 };
 
 MovieDetailModal.propTypes = {
-  open: PropTypes.bool,
-  movieId: PropTypes.string,
-  title: PropTypes.string,
-  onClose: PropTypes.func,
+  user: PropTypes.oneOfType([
+    PropTypes.shape({
+      accessToken: PropTypes.string.isRequired,
+      refreshToken: PropTypes.string.isRequired,
+      user: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired,
+      }).isRequired,
+    }),
+    PropTypes.oneOf([null]), // Для указания, что значение может быть null
+  ]),
+  isPreviewMode: PropTypes.bool,
+  savedMoviesLoading: PropTypes.bool,
+  open: PropTypes.bool.isRequired,
+  movieId: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+  selectMovie: PropTypes.func,
+  deleteMovie: PropTypes.func,
+  addFavoriteMovie: PropTypes.func,
+  removeFavoriteMovie: PropTypes.func,
+  selectedMovies: PropTypes.arrayOf(
+    PropTypes.shape({
+      __typename: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+      releaseDate: PropTypes.string.isRequired,
+      voteAverage: PropTypes.number.isRequired,
+      voteCount: PropTypes.number.isRequired,
+    })
+  ),
+  savedMovies: PropTypes.arrayOf(
+    PropTypes.shape({
+      __typename: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+      movieId: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+      releaseDate: PropTypes.string.isRequired,
+      voteAverage: PropTypes.number.isRequired,
+      voteCount: PropTypes.number.isRequired,
+    })
+  ),
 };
 
 export default MovieDetailModal;

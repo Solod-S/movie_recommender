@@ -1,13 +1,15 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import PropTypes from "prop-types";
 import { Alert, Divider, IconButton, InputBase, Paper } from "@mui/material";
+
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import CloseIcon from "@mui/icons-material/Close";
+
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -18,6 +20,8 @@ import {
   LinkedinIcon,
   TelegramIcon,
 } from "react-share";
+
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FormattedMessage } from "react-intl";
 
 const style = {
@@ -39,9 +43,9 @@ const ConfirmModal = ({
   title = "",
   onClose = () => {},
 }) => {
-  const [openAlert, setOpenAlert] = React.useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let timer;
     if (openAlert)
       timer = setTimeout(() => {

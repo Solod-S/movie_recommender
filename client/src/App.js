@@ -1,7 +1,8 @@
-import { ApolloProvider } from "@apollo/client";
-import I18nProvider from "./providers/i18n";
 import { useContext } from "react";
+import { ApolloProvider } from "@apollo/client";
+
 import { AppContext } from "./providers/appContext";
+import I18nProvider from "./providers/i18n";
 import { createApolloClient } from "./apolloClient";
 import UserRoutes from "./UserRoutes";
 

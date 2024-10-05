@@ -1,21 +1,29 @@
-import * as React from "react";
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import CardMenu from "../CardMenu";
+import { useRef } from "react";
 import PropTypes from "prop-types";
-import { Box, MenuItem, Tooltip } from "@mui/material";
-import { FormattedMessage } from "react-intl";
-import { SiImdb } from "react-icons/si";
-import { MdOutlineFavoriteBorder } from "react-icons/md";
+
 import {
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  Box,
+  MenuItem,
+  Tooltip,
+  styled,
+} from "@mui/material";
+
+import { FormattedMessage } from "react-intl";
+
+import {
+  MdOutlineFavoriteBorder,
   // MdFavoriteBorder,
   MdOutlineBookmarkAdded,
 } from "react-icons/md";
-import { styled } from "@mui/material/styles";
+
+import { SiImdb } from "react-icons/si";
 // import { TbSelect } from "react-icons/tb";
 
+import CardMenu from "../CardMenu";
 import DefaultPoster from "../../assets/poster.jpg";
 
 export const MoviesRating = styled(({ movieRating, ...other }) => (
@@ -56,11 +64,11 @@ const MovieCard = ({
   movie,
   onCardSelect,
   isPreviewMode = false,
-  openMovieDetailsById,
+  openMovieDetailsById = () => {},
   selected = false,
   favorites = false,
 }) => {
-  const menuRef = React.useRef();
+  const menuRef = useRef();
 
   const callhandleClose = () => {
     if (menuRef.current) {
@@ -194,6 +202,9 @@ MovieCard.protoTypes = {
   }).isRequired,
   onCardSelect: PropTypes.func.isRequired,
   isPreviewMode: PropTypes.bool.isRequired,
+  openMovieDetailsById: PropTypes.func.isRequired,
+  selected: PropTypes.bool,
+  favorites: PropTypes.bool,
 };
 
 export default MovieCard;

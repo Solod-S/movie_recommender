@@ -1,4 +1,7 @@
-import * as React from "react";
+import { useContext, useState } from "react";
+import { useMutation } from "@apollo/client";
+import PropTypes from "prop-types";
+
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormLabel from "@mui/material/FormLabel";
@@ -6,17 +9,19 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import MuiCard from "@mui/material/Card";
-import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
+import { styled } from "@mui/material/styles";
+
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useMutation } from "@apollo/client";
+
+import { FormattedMessage } from "react-intl";
+import { AppContext } from "../../../providers/appContext";
+import { useCustomNotification } from "../../../hooks/useCustomNotification";
+
 import { SIGN_UP_MUTATION } from "../queries";
 import logoSvg from "../../../assets/logo.webp";
-import { useCustomNotification } from "../../../hooks/useCustomNotification";
-import { AppContext } from "../../../providers/appContext";
-import { FormattedMessage } from "react-intl";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   borderRadius: "15px",
@@ -40,17 +45,17 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 const Register = ({ setMode, setOpenAuthModal }) => {
   const [signUp, { loading }] = useMutation(SIGN_UP_MUTATION);
-  const { dispatch } = React.useContext(AppContext);
+  const { dispatch } = useContext(AppContext);
   const { showNotification, NotificationComponent } = useCustomNotification();
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-  const [nameError, setNameError] = React.useState(false);
-  const [nameErrorMessage, setNameErrorMessage] = React.useState("");
+  const [emailError, setEmailError] = useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [nameError, setNameError] = useState(false);
+  const [nameErrorMessage, setNameErrorMessage] = useState("");
 
   // State for toggling password visibility
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -253,6 +258,11 @@ const Register = ({ setMode, setOpenAuthModal }) => {
       </Card>
     </>
   );
+};
+
+Register.propTypes = {
+  setMode: PropTypes.func.isRequired,
+  setOpenAuthModal: PropTypes.func.isRequired,
 };
 
 export default Register;

@@ -1,7 +1,7 @@
-import { useContext, useLayoutEffect, useState } from "react";
-import { AppContext } from "../../providers/appContext";
-import { GET_SAVED_MOVIES, SAVE_MOVIE, REMOVE_MOVIE } from "./queries";
-import { useMutation, useQuery } from "@apollo/client";
+import { useContext, useLayoutEffect, useState } from "react"; // React hooks
+import { AppContext } from "../../providers/appContext"; // Context provider
+import { useMutation, useQuery } from "@apollo/client"; // Apollo Client hooks
+import { GET_SAVED_MOVIES, SAVE_MOVIE, REMOVE_MOVIE } from "./queries"; // GraphQL queries
 
 export const useSavedMovies = () => {
   const { state } = useContext(AppContext);

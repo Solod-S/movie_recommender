@@ -99,7 +99,7 @@ const getSavedMovies = async (parent, args, context) => {
     if (!user) {
       throw new UserInputError("User not found.");
     }
-    console.log(`Saved movies`);
+
     // Если передан аргумент "all: true", то возвращаем все фильмы без пагинации
     if (args.all) {
       const allMovies = await context.prisma.savedMovie.findMany({

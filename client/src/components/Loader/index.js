@@ -1,5 +1,5 @@
-import { RotatingLines } from "react-loader-spinner";
 import { Box } from "@mui/material";
+import { RotatingLines } from "react-loader-spinner";
 
 const Loader = () => (
   <Box

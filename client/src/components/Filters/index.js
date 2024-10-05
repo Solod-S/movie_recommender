@@ -1,4 +1,6 @@
 import React, { useCallback } from "react";
+import PropTypes from "prop-types";
+
 import {
   Paper,
   MenuItem,
@@ -9,14 +11,16 @@ import {
   TextField,
   IconButton,
 } from "@mui/material";
-import { Form, Field } from "react-final-form";
-import debounce from "lodash.debounce";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import { FormattedMessage } from "react-intl";
-import PropTypes from "prop-types";
-import { GET_GENRES_QUERY } from "./queries";
+
+import { Form, Field } from "react-final-form";
+import debounce from "lodash.debounce";
+
 import { useQuery } from "@apollo/client";
+import { GET_GENRES_QUERY } from "./queries";
+
+import { FormattedMessage } from "react-intl";
 
 const Filters = ({ initialValues, onSubmit, years }) => {
   const {
@@ -287,12 +291,6 @@ Filters.propTypes = {
     ]),
   }).isRequired,
   onSubmit: PropTypes.func.isRequired,
-  genres: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-    })
-  ).isRequired,
   years: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 

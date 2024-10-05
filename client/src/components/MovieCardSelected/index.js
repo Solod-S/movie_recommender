@@ -1,4 +1,3 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -11,9 +10,10 @@ import { MenuItem } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 
 import DefaultPoster from "../../assets/poster.jpg";
+import { useRef } from "react";
 
 const MovieCardSelected = ({ movie, onCardDelete }) => {
-  const menuRef = React.useRef();
+  const menuRef = useRef();
 
   const callhandleClose = () => {
     if (menuRef.current) {

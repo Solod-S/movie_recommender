@@ -1,6 +1,9 @@
-import * as React from "react";
+import { useEffect, useState, useContext } from "react";
 import { motion } from "framer-motion";
 import { Box, Grid, Paper } from "@mui/material";
+import { useQuery } from "@apollo/client";
+import { MOVIES_QUERY } from "./queries";
+
 import {
   MovieCard,
   SelectedMoviesSection,
@@ -10,19 +13,16 @@ import {
   ServerError,
 } from "../../components";
 
-import { useQuery } from "@apollo/client";
-import { MOVIES_QUERY } from "./queries";
-
 import { useMovies } from "../../hooks/useMovies";
 import { useCustomNotification } from "../../hooks/useCustomNotification";
+import { useFilters } from "../../hooks/useFilters";
+import { useSavedMovies } from "../../hooks/useSavedMovies";
+
+import { AppContext } from "../../providers/appContext";
+import { framerListVariants } from "../../constants";
 import { SELECTED_MOVIES_LIMIT } from "../../config";
 import renderSkeletons from "../../utils/renderSkeletons";
-
-import { useFilters } from "../../hooks/useFilters";
-import { framerListVariants } from "../../constants";
 import { FormattedMessage } from "react-intl";
-import { AppContext } from "../../providers/appContext";
-import { useSavedMovies } from "../../hooks/useSavedMovies";
 
 const genres = [
   // {
@@ -122,12 +122,12 @@ const Home = () => {
     savedMoviesLoading,
   } = useSavedMovies();
 
-  const { state } = React.useContext(AppContext);
+  const { state } = useContext(AppContext);
   const { filter, setPage, setFilter } = useFilters();
   const { selectedMovies, selectMovie, deleteMovie } = useMovies();
-  const [movieId, setMovieId] = React.useState("");
+  const [movieId, setMovieId] = useState("");
 
-  const [moviesList, setmoviesList] = React.useState([]);
+  const [moviesList, setmoviesList] = useState([]);
   const { showNotification, NotificationComponent } = useCustomNotification();
   const { loading, error, data } = useQuery(MOVIES_QUERY, {
     variables: {
@@ -142,7 +142,7 @@ const Home = () => {
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data?.movies?.results?.length > 0)
       setmoviesList(prevState => {
         return data.movies.results.map(newMovie => {

@@ -1,8 +1,10 @@
-import { Outlet } from "react-router-dom";
 import { Suspense } from "react";
+import { Outlet } from "react-router-dom";
+
+import { Box, Container, CssBaseline } from "@mui/material";
+
 import Loader from "../Loader/index.js";
 import { Navigation, Footer } from "../index";
-import { Box, Container, CssBaseline } from "@mui/material";
 
 const Layout = () => {
   return (

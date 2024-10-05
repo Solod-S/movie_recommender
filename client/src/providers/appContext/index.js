@@ -1,7 +1,7 @@
-import React, { useReducer, createContext } from "react";
-import { saveToStorage, removeFromStorage } from "../../utils/localStorage";
+import { createContext, useReducer } from "react";
 import { STORAGE_LOCALE_KEY, STORAGE_USER_KEY } from "../../constants/index";
-import { useDefaultContext } from "./defaultContext"; // Импортируем здесь
+import { saveToStorage, removeFromStorage } from "../../utils/localStorage";
+import { useDefaultContext } from "./defaultContext";
 
 const AppContext = createContext();
 

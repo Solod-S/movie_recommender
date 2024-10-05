@@ -1,12 +1,12 @@
 import {
   ApolloClient,
-  InMemoryCache,
-  HttpLink,
   ApolloLink,
   from,
+  fromPromise,
+  HttpLink,
+  InMemoryCache,
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
-import { fromPromise } from "@apollo/client";
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -63,7 +63,7 @@ export const createApolloClient = ({ locale, userData, dispatch }) => {
                     // Обновляем токены
                     userData.accessToken = newUserData.accessToken;
                     userData.refreshToken = newUserData.refreshToken;
-                    console.log(`newUserData`, newUserData);
+
                     dispatch({ type: "setUser", user: newUserData });
 
                     // Обновляем заголовки и повторяем запрос

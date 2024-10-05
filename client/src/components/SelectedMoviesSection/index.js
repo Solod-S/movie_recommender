@@ -1,19 +1,21 @@
+import { useContext, useState } from "react";
+import PropTypes from "prop-types";
+import { FormattedMessage } from "react-intl";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { Grid } from "@mui/material";
+
+import { AppContext } from "../../providers/appContext";
 import {
   MovieCardSelected,
   SelectedMoviesForm,
   ConfirmModal,
 } from "../../components";
+
 import noMoviesImageSrc from "../../assets/no_movies.png";
-import { Grid } from "@mui/material";
-import PropTypes from "prop-types";
-import { useContext, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { AppContext } from "../../providers/appContext";
 
 const CLIENT_URL =
   process.env.REACT_APP_CLIENT_URL_DEV ||
@@ -55,7 +57,7 @@ const MoviesList = styled(Stack)(({ theme }) => ({
   scrollbarColor: "#bfbfbf #f1f1f1", // Цвет бегунка и фона (background и track)
 }));
 
-const NoMovies = styled(Box)(({ theme }) => ({
+const NoMovies = styled(Box)(() => ({
   height: "100%",
   display: "flex",
   alignItems: "center",

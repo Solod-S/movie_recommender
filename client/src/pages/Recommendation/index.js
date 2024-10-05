@@ -1,7 +1,8 @@
-import { useQuery } from "@apollo/client";
-import { Box, Grid, Paper, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { Box, Grid, Paper, Typography } from "@mui/material";
+
 import { MOVIES_BY_IDS_QUERY } from "./queries";
 import { MovieDetailModal, MovieCard, ServerError } from "../../components";
 import renderSkeletons from "../../utils/renderSkeletons";

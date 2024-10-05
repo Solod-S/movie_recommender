@@ -1,6 +1,8 @@
+import { useCallback, useContext, useState } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 
 import { motion } from "framer-motion";
+
 import {
   AppBar,
   Toolbar,
@@ -13,13 +15,15 @@ import {
   Avatar,
   Button,
 } from "@mui/material";
+
 import { LOCALES } from "../../constants";
-import { useCallback, useContext, useState } from "react";
 import { AppContext } from "../../providers/appContext";
 import { framerLogoVariants } from "../../constants";
+
 import defaultBackground from "../../assets/banner.jpg";
 import favoritesBackground from "../../assets/favorites.jpg";
 import logo from "../../assets/movie-logo.png";
+
 import { FormattedMessage } from "react-intl";
 import AuthModal from "../AuthModal";
 

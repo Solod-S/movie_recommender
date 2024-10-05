@@ -1,9 +1,11 @@
-import * as React from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
+import PropTypes from "prop-types";
+
 import { IconButton, Menu } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const CardMenu = React.forwardRef(({ children }, ref) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+const CardMenu = forwardRef(({ children }, ref) => {
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   const handleClick = event => {
@@ -14,7 +16,7 @@ const CardMenu = React.forwardRef(({ children }, ref) => {
     setAnchorEl(null);
   };
 
-  React.useImperativeHandle(ref, () => ({
+  useImperativeHandle(ref, () => ({
     handleClose,
   }));
 
@@ -53,5 +55,9 @@ const CardMenu = React.forwardRef(({ children }, ref) => {
     </>
   );
 });
+
+CardMenu.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default CardMenu;

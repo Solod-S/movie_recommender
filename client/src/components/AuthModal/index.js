@@ -1,16 +1,18 @@
-import * as React from "react";
+import { useState } from "react";
+import PropTypes from "prop-types";
+
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+
 import Login from "./Login";
 import Register from "./Register";
 
-const AuthModal = ({ open = false, setOpenAuthModal }) => {
-  const [mode, setMode] = React.useState("SignIn");
+const AuthModal = ({ open = false, setOpenAuthModal = () => {} }) => {
+  const [mode, setMode] = useState("SignIn");
 
   const style = {
     position: "absolute",
     borderRadius: "15px",
-
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
@@ -39,6 +41,11 @@ const AuthModal = ({ open = false, setOpenAuthModal }) => {
       </Box>
     </Modal>
   );
+};
+
+AuthModal.propTypes = {
+  open: PropTypes.bool.isRequired,
+  setOpenAuthModal: PropTypes.func.isRequired,
 };
 
 export default AuthModal;

@@ -1,4 +1,7 @@
-import * as React from "react";
+import { useContext, useState } from "react";
+import { useMutation } from "@apollo/client";
+import PropTypes from "prop-types";
+
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormLabel from "@mui/material/FormLabel";
@@ -6,17 +9,19 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import MuiCard from "@mui/material/Card";
-import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
+import { styled } from "@mui/material/styles";
+
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { LOGIN_MUTATION } from "../queries";
-import logoSvg from "../../../assets/logo.webp";
-import { useMutation } from "@apollo/client";
-import { useCustomNotification } from "../../../hooks/useCustomNotification";
-import { AppContext } from "../../../providers/appContext";
+
 import { FormattedMessage } from "react-intl";
+import { AppContext } from "../../../providers/appContext";
+import { useCustomNotification } from "../../../hooks/useCustomNotification";
+import { LOGIN_MUTATION } from "../queries";
+
+import logoSvg from "../../../assets/logo.webp";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   borderRadius: "15px",
@@ -40,13 +45,13 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 const Login = ({ setMode, setOpenAuthModal }) => {
   const [loginUp, { loading }] = useMutation(LOGIN_MUTATION);
-  const { dispatch } = React.useContext(AppContext);
+  const { dispatch } = useContext(AppContext);
   const { showNotification, NotificationComponent } = useCustomNotification();
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -55,10 +60,6 @@ const Login = ({ setMode, setOpenAuthModal }) => {
   const handleSubmit = async event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get("email"),
-    //   password: data.get("password"),
-    // });
     try {
       const email = data.get("email");
       const password = data.get("password");
@@ -213,7 +214,6 @@ const Login = ({ setMode, setOpenAuthModal }) => {
             <span
               style={{ color: "#1976d2", cursor: "pointer" }}
               onClick={() => {
-                console.log(`SignUp`);
                 setMode("SignUp");
               }}
             >
@@ -224,6 +224,11 @@ const Login = ({ setMode, setOpenAuthModal }) => {
       </Card>
     </>
   );
+};
+
+Login.propTypes = {
+  setMode: PropTypes.func.isRequired,
+  setOpenAuthModal: PropTypes.func.isRequired,
 };
 
 export default Login;
