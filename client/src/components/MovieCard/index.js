@@ -25,6 +25,7 @@ import { SiImdb } from "react-icons/si";
 
 import CardMenu from "../CardMenu";
 import DefaultPoster from "../../assets/poster.jpg";
+import Loader from "../Loader";
 
 export const MoviesRating = styled(({ movieRating, ...other }) => (
   <Box {...other} />
@@ -65,6 +66,7 @@ const MovieCard = ({
   onCardSelect,
   isPreviewMode = false,
   openMovieDetailsById = () => {},
+  movieCardIsLoading = false,
   selected = false,
   favorites = false,
 }) => {
@@ -162,6 +164,7 @@ const MovieCard = ({
           </MenuItem> */}
         </CardMenu>
       )}
+      {movieCardIsLoading && <Loader cardLoader />}
       <MoviesRating movieRating={Math.round(movie.voteAverage || 0)}>
         <SiImdb size={25} style={{ marginRight: "4px" }} />{" "}
         <span>{Math.round(movie.voteAverage || 0)}</span>
@@ -205,6 +208,7 @@ MovieCard.protoTypes = {
   openMovieDetailsById: PropTypes.func.isRequired,
   selected: PropTypes.bool,
   favorites: PropTypes.bool,
+  isPreviewMode: PropTypes.bool,
 };
 
 export default MovieCard;

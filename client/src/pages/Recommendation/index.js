@@ -20,6 +20,7 @@ const Recommendation = () => {
   } = useSavedMovies();
   const { state } = useContext(AppContext);
   const [searchParams] = useSearchParams();
+  const [movieCardIsLoading, setMovieCardIsLoading] = useState(false);
   const [movieId, setMovieId] = useState("");
   const [params, setParams] = useState({ title: "", ids: [] });
   const [boxMinHeight, setBoxMinHeight] = useState("100vh");
@@ -117,6 +118,7 @@ const Recommendation = () => {
         isPreviewMode
         title={movieId}
         movieId={movieId}
+        setMovieCardIsLoading={setMovieCardIsLoading}
         open={!!movieId}
         onClose={onCloseConfirmModal}
         addFavoriteMovie={addFavoriteMovie}
@@ -137,6 +139,7 @@ const Recommendation = () => {
                   <Grid key={movie.id} item xs={12} md={3} lg={2}>
                     <MovieCard
                       movie={movie}
+                      movieCardIsLoading={movieCardIsLoading}
                       onCardSelect={() => console.log(`onCardSelect`)}
                       openMovieDetailsById={setMovieId}
                       isPreviewMode

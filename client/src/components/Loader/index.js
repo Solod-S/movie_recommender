@@ -1,16 +1,25 @@
 import { Box } from "@mui/material";
 import { RotatingLines } from "react-loader-spinner";
 
-const Loader = () => (
+const Loader = ({ cardLoader = false }) => (
   <Box
-    sx={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      // height: "350px",
-      width: "100%",
-      height: "100vh",
-    }}
+    sx={
+      cardLoader
+        ? {
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }
+        : {
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            // height: "350px",
+            width: "100%",
+            height: "100vh",
+          }
+    }
   >
     <RotatingLines
       visible={true}

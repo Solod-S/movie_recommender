@@ -17,15 +17,6 @@ export const useFilters = () => {
   );
 
   const setFilter = useCallback(
-    // filterFields => {
-    //   setFilterFields({
-    //     ...filter,
-    //     ...filterFields,
-    //     year: +filterFields.year,
-    //     genre: filterFields.genre === "" ? NaN : filterFields.genre,
-    //     primaryReleaseYear: +filterFields.primaryReleaseYear,
-    //   });
-    // },
     filterFields => {
       setFilterFields({
         ...filter,

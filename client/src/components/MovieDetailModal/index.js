@@ -45,6 +45,7 @@ const MovieDetailModal = ({
   deleteMovie = () => {},
   addFavoriteMovie = () => {},
   removeFavoriteMovie = () => {},
+  setMovieCardIsLoading = () => {},
 }) => {
   const { loading, error, data } = useQuery(MOVIE_DETAIL_BY_ID_QUERY, {
     variables: {
@@ -92,7 +93,18 @@ const MovieDetailModal = ({
 
   useEffect(() => {
     if (movieId && !isNaN(Number(movieId)) && Number(movieId) > 0) {
-      refetch(); // Выполнить запрос, если movieId валиден
+      const fetchMoviesDetail = async () => {
+        try {
+          setMovieCardIsLoading(true);
+          const result = await refetch(); // Выполнить запрос, если movieId валиден}
+          console.log(`result`, result);
+        } catch (error) {
+          console.log(`error in fetchMoviesDetail`, error);
+        } finally {
+          setMovieCardIsLoading(false);
+        }
+      };
+      fetchMoviesDetail();
     }
   }, [movieId, refetch]);
 
@@ -539,6 +551,7 @@ MovieDetailModal.propTypes = {
   deleteMovie: PropTypes.func,
   addFavoriteMovie: PropTypes.func,
   removeFavoriteMovie: PropTypes.func,
+  setMovieCardIsLoading: PropTypes.func,
   selectedMovies: PropTypes.arrayOf(
     PropTypes.shape({
       __typename: PropTypes.string.isRequired,

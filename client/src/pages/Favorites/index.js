@@ -21,6 +21,7 @@ import { FormattedMessage } from "react-intl";
 const Favorites = () => {
   const { state } = useContext(AppContext);
   const [movieId, setMovieId] = useState("");
+  const [movieCardIsLoading, setMovieCardIsLoading] = useState(false);
   const [moviesList, setMoviesList] = useState([]);
   const [page, setPage] = useState(1);
   const [boxMinHeight, setBoxMinHeight] = useState();
@@ -215,6 +216,7 @@ const Favorites = () => {
         user={state.user || null}
         title={movieId}
         movieId={movieId}
+        setMovieCardIsLoading={setMovieCardIsLoading}
         open={!!movieId}
         onClose={onCloseConfirmModal}
         selectedMovies={selectedMovies}
@@ -243,7 +245,7 @@ const Favorites = () => {
                     >
                       <MovieCard
                         movie={movie}
-                        onCardSelect={() => console.log(`onCardSelect`)}
+                        movieCardIsLoading={movieCardIsLoading}
                         openMovieDetailsById={setMovieId}
                         selected={selectedMovies.find(
                           ({ id }) => id === movie.id

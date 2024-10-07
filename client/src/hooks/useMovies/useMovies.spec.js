@@ -252,7 +252,7 @@ describe("useMovies hook", () => {
     );
   });
 
-  it("shouldn't delete movie", () => {
+  it("shouldn't delete movie that isn't in the list", () => {
     localStorage.clear();
     let hookValue;
 

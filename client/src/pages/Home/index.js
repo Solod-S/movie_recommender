@@ -127,7 +127,8 @@ const Home = () => {
   const { selectedMovies, selectMovie, deleteMovie } = useMovies();
   const [movieId, setMovieId] = useState("");
 
-  const [moviesList, setmoviesList] = useState([]);
+  const [moviesList, setMoviesList] = useState([]);
+  const [movieCardIsLoading, setMovieCardIsLoading] = useState(false);
   const { showNotification, NotificationComponent } = useCustomNotification();
   const { loading, error, data } = useQuery(MOVIES_QUERY, {
     variables: {
@@ -144,7 +145,7 @@ const Home = () => {
 
   useEffect(() => {
     if (data?.movies?.results?.length > 0)
-      setmoviesList(prevState => {
+      setMoviesList(prevState => {
         return data.movies.results.map(newMovie => {
           const oldMovie = prevState.find(movie => movie.id === newMovie.id);
 
@@ -154,7 +155,7 @@ const Home = () => {
           };
         });
       });
-    else setmoviesList([]);
+    else setMoviesList([]);
   }, [data]);
 
   const addFavoriteMovie = async movie => {
@@ -289,6 +290,7 @@ const Home = () => {
         user={state.user || null}
         title={movieId}
         movieId={movieId}
+        setMovieCardIsLoading={setMovieCardIsLoading}
         open={!!movieId}
         onClose={onCloseConfirmModal}
         selectedMovies={selectedMovies}
@@ -328,6 +330,7 @@ const Home = () => {
                         <MovieCard
                           movie={movie}
                           onCardSelect={selectMovieHandler}
+                          movieCardIsLoading={movieCardIsLoading}
                           openMovieDetailsById={setMovieId}
                           selected={selectedMovies.find(
                             ({ id }) => id === movie.id

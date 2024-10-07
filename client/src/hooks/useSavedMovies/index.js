@@ -31,6 +31,7 @@ export const useSavedMovies = () => {
   }, [data]);
 
   const addMovieToSaved = async movie => {
+    // console.log(`movie!!!!`, movie);
     setSavedMoviesLoading(true);
     const isNewMovie = !savedMovies.find(({ id }) => id === movie.id);
 
@@ -75,6 +76,7 @@ export const useSavedMovies = () => {
   };
 
   const removeMovieFromSaved = async movie => {
+    // console.log(`movie---`, movie);
     setSavedMoviesLoading(true);
     try {
       await removeMovie({

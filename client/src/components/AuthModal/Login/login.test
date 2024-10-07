@@ -1,0 +1,130 @@
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import Login from ".";
+import { MockedProvider } from "@apollo/client/testing";
+import { LOGIN_MUTATION } from "../queries";
+import { AppContextProvider } from "../../../providers/appContext";
+import { MemoryRouter } from "react-router-dom";
+// import I18nProvider from "./providers/i18n";
+import I18nProvider from "../../../providers/i18n";
+
+const mocks = [
+  {
+    request: {
+      query: LOGIN_MUTATION,
+      variables: {
+        email: "s.solod@megabite.com.ua",
+        password: "123456",
+      },
+    },
+    result: {
+      data: {
+        login: {
+          accessToken: "testToken",
+          refreshToken: "testRefreshToken",
+          user: {
+            id: "1",
+            name: "Sergey Solod",
+            email: "s.solod@megabite.com.ua",
+            savedMovies: [],
+          },
+        },
+      },
+    },
+  },
+];
+
+describe("Login Component", () => {
+  test("renders login form correctly", () => {
+    render(
+      <MockedProvider mocks={mocks} addTypename={false}>
+        <MemoryRouter>
+          <AppContextProvider>
+            <I18nProvider locale="en-us">
+              <Login setMode={jest.fn()} setOpenAuthModal={jest.fn()} />
+            </I18nProvider>
+          </AppContextProvider>
+        </MemoryRouter>
+      </MockedProvider>
+    );
+
+    expect(screen.getByPlaceholderText("your@email.com")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("••••••")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /login/i })).toBeInTheDocument();
+  });
+
+  // test("shows email validation error if email is invalid", () => {
+  //   render(
+  //     <MockedProvider mocks={[]} addTypename={false}>
+  //       <Login setMode={jest.fn()} setOpenAuthModal={jest.fn()} />
+  //     </MockedProvider>
+  //   );
+
+  //   fireEvent.change(screen.getByPlaceholderText("your@email.com"), {
+  //     target: { value: "invalidEmail" },
+  //   });
+  //   fireEvent.click(screen.getByRole("button", { name: /login/i }));
+
+  //   expect(
+  //     screen.getByText("Please enter a valid email address.")
+  //   ).toBeInTheDocument();
+  // });
+
+  // test("shows password validation error if password is too short", () => {
+  //   render(
+  //     <MockedProvider mocks={[]} addTypename={false}>
+  //       <Login setMode={jest.fn()} setOpenAuthModal={jest.fn()} />
+  //     </MockedProvider>
+  //   );
+
+  //   fireEvent.change(screen.getByPlaceholderText("••••••"), {
+  //     target: { value: "123" },
+  //   });
+  //   fireEvent.click(screen.getByRole("button", { name: /login/i }));
+
+  //   expect(
+  //     screen.getByText("Password must be at least 6 characters long.")
+  //   ).toBeInTheDocument();
+  // });
+
+  // test("submits the form with valid inputs", async () => {
+  //   const setOpenAuthModal = jest.fn();
+  //   const setMode = jest.fn();
+
+  //   render(
+  //     <MockedProvider mocks={mocks} addTypename={false}>
+  //       <Login setMode={setMode} setOpenAuthModal={setOpenAuthModal} />
+  //     </MockedProvider>
+  //   );
+
+  //   fireEvent.change(screen.getByPlaceholderText("your@email.com"), {
+  //     target: { value: "s.solod@megabite.com.ua" },
+  //   });
+  //   fireEvent.change(screen.getByPlaceholderText("••••••"), {
+  //     target: { value: "123456" },
+  //   });
+
+  //   fireEvent.click(screen.getByRole("button", { name: /login/i }));
+
+  //   await waitFor(() => expect(setOpenAuthModal).toHaveBeenCalledWith(false));
+  // });
+
+  // test("toggles password visibility", () => {
+  //   render(
+  //     <MockedProvider mocks={[]} addTypename={false}>
+  //       <Login setMode={jest.fn()} setOpenAuthModal={jest.fn()} />
+  //     </MockedProvider>
+  //   );
+
+  //   const passwordField = screen.getByPlaceholderText("••••••");
+  //   expect(passwordField).toHaveAttribute("type", "password");
+
+  //   fireEvent.click(screen.getByLabelText(/toggle password visibility/i));
+
+  //   expect(passwordField).toHaveAttribute("type", "text");
+
+  //   fireEvent.click(screen.getByLabelText(/toggle password visibility/i));
+
+  //   expect(passwordField).toHaveAttribute("type", "password");
+  // });
+});
