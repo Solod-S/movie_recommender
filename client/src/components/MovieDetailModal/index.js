@@ -106,6 +106,7 @@ const MovieDetailModal = ({
       };
       fetchMoviesDetail();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movieId, refetch]);
 
   const [trailerUrl, setTrailerUrl] = useState(null);
