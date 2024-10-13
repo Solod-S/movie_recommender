@@ -204,7 +204,6 @@ MovieCard.protoTypes = {
     releaseDate: PropTypes.string,
   }).isRequired,
   onCardSelect: PropTypes.func.isRequired,
-  isPreviewMode: PropTypes.bool.isRequired,
   openMovieDetailsById: PropTypes.func.isRequired,
   selected: PropTypes.bool,
   favorites: PropTypes.bool,
