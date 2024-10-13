@@ -1,17 +1,12 @@
 ![Version](https://img.shields.io/badge/Version-1.0-blue.svg?cacheSeconds=2592000)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![runs with React](https://img.shields.io/badge/Runs%20with%20React-000.svg?style=flat-square&logo=react&labelColor=f3f3f3&logoColor=#3C823B)](https://legacy.reactjs.org/)
-[![runs with React Router](https://img.shields.io/badge/Runs%20with%20React%20Router-000.svg?style=flat-square&logo=reactrouter&labelColor=f3f3f3&logoColor=#3C823B)](https://reactrouter.com/en/main)
-[![runs with Storyblok](https://img.shields.io/badge/Runs%20with%20Story%20Book-000.svg?style=flat-square&logo=storyblok&labelColor=f3f3f3&logoColor=#3C823B)](https://www.storyblok.com/)
-[![runs with MUI](https://img.shields.io/badge/Runs%20with%20MUI-000.svg?style=flat-square&logo=mui&labelColor=f3f3f3&logoColor=#3C823B)](https://mui.com/)
-[![runs with Testing Library](https://img.shields.io/badge/Runs%20with%20React%20Testing%20Library-000.svg?style=flat-square&logo=testinglibrary&labelColor=f3f3f3&logoColor=#3C823B)](https://testing-library.com/)
 [![runs with nodeJs](https://img.shields.io/badge/Runs%20with%20Node.Js-000.svg?style=flat-square&logo=nodedotjs&labelColor=f3f3f3&logoColor=#3C823B)](https://nodejs.org/ru)
-[![runs with GraphQL](https://img.shields.io/badge/Runs%20with%20GraphQL-000.svg?style=flat-square&logo=graphql&labelColor=f3f3f3&logoColor=E10098)](https://graphql.org/)
-[![runs with Apolo Server](https://img.shields.io/badge/Runs%20with%20Apolo%20Server-000.svg?style=flat-square&logo=apollographql&labelColor=f3f3f3&logoColor=311C87)](https://www.apollographql.com/docs)
+[![runs with GraphQL](https://img.shields.io/badge/Runs%20with%20GraphQL-000.svg?style=flat-square&logo=graphql&labelColor=f3f3f3&logoColor=E10098)](https://nestjs.com/)
+[![runs with Apolo Server](https://img.shields.io/badge/Runs%20with%20Apolo%20Server-000.svg?style=flat-square&logo=apollographql&labelColor=f3f3f3&logoColor=311C87)](https://nestjs.com/)
 [![Runs with Express](https://img.shields.io/badge/Runs%20with%20Express-000.svg?style=flat-square&logo=express&labelColor=f3f3f3&logoColor=000000)](https://expressjs.com/)
 [![runs with Prisma](https://img.shields.io/badge/Runs%20with%20Prisma-000.svg?style=flat-square&logo=prisma&labelColor=f3f3f3&logoColor=2D3748)](https://www.prisma.io/)
 [![Runs with MongoDB](https://img.shields.io/badge/Runs%20with%20MongoDB-000.svg?style=flat-square&logo=mongodb&labelColor=f3f3f3&logoColor=47A248)](https://www.mongodb.com/)
-[![runs with JSON Web Tokens](https://img.shields.io/badge/Runs%20with%20JSON%20Web%20Tokens-000.svg?style=flat-square&logo=jsonwebtokens&labelColor=f3f3f3&logoColor=2D3748)](https://jwt.io/)
+[![runs with JSON Web Tokens](https://img.shields.io/badge/Runs%20with%20JSON%20Web%20Tokens-000.svg?style=flat-square&logo=jsonwebtokens&labelColor=f3f3f3&logoColor=2D3748)](https://www.prisma.io/)
 
 # Movie Recommender
 
@@ -24,41 +19,6 @@ Movie Recommender is a web application that allows users to explore information 
 - Recommended Movie Lists: Users can generate personalized movie recommendation lists and share them via a unique link. Recipients can explore the movies in the list, watch trailers, view actors, and read expert reviews.
 
 This app is perfect for movie enthusiasts who want to organize their collections and share recommendations with friends and family.
-
-**Client Main Technologies:**
-
-![Movie Recommender](/media/banner_client.jpg)
-
-- React: React is a popular open-source JavaScript library for building user interfaces, particularly for single-page applications (SPAs). It allows developers to create reusable UI components, manage state efficiently, and build complex user interfaces with a declarative approach. React's component-based architecture and virtual DOM enhance performance by efficiently updating and rendering components when data changes.
-
-- React Router DOM: React Router DOM is a routing library specifically for React applications, allowing navigation between different pages or views in a single-page application. It manages dynamic routing, enabling developers to map URL paths to specific components and create a seamless user experience with history-based navigation.
-
-- Material-UI (MUI): Material-UI is a popular React component library that implements Google's Material Design guidelines. It provides pre-built, customizable UI components like buttons, forms, and layouts, which help developers quickly build responsive, visually appealing applications. MUI enhances the development process with a clean and consistent design language.
-
-- Storybook: Storybook is an open-source tool for building and testing UI components in isolation from the main application. It allows developers to create and showcase different UI component states, document their usage, and test their behavior, improving component reusability and collaboration across development teams.
-
-- Axios: Axios is a promise-based HTTP client for making requests from the browser or Node.js. It simplifies data fetching and interaction with REST APIs by providing a clean and consistent API for handling requests, responses, and errors. Axios also supports request/response interception, timeouts, and automatic JSON data transformation.
-
-- Apollo Client: Apollo Client is a comprehensive state management library for GraphQL in JavaScript applications. It enables seamless data fetching and caching from GraphQL APIs, allowing developers to manage the local and remote application state in a declarative manner. Apollo Client integrates easily with React and enhances performance through automatic caching and query optimization.
-
-- GraphQL: GraphQL is a query language for APIs and a runtime for executing those queries. It allows clients to request specific data and aggregate responses from multiple sources in a single request. This flexibility leads to more efficient and performant data retrieval compared to traditional REST APIs, making it easier to build dynamic user interfaces.
-
-- React Testing Library: React Testing Library is a lightweight testing library focused on testing React components from a user's perspective. It encourages best practices by simulating real user interactions with components, ensuring that the application works as expected in different scenarios. It is often used for unit and integration testing in React applications.
-
-- Framer Motion: Framer Motion is an animation library for React, providing simple and flexible APIs to create smooth, high-performance animations and transitions. It allows developers to build complex animations with ease, leveraging the power of React's declarative syntax and improving the user experience with visually engaging interactions.
-
-## Client Technologies Used
-
-    react
-    react-router-dom
-    graphql
-    axios
-    final-form
-    framer-motion
-    lodash.debounce
-    testing-library
-    storybook
-    prop-types
 
 **Server Main Technologies:**
 
@@ -182,31 +142,21 @@ yarn;
   npx prisma db push
 ```
 
-3.1 Exemple of server `.env` file. Replace values with yours!!
+1. Exemple of `.env` file. Replace values with yours!!
 
 ```javascript
-TMDB_TOKEN;
-THDB_API_KEY;
-IMAGE_BASE_PATH;
-PORT;
-VERCEL_SERVER_URL;
-APP_SECRET;
-DATABASE_URL;
-JWT_ACCESS_EXPIRATION;
-JWT_REFRESH_EXPIRATION;
+TMDB_TOKEN="TMDB_api_token"
+THDB_API_KEY="TMDB_api_key"
+IMAGE_BASE_PATH="https://image.tmdb.org/t/p/w300"
+PORT=4000
+VERCEL_SERVER_URL="https://yourproject.app/api/graphql"
+APP_SECRET="your_app_secret";
+DATABASE_URL="mongodb+srv://User:m9D8asfasf@cluster0......"
+JWT_ACCESS_EXPIRATION=1d
+JWT_REFRESH_EXPIRATION=7d
 ```
 
-3.2 Exemple of client `.env` file. Replace values with yours!!
-
-```javascript
-REACT_APP_TMDB_API_KEY;
-REACT_APP_TMDB_READ_ACCESS_TOKEN;
-REACT_APP_SERVER_URL;
-REACT_APP_PRODUCT_SERVER_URL;
-REACT_APP_CLIENT_URL_DEV;
-```
-
-4. Start the server
+1. Start the server
 
 ```javascript
 npx nodemon src/index
